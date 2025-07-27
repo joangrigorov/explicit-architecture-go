@@ -7,8 +7,8 @@ type CreatePostRequest struct {
 	Content string `json:"content" binding:"required"`
 }
 
-func (r *CreatePostRequest) ToPost() post.Post {
-	return post.Post{
+func (r *CreatePostRequest) ToPost() *post.Post {
+	return &post.Post{
 		Name:    r.Name,
 		Content: r.Content,
 	}

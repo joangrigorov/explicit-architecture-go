@@ -10,6 +10,8 @@ x-backend-app-environment: &x-backend-app-environment
   # PG
   PG_POOL_MAX: "2"
   PG_URL: "postgres://user:password@db:5432/db?sslmode=disable"
+  # Go
+  GO111MODULE: on
 
 services:
   db:
@@ -29,24 +31,41 @@ services:
       app_network:
         aliases:
           - db.lvh.me
-
   app:
-    container_name: app
-    platform: linux/amd64
-    pid: "host"
     build:
       context: .
+      dockerfile: Dockerfile.dev
+    working_dir: /app
+    volumes:
+      - ./:/app
     environment:
       <<: *x-backend-app-environment
+    command: air
     ports:
       - "8080:8080"
-      - "8081:8081"
     depends_on:
       - db
     networks:
       app_network:
         aliases:
           - app.lvh.me
+#  app:
+#    container_name: app
+#    platform: linux/amd64
+#    pid: "host"
+#    build:
+#      context: .
+#    environment:
+#      <<: *x-backend-app-environment
+#    ports:
+#      - "8080:8080"
+#      - "8081:8081"
+#    depends_on:
+#      - db
+#    networks:
+#      app_network:
+#        aliases:
+#          - app.lvh.me
 
 networks:
   app_network:
