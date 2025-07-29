@@ -1,4 +1,4 @@
-package shared_kernel
+package responses
 
 import (
 	"github.com/gin-gonic/gin"

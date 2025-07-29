@@ -2,7 +2,7 @@ package core
 
 import (
 	"app/internal/core/component/blog/application/repositories"
-	"app/internal/presentation/web/core/component/blog/anonymous/v1/controllers"
+	"app/internal/presentation/web/core/component/blog/v1/anonymous/controllers"
 
 	"github.com/gin-gonic/gin"
 )
