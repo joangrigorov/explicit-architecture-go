@@ -1,9 +1,7 @@
 package bootstrap
 
 import (
-	"app/config"
 	"app/internal/infrastructure/framework/validation"
-	"app/internal/infrastructure/persistence/ent"
 	"app/internal/infrastructure/persistence/ent/blog"
 	"app/internal/presentation/web/core"
 	"context"
@@ -12,16 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/fx"
 	"net/http"
-)
-
-var providers = fx.Options(
-	fx.Provide(
-		core.NewRouter,
-		blog.NewPostRepository,
-		config.NewConfig,
-		ent.NewDB,
-		blog.NewClient,
-	),
 )
 
 // runServer Starts a server by registering an Fx lifecycle hook
@@ -53,7 +41,9 @@ func NewApp() *fx.App {
 		providers,
 		fx.Invoke(
 			blog.MigrateSchema,
+			core.RegisterRoutes,
 			validation.RegisterBindings,
+			validation.RegisterTranslations,
 			runServer,
 		),
 	)

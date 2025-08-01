@@ -9,7 +9,7 @@ import (
 
 // TestCreatePostRequest_ToPost verifies that ToPost() maps fields correctly.
 func TestCreatePostRequest_ToPost(t *testing.T) {
-	req := &CreatePostRequest{
+	req := &CreatePost{
 		Name:    "My Title",
 		Content: "My content here",
 	}

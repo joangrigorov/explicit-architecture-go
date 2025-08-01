@@ -27,11 +27,12 @@ func (p PostRepository) GetById(ctx context.Context, id int) (*post.Post, error)
 }
 
 func (p PostRepository) Create(ctx context.Context, post *post.Post) error {
-	_, err := p.client.Post.
+	dto, err := p.client.Post.
 		Create().
 		SetName(post.Name).
 		SetContent(post.Content).
 		Save(ctx)
+	post.Id = dto.ID
 	return err
 }
 

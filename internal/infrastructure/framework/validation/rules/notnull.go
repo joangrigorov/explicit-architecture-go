@@ -1,4 +1,4 @@
-package validation
+package rules
 
 import (
 	"github.com/aarondl/null/v9"
