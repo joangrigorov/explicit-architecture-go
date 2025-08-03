@@ -3,16 +3,15 @@ package post
 import (
 	"app/internal/presentation/web/core/component/blog/v1/anonymous/requests"
 	. "app/internal/presentation/web/core/component/blog/v1/anonymous/responses"
-	. "app/internal/presentation/web/core/responses"
+	. "app/internal/presentation/web/core/shared_kernel/responses"
 	. "app/internal/presentation/web/port/http"
 	"net/http"
-	"strconv"
 )
 
 func (pc *Controller) Update(c Context) {
-	id, err := strconv.Atoi(c.Param("id"))
+	id, err := c.ParamInt("id")
 	if err != nil {
-		BadRequest(c, err)
+		BadRequest(c, NewDefaultError(err))
 		return
 	}
 
@@ -24,7 +23,7 @@ func (pc *Controller) Update(c Context) {
 
 	var req requests.UpdatePostRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		UnprocessableEntity(c, err, req)
+		UnprocessableEntity(c, Render(pc.translator, err, req))
 		return
 	}
 

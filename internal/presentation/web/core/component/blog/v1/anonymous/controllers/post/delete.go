@@ -1,15 +1,14 @@
 package post
 
 import (
-	. "app/internal/presentation/web/core/responses"
+	. "app/internal/presentation/web/core/shared_kernel/responses"
 	. "app/internal/presentation/web/port/http"
-	"strconv"
 )
 
 func (pc *Controller) Delete(c Context) {
-	id, err := strconv.Atoi(c.Param("id"))
+	id, err := c.ParamInt("id")
 	if err != nil {
-		BadRequest(c, err)
+		BadRequest(c, NewDefaultError(err))
 		return
 	}
 

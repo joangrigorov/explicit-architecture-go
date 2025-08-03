@@ -1,7 +1,10 @@
-package validation
+package responses
 
 import (
+	"encoding/json"
+	"errors"
 	"fmt"
+	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 	"reflect"
 	"strings"
@@ -14,15 +17,43 @@ type fieldError struct {
 }
 
 type ErrorsResponse struct {
-	Errors []fieldError `json:"errors"`
+	Errors []fieldError `json:"errors" binding:"omitempty"`
+	Error  *string      `json:"error" binding:"omitempty"`
 }
 
-func Render(ve validator.ValidationErrors, req interface{}) ErrorsResponse {
+func Render(tr ut.Translator, err error, req interface{}) ErrorsResponse {
+	var ve validator.ValidationErrors
+	if errors.As(err, &ve) {
+		return renderValidationErrors(tr, ve, req)
+	}
+
+	var ute *json.UnmarshalTypeError
+	if errors.As(err, &ute) {
+		return renderTypeErrors(ute)
+	}
+
+	errorAsString := err.Error()
+	return ErrorsResponse{Error: &errorAsString}
+}
+
+func renderTypeErrors(ute *json.UnmarshalTypeError) ErrorsResponse {
+	return ErrorsResponse{
+		Errors: []fieldError{
+			{
+				Field:   ute.Field,
+				Rule:    "type_error",
+				Message: fmt.Sprintf("Type error for field %s", ute.Field),
+			},
+		},
+	}
+}
+
+func renderValidationErrors(tr ut.Translator, ve validator.ValidationErrors, req interface{}) ErrorsResponse {
 	fieldErrors := make([]fieldError, len(ve))
 	for i, fe := range ve {
 		fieldErrors[i] = fieldError{
 			Field:   getJSONFieldName(fe, req),
-			Message: fe.Translate(Trans),
+			Message: fe.Translate(tr),
 			Rule:    fe.Tag(),
 		}
 	}
