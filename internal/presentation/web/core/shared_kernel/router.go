@@ -15,7 +15,6 @@ func RegisterRoutes(
 		// We make sure only fundamentally valid JSON passes through.
 		// The validation only happens for json requests.
 		middleware.ValidateJSONBody,
-		middleware.ValidateJSONBody,
 	)
 
 	// blog component routes
