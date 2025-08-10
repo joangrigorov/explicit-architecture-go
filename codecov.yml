@@ -4,11 +4,12 @@ coverage:
       default:
         target: 100%
   ignore:
-    - "^cmd/"
-    - "^ent/"
-    - "^config/"
-    - "^internal/infrastructure/persistence/ent/generated/"
-    - "^internal/infrastructure/persistence/ent/activity/migrate\.go$"
-    - "^internal/infrastructure/persistence/ent/attendance/migrate\.go$"
-    - "^internal/infrastructure/bootstrap/"
-    - "^mock/"
+    - "bootstrap/*"
+    - "cmd/*"
+    - "config/*"
+    - "database/ent/*"
+    - "internal/infrastructure/persistence/ent/generated/*"
+    - "internal/infrastructure/persistence/ent/activity/migrate.go"
+    - "internal/infrastructure/persistence/ent/attendance/migrate.go"
+    - "internal/infrastructure/bootstrap/*"
+    - "mock/*"

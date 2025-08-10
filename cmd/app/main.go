@@ -1,11 +1,10 @@
 package main
 
 import (
-	"app/internal/infrastructure/bootstrap"
+	"app/bootstrap"
 )
 
 func main() {
-	bootstrap.
-		NewApp().
+	bootstrap.NewApp().
 		Run()
 }

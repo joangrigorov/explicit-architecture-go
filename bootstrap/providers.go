@@ -2,12 +2,12 @@ package bootstrap
 
 import (
 	"app/config"
-	"app/internal/infrastructure/framework/http"
-	"app/internal/infrastructure/framework/validation"
 	"app/internal/infrastructure/persistence/ent"
 	"app/internal/infrastructure/persistence/ent/activity"
 	"app/internal/infrastructure/persistence/ent/attendance"
 	"app/internal/presentation/web/core/component/activity/v1/controllers/activities"
+	"app/internal/presentation/web/infrastructure/framework/http"
+	"app/internal/presentation/web/infrastructure/framework/validation"
 
 	"go.uber.org/fx"
 )

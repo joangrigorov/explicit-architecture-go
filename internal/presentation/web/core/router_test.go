@@ -1,10 +1,8 @@
-package shared_kernel
+package core
 
 import (
 	"app/internal/presentation/web/core/component/activity/v1/controllers/activities"
 	ctx "app/internal/presentation/web/port/http"
-	"app/mock/core/component/blog/application/repositories"
-	ut "app/mock/ext/go-playground/universal-translator"
 	"app/mock/presentation/web/port/http"
 	"testing"
 
@@ -18,8 +16,6 @@ func TestRegisterRoutes(t *testing.T) {
 
 	router := http.NewMockRouter(ctrl)
 	group := http.NewMockRouter(ctrl)
-	postRepository := repositories.NewMockPostRepository(ctrl)
-	translator := ut.NewMockTranslator(ctrl)
 
 	router.EXPECT().
 		Use(gomock.Any()).
@@ -54,6 +50,9 @@ func TestRegisterRoutes(t *testing.T) {
 		AnyTimes()
 
 	assert.NotPanics(t, func() {
-		RegisterRoutes(router, activities.NewController(postRepository, translator))
+		RegisterRoutes(
+			router,
+			&activities.Controller{},
+		)
 	})
 }

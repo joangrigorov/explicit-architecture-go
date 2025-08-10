@@ -18,7 +18,7 @@ type ActivityResponse struct {
 	UpdatedAt        time.Time `json:"updated_at"`
 }
 
-func OneActivityResponse(ac *domain.Activity) *ActivityResponse {
+func One(ac *domain.Activity) *ActivityResponse {
 	return &ActivityResponse{
 		Id:               string(ac.Id),
 		Slug:             ac.Slug,
@@ -33,11 +33,11 @@ func OneActivityResponse(ac *domain.Activity) *ActivityResponse {
 	}
 }
 
-func MultiActivityResponse(entries []*domain.Activity) []*ActivityResponse {
+func Many(entries []*domain.Activity) []*ActivityResponse {
 	responses := make([]*ActivityResponse, 0, len(entries))
 
 	for _, ac := range entries {
-		responses = append(responses, OneActivityResponse(ac))
+		responses = append(responses, One(ac))
 	}
 	return responses
 }

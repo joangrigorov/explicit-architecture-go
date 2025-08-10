@@ -2,11 +2,12 @@ package http
 
 import (
 	port "app/internal/presentation/web/port/http"
-	"github.com/gin-gonic/gin"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
 )
 
 // TODO rewrite all of the tests below to use mocked gin interfaces instead of httptest.

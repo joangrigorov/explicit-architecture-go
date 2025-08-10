@@ -1,10 +1,10 @@
 package bootstrap
 
 import (
-	"app/internal/infrastructure/framework/validation"
 	"app/internal/infrastructure/persistence/ent/activity"
 	"app/internal/infrastructure/persistence/ent/attendance"
-	"app/internal/presentation/web/core/shared_kernel"
+	"app/internal/presentation/web/core"
+	"app/internal/presentation/web/infrastructure/framework/validation"
 	"context"
 	"errors"
 	"fmt"
@@ -47,7 +47,7 @@ func NewApp() *fx.App {
 			attendance.MigrateSchema,
 
 			// bootstrap
-			shared_kernel.RegisterRoutes,
+			core.RegisterRoutes,
 			validation.RegisterRules,
 
 			// initiate

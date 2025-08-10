@@ -2,13 +2,14 @@ package validation
 
 import (
 	utMock "app/mock/ext/go-playground/universal-translator"
-	"app/mock/infrastructure/framework/validation"
+	"app/mock/presentation/web/infrastructure/framework/validation"
+	"testing"
+
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
-	"testing"
 )
 
 func TestRegisterRules(t *testing.T) {

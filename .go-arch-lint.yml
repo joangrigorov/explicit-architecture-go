@@ -11,41 +11,72 @@ exclude:
   - mock
 
 components:
-  domain:
-    in: internal/core/component/*/domain/**
-  application:
-    in: internal/core/component/*/application/**
-  ports:
+  # Application Core layers
+  core/domain/activity:
+    in: internal/core/component/activity/domain/**
+  core/domain/attendance:
+    in: internal/core/component/attendance/domain/**
+  core/application/activity:
+    in: internal/core/component/activity/application/**
+  core/application/attendance:
+    in: internal/core/component/attendance/application/**
+  core/ports:
     in: internal/core/port/**
-  shared_kernel:
+  core/shared_kernel:
     in: internal/core/shared_kernel/**
+  # Outer layers
   presentation:
     in: internal/presentation/**
   infrastructure:
     in:
       - internal/infrastructure/**
       - config
+  # App boilerplate
+  bootstrap:
+    in: bootstrap/**
 
 deps:
-  domain:
+  core/domain/activity:
     mayDependOn:
-      - shared_kernel
-  application:
+      - core/domain/activity # self
+      - core/shared_kernel
+  core/domain/attendance:
     mayDependOn:
-      - domain
-      - ports
-      - shared_kernel
+      - core/domain/attendance # self
+      - core/shared_kernel
+  core/application/activity:
+    mayDependOn:
+      - core/application/activity # self
+      - core/domain/activity
+      - core/ports
+      - core/shared_kernel
+  core/application/attendance:
+    mayDependOn:
+      - core/application/attendance # self
+      - core/domain/attendance
+      - core/ports
+      - core/shared_kernel
   presentation:
     anyVendorDeps: true
     mayDependOn:
+      - presentation # self
+      - core/domain/activity
+      - core/domain/attendance
+      - core/application/activity
+      - core/application/attendance
       - infrastructure
-      - presentation
-      - application
-      - domain
   infrastructure:
     anyVendorDeps: true
     mayDependOn:
+      - infrastructure # self
+      - core/domain/activity
+      - core/domain/attendance
+      - core/application/activity
+      - core/application/attendance
+      - core/ports
+  bootstrap:
+    anyVendorDeps: true
+    mayDependOn:
+      - bootstrap # self
       - infrastructure
       - presentation
-      - application
-      - domain

@@ -1,8 +1,8 @@
-package shared_kernel
+package core
 
 import (
 	"app/internal/presentation/web/core/component/activity/v1/controllers/activities"
-	"app/internal/presentation/web/core/shared_kernel/middleware"
+	"app/internal/presentation/web/core/shared/middleware"
 	"app/internal/presentation/web/port/http"
 )
 

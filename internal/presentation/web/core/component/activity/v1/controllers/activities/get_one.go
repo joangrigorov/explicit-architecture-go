@@ -3,7 +3,7 @@ package activities
 import (
 	"app/internal/core/component/activity/domain"
 	. "app/internal/presentation/web/core/component/activity/v1/responses"
-	. "app/internal/presentation/web/core/shared_kernel/responses"
+	. "app/internal/presentation/web/core/shared/responses"
 	. "app/internal/presentation/web/port/http"
 	"net/http"
 )
@@ -17,5 +17,5 @@ func (pc *Controller) GetOne(c Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, OneActivityResponse(p))
+	c.JSON(http.StatusOK, One(p))
 }

@@ -3,11 +3,12 @@ package rules
 import (
 	ut "app/mock/ext/go-playground/universal-translator"
 	"app/mock/ext/go-playground/validator"
+	"reflect"
+	"testing"
+
 	"github.com/aarondl/null/v9"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
-	"reflect"
-	"testing"
 )
 
 func TestNewNotNull(t *testing.T) {

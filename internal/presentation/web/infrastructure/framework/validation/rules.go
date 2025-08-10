@@ -1,7 +1,8 @@
 package validation
 
 import (
-	"app/internal/infrastructure/framework/validation/rules"
+	"app/internal/presentation/web/infrastructure/framework/validation/rules"
+
 	"github.com/gin-gonic/gin/binding"
 	enLoc "github.com/go-playground/locales/en"
 	ut "github.com/go-playground/universal-translator"

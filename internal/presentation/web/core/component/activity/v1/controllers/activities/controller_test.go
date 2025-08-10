@@ -1,8 +1,7 @@
 package activities
 
 import (
-	"app/internal/infrastructure/framework/validation"
-	"app/mock/core/component/blog/application/repositories"
+	"app/mock/core/component/activity/application/repositories"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -13,10 +12,10 @@ func TestNewController(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	mockPostRepo := repositories.NewMockPostRepository(ctrl)
+	activityRepository := repositories.NewMockActivityRepository(ctrl)
 
-	c := NewController(mockPostRepo, validation.NewTranslator())
+	c := NewController(activityRepository)
 
 	assert.NotNil(t, c)
-	assert.Equal(t, mockPostRepo, c.activityRepository)
+	assert.Equal(t, activityRepository, c.activityRepository)
 }

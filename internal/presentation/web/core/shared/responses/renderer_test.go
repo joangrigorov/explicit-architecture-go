@@ -1,14 +1,15 @@
 package responses
 
 import (
-	"app/internal/infrastructure/framework/validation"
+	"app/internal/presentation/web/infrastructure/framework/validation"
 	"encoding/json"
 	"errors"
+	"reflect"
+	"testing"
+
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 	"github.com/stretchr/testify/assert"
-	"reflect"
-	"testing"
 )
 
 type fakeFieldError struct {
