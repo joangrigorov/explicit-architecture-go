@@ -1,11 +1,12 @@
-package post
+package activities
 
 import (
 	"app/internal/infrastructure/framework/validation"
 	"app/mock/core/component/blog/application/repositories"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
-	"testing"
 )
 
 func TestNewController(t *testing.T) {
@@ -17,5 +18,5 @@ func TestNewController(t *testing.T) {
 	c := NewController(mockPostRepo, validation.NewTranslator())
 
 	assert.NotNil(t, c)
-	assert.Equal(t, mockPostRepo, c.PostRepository)
+	assert.Equal(t, mockPostRepo, c.activityRepository)
 }

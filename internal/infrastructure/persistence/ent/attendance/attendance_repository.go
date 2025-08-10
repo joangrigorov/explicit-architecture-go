@@ -4,7 +4,7 @@ import (
 	"app/internal/core/component/attendance/domain"
 	"app/internal/infrastructure/framework/uuid"
 	"app/internal/infrastructure/persistence/ent/generated/attendance"
-	attendance2 "app/internal/infrastructure/persistence/ent/generated/attendance/attendance"
+	ent "app/internal/infrastructure/persistence/ent/generated/attendance/attendance"
 	"context"
 	"time"
 )
@@ -21,8 +21,8 @@ func (r *AttendanceRepository) GetById(ctx context.Context, id domain.Attendance
 	dto, err := r.client.Attendance.
 		Query().
 		Where(
-			attendance2.ID(uuid.Parse(id)),
-			attendance2.DeletedAtIsNil(),
+			ent.ID(uuid.Parse(id)),
+			ent.DeletedAtIsNil(),
 		).
 		Only(ctx)
 
@@ -34,13 +34,16 @@ func (r *AttendanceRepository) GetById(ctx context.Context, id domain.Attendance
 }
 
 func (r *AttendanceRepository) GetAll(ctx context.Context) ([]*domain.Attendance, error) {
-	entries, err := r.client.Attendance.Query().All(ctx)
+	entries, err := r.client.Attendance.
+		Query().
+		Where(ent.DeletedAtIsNil()).
+		All(ctx)
 
 	if err != nil {
 		return nil, err
 	}
 
-	collection := make([]*domain.Attendance, len(entries))
+	collection := make([]*domain.Attendance, 0, len(entries))
 
 	for _, e := range entries {
 		collection = append(collection, mapEntity(e))

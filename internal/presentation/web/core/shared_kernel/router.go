@@ -1,14 +1,14 @@
 package shared_kernel
 
 import (
-	"app/internal/presentation/web/core/component/blog/v1/anonymous/controllers/post"
+	"app/internal/presentation/web/core/component/activity/v1/controllers/activities"
 	"app/internal/presentation/web/core/shared_kernel/middleware"
 	"app/internal/presentation/web/port/http"
 )
 
 func RegisterRoutes(
 	r http.Router,
-	postController *post.Controller,
+	activityController *activities.Controller,
 ) {
 	// Global middleware
 	r.Use(
@@ -17,15 +17,15 @@ func RegisterRoutes(
 		middleware.ValidateJSONBody,
 	)
 
-	// activity component routes
+	// activity component public routes
 	{
-		v1 := r.Group("/blogs/v1")
+		v1 := r.Group("/activity/v1")
+		//
+		//v1.POST("/activities", middleware.RequiresJSON, activityController.Create)
+		//v1.PATCH("/posts/:id", middleware.RequiresJSON, activityController.Update)
+		//v1.DELETE("/posts/:id", activityController.Delete)
 
-		v1.POST("/posts", middleware.RequiresJSON, postController.Create)
-		v1.PATCH("/posts/:id", middleware.RequiresJSON, postController.Update)
-		v1.DELETE("/posts/:id", postController.Delete)
-
-		v1.GET("/posts/:id", postController.GetOne)
-		v1.GET("/posts", postController.Index)
+		v1.GET("/activities/:id", activityController.GetOne)
+		v1.GET("/activities", activityController.Index)
 	}
 }

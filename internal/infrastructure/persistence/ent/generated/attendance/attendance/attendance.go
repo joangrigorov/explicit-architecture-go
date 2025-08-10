@@ -32,7 +32,7 @@ const (
 	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
 	FieldDeletedAt = "deleted_at"
 	// Table holds the table name of the attendance in the database.
-	Table = "attendance"
+	Table = "attendances"
 )
 
 // Columns holds all SQL columns for attendance fields.

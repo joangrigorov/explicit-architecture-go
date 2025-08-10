@@ -1,14 +1,15 @@
 package shared_kernel
 
 import (
-	"app/internal/presentation/web/core/component/blog/v1/anonymous/controllers/post"
+	"app/internal/presentation/web/core/component/activity/v1/controllers/activities"
 	ctx "app/internal/presentation/web/port/http"
 	"app/mock/core/component/blog/application/repositories"
 	ut "app/mock/ext/go-playground/universal-translator"
 	"app/mock/presentation/web/port/http"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
-	"testing"
 )
 
 func TestRegisterRoutes(t *testing.T) {
@@ -53,6 +54,6 @@ func TestRegisterRoutes(t *testing.T) {
 		AnyTimes()
 
 	assert.NotPanics(t, func() {
-		RegisterRoutes(router, post.NewController(postRepository, translator))
+		RegisterRoutes(router, activities.NewController(postRepository, translator))
 	})
 }

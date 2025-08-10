@@ -17,7 +17,7 @@ import (
 	gomock "go.uber.org/mock/gomock"
 )
 
-// MockPostRepository is a mock of PostRepository interface.
+// MockPostRepository is a mock of activityRepository interface.
 type MockPostRepository struct {
 	ctrl     *gomock.Controller
 	recorder *MockPostRepositoryMockRecorder

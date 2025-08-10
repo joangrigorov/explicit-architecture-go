@@ -7,6 +7,7 @@ package mock
 
 // Repository mocks
 //go:generate mockgen -source=../internal/core/component/activity/application/repositories/activity_repository.go -destination=core/component/activity/application/repositories/mock_activity_repository.go -package=repositories
+//go:generate mockgen -source=../internal/core/component/attendance/application/repositories/attendance_repository.go -destination=core/component/attendance/application/repositories/mock_attendance_repository.go -package=repositories
 
 //go:generate mockgen -source=../internal/infrastructure/framework/validation/rules.go -destination=infrastructure/framework/validation/mock_rules.go -package=validation
 //go:generate mockgen -source=../internal/presentation/web/port/http/router.go -destination=presentation/web/port/http/mock_router.go -package=http

@@ -2,11 +2,18 @@ package config
 
 import (
 	"fmt"
+
 	"github.com/caarlos0/env/v11"
 )
 
 type Config struct {
+	DB DB
 	PG PG
+}
+
+type DB struct {
+	Driver string `env:"DB_DRIVER" envDefault:"postgres"`
+	PG     PG
 }
 
 type PG struct {

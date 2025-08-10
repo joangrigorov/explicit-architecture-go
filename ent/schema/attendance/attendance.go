@@ -42,5 +42,5 @@ func (Attendance) Indexes() []ent.Index {
 }
 
 func (Attendance) Config() ent.Config {
-	return ent.Config{Table: "attendance"}
+	return ent.Config{Table: "attendances"}
 }

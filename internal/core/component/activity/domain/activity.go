@@ -29,6 +29,7 @@ func NewActivity(
 	shortDescription string,
 	fullDescription string,
 	happensAt time.Time,
+	attendants int,
 ) *Activity {
 	return &Activity{
 		events: []ActivityEvent{
@@ -42,6 +43,7 @@ func NewActivity(
 		ShortDescription: shortDescription,
 		FullDescription:  fullDescription,
 		HappensAt:        happensAt,
+		Attendants:       attendants,
 
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
@@ -56,6 +58,7 @@ func ReconstituteActivity(
 	shortDescription string,
 	fullDescription string,
 	happensAt time.Time,
+	attendants int,
 	createdAt time.Time,
 	updatedAt time.Time,
 ) *Activity {
@@ -69,7 +72,9 @@ func ReconstituteActivity(
 		ShortDescription: shortDescription,
 		FullDescription:  fullDescription,
 		HappensAt:        happensAt,
-		CreatedAt:        createdAt,
-		UpdatedAt:        updatedAt,
+		Attendants:       attendants,
+
+		CreatedAt: createdAt,
+		UpdatedAt: updatedAt,
 	}
 }

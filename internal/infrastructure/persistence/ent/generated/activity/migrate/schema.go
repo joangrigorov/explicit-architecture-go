@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	// ActivityColumns holds the columns for the "activity" table.
-	ActivityColumns = []*schema.Column{
+	// ActivitiesColumns holds the columns for the "activities" table.
+	ActivitiesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID},
 		{Name: "slug", Type: field.TypeString, Unique: true},
 		{Name: "title", Type: field.TypeString},
@@ -22,42 +22,42 @@ var (
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
 	}
-	// ActivityTable holds the schema information for the "activity" table.
-	ActivityTable = &schema.Table{
-		Name:       "activity",
-		Columns:    ActivityColumns,
-		PrimaryKey: []*schema.Column{ActivityColumns[0]},
+	// ActivitiesTable holds the schema information for the "activities" table.
+	ActivitiesTable = &schema.Table{
+		Name:       "activities",
+		Columns:    ActivitiesColumns,
+		PrimaryKey: []*schema.Column{ActivitiesColumns[0]},
 		Indexes: []*schema.Index{
 			{
 				Name:    "activity_happens_at",
 				Unique:  false,
-				Columns: []*schema.Column{ActivityColumns[6]},
+				Columns: []*schema.Column{ActivitiesColumns[6]},
 			},
 			{
 				Name:    "activity_attendants",
 				Unique:  false,
-				Columns: []*schema.Column{ActivityColumns[7]},
+				Columns: []*schema.Column{ActivitiesColumns[7]},
 			},
 			{
 				Name:    "activity_created_at",
 				Unique:  false,
-				Columns: []*schema.Column{ActivityColumns[8]},
+				Columns: []*schema.Column{ActivitiesColumns[8]},
 			},
 			{
 				Name:    "activity_updated_at",
 				Unique:  false,
-				Columns: []*schema.Column{ActivityColumns[9]},
+				Columns: []*schema.Column{ActivitiesColumns[9]},
 			},
 			{
 				Name:    "activity_deleted_at",
 				Unique:  false,
-				Columns: []*schema.Column{ActivityColumns[10]},
+				Columns: []*schema.Column{ActivitiesColumns[10]},
 			},
 		},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
-		ActivityTable,
+		ActivitiesTable,
 	}
 )
 

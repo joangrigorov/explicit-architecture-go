@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	// AttendanceColumns holds the columns for the "attendance" table.
-	AttendanceColumns = []*schema.Column{
+	// AttendancesColumns holds the columns for the "attendances" table.
+	AttendancesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID},
 		{Name: "attendee_id", Type: field.TypeUUID},
 		{Name: "activity_id", Type: field.TypeUUID},
@@ -22,47 +22,47 @@ var (
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "deleted_at", Type: field.TypeTime, Nullable: true},
 	}
-	// AttendanceTable holds the schema information for the "attendance" table.
-	AttendanceTable = &schema.Table{
-		Name:       "attendance",
-		Columns:    AttendanceColumns,
-		PrimaryKey: []*schema.Column{AttendanceColumns[0]},
+	// AttendancesTable holds the schema information for the "attendances" table.
+	AttendancesTable = &schema.Table{
+		Name:       "attendances",
+		Columns:    AttendancesColumns,
+		PrimaryKey: []*schema.Column{AttendancesColumns[0]},
 		Indexes: []*schema.Index{
 			{
 				Name:    "attendance_attendee_id_activity_id",
 				Unique:  true,
-				Columns: []*schema.Column{AttendanceColumns[1], AttendanceColumns[2]},
+				Columns: []*schema.Column{AttendancesColumns[1], AttendancesColumns[2]},
 			},
 			{
 				Name:    "attendance_activity_slug",
 				Unique:  false,
-				Columns: []*schema.Column{AttendanceColumns[3]},
+				Columns: []*schema.Column{AttendancesColumns[3]},
 			},
 			{
 				Name:    "attendance_activity_happens_at",
 				Unique:  false,
-				Columns: []*schema.Column{AttendanceColumns[7]},
+				Columns: []*schema.Column{AttendancesColumns[7]},
 			},
 			{
 				Name:    "attendance_created_at",
 				Unique:  false,
-				Columns: []*schema.Column{AttendanceColumns[8]},
+				Columns: []*schema.Column{AttendancesColumns[8]},
 			},
 			{
 				Name:    "attendance_updated_at",
 				Unique:  false,
-				Columns: []*schema.Column{AttendanceColumns[9]},
+				Columns: []*schema.Column{AttendancesColumns[9]},
 			},
 			{
 				Name:    "attendance_deleted_at",
 				Unique:  false,
-				Columns: []*schema.Column{AttendanceColumns[10]},
+				Columns: []*schema.Column{AttendancesColumns[10]},
 			},
 		},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
-		AttendanceTable,
+		AttendancesTable,
 	}
 )
 

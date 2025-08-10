@@ -1,14 +1,14 @@
 package activity
 
 import (
-	"app/internal/infrastructure/persistence/ent/generated/activities"
+	"app/config"
+	"app/internal/infrastructure/persistence/ent/generated/activity"
 
 	"database/sql"
 
-	"entgo.io/ent/dialect"
 	entSql "entgo.io/ent/dialect/sql"
 )
 
-func NewClient(db *sql.DB) *activities.Client {
-	return activities.NewClient(activities.Driver(entSql.OpenDB(dialect.Postgres, db)))
+func NewClient(db *sql.DB, cfg *config.Config) *activity.Client {
+	return activity.NewClient(activity.Driver(entSql.OpenDB(cfg.DB.Driver, db)))
 }

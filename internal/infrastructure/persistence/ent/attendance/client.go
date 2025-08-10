@@ -1,7 +1,7 @@
 package attendance
 
 import (
-	"app/internal/infrastructure/persistence/ent/generated/attendances"
+	"app/internal/infrastructure/persistence/ent/generated/attendance"
 
 	"database/sql"
 
@@ -9,6 +9,6 @@ import (
 	entSql "entgo.io/ent/dialect/sql"
 )
 
-func NewClient(db *sql.DB) *attendances.Client {
-	return attendances.NewClient(attendances.Driver(entSql.OpenDB(dialect.Postgres, db)))
+func NewClient(db *sql.DB) *attendance.Client {
+	return attendance.NewClient(attendance.Driver(entSql.OpenDB(dialect.Postgres, db)))
 }

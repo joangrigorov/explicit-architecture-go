@@ -40,5 +40,5 @@ func (Activity) Indexes() []ent.Index {
 }
 
 func (Activity) Config() ent.Config {
-	return ent.Config{Table: "activity"}
+	return ent.Config{Table: "activities"}
 }
