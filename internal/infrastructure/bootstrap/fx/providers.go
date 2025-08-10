@@ -4,13 +4,13 @@ import (
 	"app/config"
 	"app/internal/infrastructure/persistence/ent"
 	"app/internal/infrastructure/persistence/ent/blog"
-	"app/internal/presentation/web"
+	"app/internal/presentation/web/core"
 	"go.uber.org/fx"
 )
 
 var Providers = fx.Options(
 	fx.Provide(
-		web.NewRouter,
+		core.NewRouter,
 		blog.NewPostRepository,
 		config.NewConfig,
 		ent.NewDB,

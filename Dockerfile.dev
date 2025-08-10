@@ -1,0 +1,11 @@
+FROM golang:1.24.4-alpine3.22
+
+# Install air
+RUN go install github.com/air-verse/air@latest
+
+ENV PATH="/go/bin:$PATH"
+WORKDIR /app
+
+COPY . .
+
+CMD ["air"]

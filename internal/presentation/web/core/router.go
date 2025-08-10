@@ -1,4 +1,4 @@
-package web
+package core
 
 import (
 	"app/internal/core/component/blog/application/repositories"
@@ -15,6 +15,10 @@ func NewRouter(pr repositories.PostRepository) *gin.Engine {
 		postController := controllers.NewPostController(pr)
 		v1 := r.Group("/blogs/v1")
 		v1.POST("/posts", postController.CreatePost)
+		v1.GET("/posts/:id", postController.GetPost)
+		v1.GET("/posts", postController.ListPosts)
+		v1.DELETE("/posts/:id", postController.DeletePost)
+		v1.PATCH("/posts/:id", postController.UpdatePost)
 	}
 
 	return r
