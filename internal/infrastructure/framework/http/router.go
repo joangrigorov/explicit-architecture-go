@@ -5,68 +5,47 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func wrapHandler(h ctx.Handler) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		h(NewGinContext(c))
+func adaptHandlers(handlers []ctx.Handler) []gin.HandlerFunc {
+	var wrapped []gin.HandlerFunc
+
+	for _, handler := range handlers {
+		wrapped = append(wrapped, func(c *gin.Context) {
+			handler(NewGinContext(c))
+		})
 	}
-}
-
-type group struct {
-	rg *gin.RouterGroup
-}
-
-func (r *group) Group(path string) ctx.RouterGroup {
-	ginRg := r.rg.Group(path)
-	return &group{rg: ginRg}
-}
-
-func (r *group) POST(path string, handler ctx.Handler) {
-	r.rg.POST(path, wrapHandler(handler))
-}
-
-func (r *group) GET(path string, handler ctx.Handler) {
-	r.rg.GET(path, wrapHandler(handler))
-}
-
-func (r *group) DELETE(path string, handler ctx.Handler) {
-	r.rg.DELETE(path, wrapHandler(handler))
-}
-
-func (r *group) PATCH(path string, handler ctx.Handler) {
-	r.rg.PATCH(path, wrapHandler(handler))
-}
-
-func (r *group) PUT(path string, handler ctx.Handler) {
-	r.rg.PUT(path, wrapHandler(handler))
+	return wrapped
 }
 
 type Router struct {
-	engine *gin.Engine
+	router gin.IRouter
 }
 
-func (r *Router) Group(path string) ctx.RouterGroup {
-	ginRg := r.engine.Group(path)
-	return &group{rg: ginRg}
+func (r *Router) Group(path string) ctx.Router {
+	return &Router{router: r.router.Group(path)}
 }
 
-func (r *Router) POST(path string, handler ctx.Handler) {
-	r.engine.POST(path, wrapHandler(handler))
+func (r *Router) Use(handler ...ctx.Handler) {
+	r.router.Use(adaptHandlers(handler)...)
 }
 
-func (r *Router) GET(path string, handler ctx.Handler) {
-	r.engine.GET(path, wrapHandler(handler))
+func (r *Router) POST(path string, handlers ...ctx.Handler) {
+	r.router.POST(path, adaptHandlers(handlers)...)
 }
 
-func (r *Router) DELETE(path string, handler ctx.Handler) {
-	r.engine.DELETE(path, wrapHandler(handler))
+func (r *Router) GET(path string, handlers ...ctx.Handler) {
+	r.router.GET(path, adaptHandlers(handlers)...)
 }
 
-func (r *Router) PATCH(path string, handler ctx.Handler) {
-	r.engine.PATCH(path, wrapHandler(handler))
+func (r *Router) DELETE(path string, handlers ...ctx.Handler) {
+	r.router.DELETE(path, adaptHandlers(handlers)...)
 }
 
-func (r *Router) PUT(path string, handler ctx.Handler) {
-	r.engine.PUT(path, wrapHandler(handler))
+func (r *Router) PATCH(path string, handlers ...ctx.Handler) {
+	r.router.PATCH(path, adaptHandlers(handlers)...)
+}
+
+func (r *Router) PUT(path string, handlers ...ctx.Handler) {
+	r.router.PUT(path, adaptHandlers(handlers)...)
 }
 
 func NewGinEngine() *gin.Engine {
@@ -75,6 +54,6 @@ func NewGinEngine() *gin.Engine {
 
 func NewRouter(engine *gin.Engine) ctx.Router {
 	return &Router{
-		engine: engine,
+		router: engine,
 	}
 }

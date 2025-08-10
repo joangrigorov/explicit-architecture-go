@@ -1,6 +1,7 @@
 package post
 
 import (
+	"app/internal/infrastructure/framework/validation"
 	"app/mock/core/component/blog/application/repositories"
 	"github.com/stretchr/testify/assert"
 	"go.uber.org/mock/gomock"
@@ -13,7 +14,7 @@ func TestNewController(t *testing.T) {
 
 	mockPostRepo := repositories.NewMockPostRepository(ctrl)
 
-	c := NewController(mockPostRepo)
+	c := NewController(mockPostRepo, validation.NewTranslator())
 
 	assert.NotNil(t, c)
 	assert.Equal(t, mockPostRepo, c.PostRepository)

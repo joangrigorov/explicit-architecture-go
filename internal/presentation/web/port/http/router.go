@@ -1,25 +1,26 @@
 package http
 
-type RouterGroup interface {
+type Router interface {
 	// POST method handling on a relative path
-	POST(relativePath string, handler Handler)
+	POST(string, ...Handler)
 
 	// GET method handling on a relative path
-	GET(relativePath string, handler Handler)
+	GET(string, ...Handler)
 
 	// DELETE method handling on a relative path
-	DELETE(relativePath string, handler Handler)
+	DELETE(string, ...Handler)
 
 	// PATCH method handling on a relative path
-	PATCH(relativePath string, handler Handler)
+	PATCH(string, ...Handler)
 
 	// PUT method handling on a relative path
-	PUT(relativePath string, handler Handler)
+	PUT(string, ...Handler)
 
 	// Group routes under a common relative path
-	Group(relativePath string) RouterGroup
+	Group(string) Router
+
+	// Use global handler
+	Use(...Handler)
 }
 
-type Router interface {
-	RouterGroup
-}
+type Handler func(Context)

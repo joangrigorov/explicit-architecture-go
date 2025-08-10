@@ -1,6 +1,9 @@
-package validation
+package responses
 
 import (
+	"app/internal/infrastructure/framework/validation"
+	"encoding/json"
+	"errors"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 	"github.com/stretchr/testify/assert"
@@ -35,7 +38,7 @@ func (f fakeFieldError) Error() string { return f.Translate(nil) }
 func TestRender(t *testing.T) {
 	s := ""
 
-	t.Run("success", func(t *testing.T) {
+	t.Run("render validation errors", func(t *testing.T) {
 		type subExample struct {
 			Field1 *string `json:"sub_field1"`
 			Hidden string  `json:"-"`
@@ -65,7 +68,7 @@ func TestRender(t *testing.T) {
 			},
 		}
 
-		res := Render(ve, &example{
+		res := Render(validation.NewTranslator(), ve, &example{
 			Field1: &s,
 			Field2: "valid",
 			Field3: &subExample{
@@ -111,7 +114,7 @@ func TestRender(t *testing.T) {
 			},
 		}
 		assert.Panics(t, func() {
-			Render(ve, &wrong{
+			Render(validation.NewTranslator(), ve, &wrong{
 				Field1: &s,
 			})
 		})
@@ -130,7 +133,7 @@ func TestRender(t *testing.T) {
 			},
 		}
 		assert.Panics(t, func() {
-			Render(ve, &example{
+			Render(validation.NewTranslator(), ve, &example{
 				Field: &s,
 			})
 		})
@@ -149,7 +152,7 @@ func TestRender(t *testing.T) {
 			},
 		}
 		assert.Panics(t, func() {
-			Render(ve, &example{
+			Render(validation.NewTranslator(), ve, &example{
 				Field: &s,
 			})
 		})
@@ -169,9 +172,26 @@ func TestRender(t *testing.T) {
 		}
 
 		assert.Panics(t, func() {
-			Render(ve, &example{
+			Render(validation.NewTranslator(), ve, &example{
 				Field1: &s,
 			})
 		})
+	})
+
+	t.Run("render json type errors", func(t *testing.T) {
+		err := json.UnmarshalTypeError{Field: "some_field"}
+		assert.Equal(t, ErrorsResponse{Errors: []fieldError{
+			{
+				Field:   "some_field",
+				Rule:    "type_error",
+				Message: "Type error for field some_field",
+			},
+		}}, Render(validation.NewTranslator(), &err, nil))
+	})
+
+	t.Run("single error", func(t *testing.T) {
+		errMsg := "some error"
+		err := errors.New(errMsg)
+		assert.Equal(t, ErrorsResponse{Error: &errMsg}, Render(validation.NewTranslator(), err, nil))
 	})
 }

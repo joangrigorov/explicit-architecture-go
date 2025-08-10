@@ -2,7 +2,7 @@ package post
 
 import (
 	. "app/internal/presentation/web/core/component/blog/v1/anonymous/responses"
-	. "app/internal/presentation/web/core/responses"
+	. "app/internal/presentation/web/core/shared_kernel/responses"
 	. "app/internal/presentation/web/port/http"
 	"net/http"
 )

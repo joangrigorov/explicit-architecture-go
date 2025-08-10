@@ -3,7 +3,7 @@ package bootstrap
 import (
 	"app/internal/infrastructure/framework/validation"
 	"app/internal/infrastructure/persistence/ent/blog"
-	"app/internal/presentation/web/core"
+	"app/internal/presentation/web/core/shared_kernel"
 	"context"
 	"errors"
 	"fmt"
@@ -41,9 +41,8 @@ func NewApp() *fx.App {
 		providers,
 		fx.Invoke(
 			blog.MigrateSchema,
-			core.RegisterRoutes,
-			validation.RegisterBindings,
-			validation.RegisterTranslations,
+			shared_kernel.RegisterRoutes,
+			validation.RegisterRules,
 			runServer,
 		),
 	)
