@@ -2,9 +2,9 @@ package controllers
 
 import (
 	"app/internal/core/component/blog/application/repositories"
-	"app/internal/presentation/web/core/component/blog/anonymous/v1/requests"
-	"app/internal/presentation/web/core/component/blog/anonymous/v1/responses"
-	re "app/internal/presentation/web/core/shared_kernel"
+	"app/internal/presentation/web/core/component/blog/v1/anonymous/requests"
+	"app/internal/presentation/web/core/component/blog/v1/anonymous/responses"
+	re "app/internal/presentation/web/core/responses"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"

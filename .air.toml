@@ -10,3 +10,5 @@ tmp_dir = "/tmp"
 
 [log]
   time = true
+  color = true
+  level = "debug"
