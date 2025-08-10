@@ -14,6 +14,5 @@ func (pc *Controller) Index(c Context) {
 		InternalServerError(c, &DefaultError{Error: "Application error."})
 		return
 	}
-
 	c.JSON(http.StatusOK, Many(entries))
 }

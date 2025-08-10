@@ -7,6 +7,9 @@ x-db-environment: &x-db-environment
   POSTGRES_USER: "user"
 
 x-backend-app-environment: &x-backend-app-environment
+  # App settings
+  APP_NAME: "activity-planner"
+
   # Database
   DB_DRIVER: "postgres"
 
@@ -15,6 +18,13 @@ x-backend-app-environment: &x-backend-app-environment
   PG_URL: "postgres://user:password@db:5432/db?sslmode=disable"
   # Go
   GO111MODULE: on
+
+  # Tracing
+  TRACE_ENDPOINT: "jaeger:4318"
+
+  # OTEL
+  OTEL_LOG_LEVEL: "debug"
+  OTEL_EXPORTER_JAEGER_LOG_SPANS: true
 
 services:
   db:
@@ -48,10 +58,22 @@ services:
       - "8080:8080"
     depends_on:
       - db
+      - jaeger
     networks:
       app_network:
         aliases:
           - app.lvh.me
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "6831:6831/udp"
+      - "16686:16686"        # Jaeger UI
+    environment:
+      - COLLECTOR_ZIPKIN_HOST_PORT=:9411
+    networks:
+      app_network:
+        aliases:
+          - jaeger.lvh.me
 #  app:
 #    container_name: app
 #    platform: linux/amd64

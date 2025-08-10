@@ -2,8 +2,9 @@ package middleware
 
 import (
 	. "app/internal/presentation/web/port/http"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 // ValidateJSONBody middleware checks if the format of the JSON body is valid.

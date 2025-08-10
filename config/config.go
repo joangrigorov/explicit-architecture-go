@@ -7,8 +7,13 @@ import (
 )
 
 type Config struct {
-	DB DB
-	PG PG
+	App     App
+	DB      DB
+	PG      PG
+	Tracing Tracing
+}
+type App struct {
+	Name string `env:"APP_NAME"`
 }
 
 type DB struct {
@@ -19,6 +24,10 @@ type DB struct {
 type PG struct {
 	PoolMax int    `env:"PG_POOL_MAX,required"`
 	URL     string `env:"PG_URL,required"`
+}
+
+type Tracing struct {
+	Endpoint string `env:"TRACE_ENDPOINT"`
 }
 
 // NewConfig returns app config.

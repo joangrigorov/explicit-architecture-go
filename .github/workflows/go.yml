@@ -24,6 +24,14 @@ jobs:
     - name: Install dependencies
       run: go mod download
 
+    - name: Install go-arch-lint
+      run: |
+        GO111MODULE=on go install github.com/fe3dback/go-arch-lint@latest
+        echo "$GOPATH/bin" >> $GITHUB_PATH
+  
+    - name: Check Architecture Layers
+      run: go-arch-lint check
+
     - name: Test
       run: go test -coverprofile=coverage.txt -v ./...
 

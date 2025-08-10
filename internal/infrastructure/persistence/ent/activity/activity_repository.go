@@ -19,10 +19,12 @@ func NewActivityRepository(client *activity.Client) repositories.ActivityReposit
 }
 
 func (r *ActivityRepository) GetById(ctx context.Context, id domain.ActivityId) (*domain.Activity, error) {
+	parse := uuid.Parse(id)
+
 	dto, err := r.client.Activity.
 		Query().
 		Where(
-			ent.ID(uuid.Parse(id)),
+			ent.ID(parse),
 			ent.DeletedAtIsNil(),
 		).
 		Only(ctx)

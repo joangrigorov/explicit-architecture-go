@@ -2,6 +2,7 @@ package bootstrap
 
 import (
 	"app/config"
+	"app/internal/infrastructure/observability/otel"
 	"app/internal/infrastructure/persistence/ent"
 	"app/internal/infrastructure/persistence/ent/activity"
 	"app/internal/infrastructure/persistence/ent/attendance"
@@ -27,6 +28,10 @@ var providers = fx.Options(
 		http.NewRouter,
 		validation.NewValidatorValidate,
 		validation.NewTranslator,
+
+		// observability providers
+		otel.NewTracerProvider,
+		otel.DefaultTracer,
 
 		// repository adapter providers
 		activity.NewActivityRepository,

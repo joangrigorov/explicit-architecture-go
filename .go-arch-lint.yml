@@ -33,7 +33,9 @@ components:
       - config
   # App boilerplate
   bootstrap:
-    in: bootstrap/**
+    in:
+      - bootstrap/**
+      - database/**
 
 deps:
   core/domain/activity:
