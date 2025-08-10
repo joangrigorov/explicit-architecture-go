@@ -1,0 +1,86 @@
+package attendance
+
+import (
+	"app/internal/core/component/attendance/domain"
+	"app/internal/infrastructure/framework/uuid"
+	"app/internal/infrastructure/persistence/ent/generated/attendance"
+	attendance2 "app/internal/infrastructure/persistence/ent/generated/attendance/attendance"
+	"context"
+	"time"
+)
+
+type AttendanceRepository struct {
+	client *attendance.Client
+}
+
+func NewAttendanceRepository(client *attendance.Client) *AttendanceRepository {
+	return &AttendanceRepository{client: client}
+}
+
+func (r *AttendanceRepository) GetById(ctx context.Context, id domain.AttendanceId) (*domain.Attendance, error) {
+	dto, err := r.client.Attendance.
+		Query().
+		Where(
+			attendance2.ID(uuid.Parse(id)),
+			attendance2.DeletedAtIsNil(),
+		).
+		Only(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return mapEntity(dto), nil
+}
+
+func (r *AttendanceRepository) GetAll(ctx context.Context) ([]*domain.Attendance, error) {
+	entries, err := r.client.Attendance.Query().All(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	collection := make([]*domain.Attendance, len(entries))
+
+	for _, e := range entries {
+		collection = append(collection, mapEntity(e))
+	}
+
+	return collection, nil
+}
+
+func (r *AttendanceRepository) Create(ctx context.Context, at *domain.Attendance) error {
+	builder := r.client.Attendance.Create()
+
+	_, err := builder.
+		SetID(uuid.Parse(at.Id)).
+		SetAttendeeID(uuid.Parse(at.Attendee.Id)).
+		SetActivityID(uuid.Parse(at.Activity.Id)).
+		SetActivitySlug(at.Activity.Slug).
+		SetActivityTitle(at.Activity.Title).
+		SetActivityShortDescription(at.Activity.ShortDescription).
+		SetActivityPosterImageURL(at.Activity.PosterImageUrl).
+		SetActivityHappensAt(at.Activity.HappensAt).
+		SetCreatedAt(at.CreatedAt).
+		SetUpdatedAt(at.UpdatedAt).
+		Save(ctx)
+
+	return err
+}
+
+func (r *AttendanceRepository) Update(ctx context.Context, at *domain.Attendance) error {
+	dto := mapDto(at)
+
+	_, err := r.client.Attendance.UpdateOne(dto).Save(ctx)
+
+	return err
+}
+
+func (r *AttendanceRepository) Delete(ctx context.Context, at *domain.Attendance) error {
+	_, err := r.client.Attendance.
+		UpdateOneID(uuid.Parse(at.Id)).
+		SetDeletedAt(time.Now()).
+		Save(ctx)
+
+	return err
+}

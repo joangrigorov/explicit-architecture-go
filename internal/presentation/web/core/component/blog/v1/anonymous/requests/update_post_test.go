@@ -1,14 +1,15 @@
 package requests
 
 import (
-	"app/internal/core/component/blog/domain/post"
+	"app/internal/core/component/activity/domain"
+	"testing"
+
 	optional "github.com/aarondl/null/v9"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestCreateUpdatePostRequest_Populate(t *testing.T) {
-	p := &post.Post{}
+	p := &domain.Activity{}
 
 	(&UpdatePostRequest{
 		Name:    optional.NewString("My Title", true),

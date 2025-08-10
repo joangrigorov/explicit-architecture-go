@@ -17,7 +17,7 @@ func RegisterRoutes(
 		middleware.ValidateJSONBody,
 	)
 
-	// blog component routes
+	// activity component routes
 	{
 		v1 := r.Group("/blogs/v1")
 

@@ -1,7 +1,8 @@
 package requests
 
 import (
-	"app/internal/core/component/blog/domain/post"
+	"app/internal/core/component/activity/domain"
+
 	optional "github.com/aarondl/null/v9"
 )
 
@@ -10,7 +11,7 @@ type UpdatePostRequest struct {
 	Content optional.String `json:"content" binding:"notnull"`
 }
 
-func (r *UpdatePostRequest) Populate(p *post.Post) {
+func (r *UpdatePostRequest) Populate(p *domain.Activity) {
 	if r.Name.IsSet() {
 		p.Name = r.Name.String
 	}

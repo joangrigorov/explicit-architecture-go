@@ -5,8 +5,10 @@ import (
 	"app/internal/infrastructure/framework/http"
 	"app/internal/infrastructure/framework/validation"
 	"app/internal/infrastructure/persistence/ent"
-	"app/internal/infrastructure/persistence/ent/blog"
+	"app/internal/infrastructure/persistence/ent/activity"
+	"app/internal/infrastructure/persistence/ent/attendance"
 	"app/internal/presentation/web/core/component/blog/v1/anonymous/controllers/post"
+
 	"go.uber.org/fx"
 )
 
@@ -17,7 +19,7 @@ var providers = fx.Options(
 
 		// database (ent) related providers
 		ent.NewDB,
-		blog.NewClient,
+		activity.NewClient,
 
 		// framework providers
 		http.NewGinEngine,
@@ -26,7 +28,8 @@ var providers = fx.Options(
 		validation.NewTranslator,
 
 		// repository adapter providers
-		blog.NewPostRepository,
+		activity.NewActivityRepository,
+		attendance.NewAttendanceRepository,
 
 		// web controller providers
 		post.NewController,

@@ -1,7 +1,7 @@
 package requests
 
 import (
-	"app/internal/core/component/blog/domain/post"
+	"app/internal/core/component/activity/domain"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -14,7 +14,7 @@ func TestCreatePostRequest_ToPost(t *testing.T) {
 		Content: "My content here",
 	}
 
-	expected := &post.Post{
+	expected := &domain.Activity{
 		Name:    "My Title",
 		Content: "My content here",
 	}

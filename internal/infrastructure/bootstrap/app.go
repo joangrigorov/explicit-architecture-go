@@ -2,14 +2,16 @@ package bootstrap
 
 import (
 	"app/internal/infrastructure/framework/validation"
-	"app/internal/infrastructure/persistence/ent/blog"
+	"app/internal/infrastructure/persistence/ent/activity"
+	"app/internal/infrastructure/persistence/ent/attendance"
 	"app/internal/presentation/web/core/shared_kernel"
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"go.uber.org/fx"
-	"net/http"
 )
 
 // runServer Starts a server by registering an Fx lifecycle hook
@@ -40,9 +42,15 @@ func NewApp() *fx.App {
 	return fx.New(
 		providers,
 		fx.Invoke(
-			blog.MigrateSchema,
+			// Migrations
+			activity.MigrateSchema,
+			attendance.MigrateSchema,
+
+			// bootstrap
 			shared_kernel.RegisterRoutes,
 			validation.RegisterRules,
+
+			// initiate
 			runServer,
 		),
 	)

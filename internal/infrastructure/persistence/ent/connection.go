@@ -2,9 +2,10 @@ package ent
 
 import (
 	"app/config"
-	
+
 	"database/sql"
 	"fmt"
+
 	_ "github.com/lib/pq"
 )
 
