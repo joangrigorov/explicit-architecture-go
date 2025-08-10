@@ -1,8 +1,8 @@
 package bootstrap
 
 import (
-	"app/internal/infrastructure/persistence/ent/activity"
-	"app/internal/infrastructure/persistence/ent/attendance"
+	"app/database/ent/schema/activity"
+	"app/database/ent/schema/attendance"
 	"app/internal/presentation/web/core"
 	"app/internal/presentation/web/infrastructure/framework/validation"
 	"context"
@@ -44,7 +44,7 @@ func NewApp() *fx.App {
 		fx.Invoke(
 			// Migrations
 			activity.MigrateSchema,
-			attendance.MigrateSchema,
+			activities.MigrateSchema,
 
 			// bootstrap
 			core.RegisterRoutes,

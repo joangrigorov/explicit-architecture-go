@@ -1,4 +1,8 @@
 package ent
 
+// activity schema
 //go:generate go run -mod=mod entgo.io/ent/cmd/ent generate ./schema/activity --target ../../internal/infrastructure/persistence/ent/generated/activity
+//go:generate atlas migrate diff activity --dir "file://../migrations/activity" --to "ent://schema/activity" --dev-url "docker://postgres/17/test?search_path=public"
+
 //go:generate go run -mod=mod entgo.io/ent/cmd/ent generate ./schema/attendance --target ../../internal/infrastructure/persistence/ent/generated/attendance
+//go:generate atlas migrate diff attendance --dir "file://../migrations/attendance" --to "ent://schema/attendance" --dev-url "docker://postgres/17/test?search_path=public"
