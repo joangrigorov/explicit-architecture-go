@@ -63,6 +63,10 @@ test: ### run test
 	go test -v -race -covermode atomic -coverprofile=coverage.txt ./internal/...
 .PHONY: test
 
+check-architecture: ### run go-arch-lint check
+	go-arch-lint check
+.PHONY: check-architecture
+
 bin-deps: ### install tools
 	GOBIN=$(LOCAL_BIN) go install tool
 .PHONY: bin-deps

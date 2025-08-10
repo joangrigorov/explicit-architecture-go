@@ -1,0 +1,51 @@
+version: 3
+
+excludeFiles:
+  - "^.*_test\\.go$"
+  - "^.*\/test\/.*$"
+
+exclude:
+  - bin
+  - cmd
+  - ent
+  - mock
+
+components:
+  domain:
+    in: internal/core/component/*/domain/**
+  application:
+    in: internal/core/component/*/application/**
+  ports:
+    in: internal/core/port/**
+  shared_kernel:
+    in: internal/core/shared_kernel/**
+  presentation:
+    in: internal/presentation/**
+  infrastructure:
+    in:
+      - internal/infrastructure/**
+      - config
+
+deps:
+  domain:
+    mayDependOn:
+      - shared_kernel
+  application:
+    mayDependOn:
+      - domain
+      - ports
+      - shared_kernel
+  presentation:
+    anyVendorDeps: true
+    mayDependOn:
+      - infrastructure
+      - presentation
+      - application
+      - domain
+  infrastructure:
+    anyVendorDeps: true
+    mayDependOn:
+      - infrastructure
+      - presentation
+      - application
+      - domain

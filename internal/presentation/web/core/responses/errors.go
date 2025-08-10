@@ -1,30 +1,40 @@
 package responses
 
 import (
-	"github.com/gin-gonic/gin"
+	"app/internal/infrastructure/framework/validation"
+	ctx "app/internal/presentation/web/port/http"
+	"errors"
+	"github.com/go-playground/validator/v10"
 	"net/http"
 )
 
-type ErrorResponse struct {
-	Code    string `json:"code"`    // e.g. HTTP status code or app-specific code
-	Message string `json:"message"` // error message text
+type defaultError struct {
+	Error string `json:"string"`
 }
 
-func newErrorResponse(err error, code string) ErrorResponse {
-	return ErrorResponse{
-		Code:    code,
-		Message: err.Error(),
+func newDefaultError(err error) defaultError {
+	return defaultError{
+		Error: err.Error(),
 	}
 }
 
-func ApplicationError(c *gin.Context, err error) {
-	c.JSON(http.StatusInternalServerError, newErrorResponse(err, "application_error"))
+func UnprocessableEntity(c ctx.Context, err error, req interface{}) {
+	var ve validator.ValidationErrors
+	if errors.As(err, &ve) {
+		c.JSON(http.StatusUnprocessableEntity, validation.Render(ve, req))
+		return
+	}
+	c.JSON(http.StatusUnprocessableEntity, newDefaultError(err))
 }
 
-func RequestError(c *gin.Context, err error) {
-	c.JSON(http.StatusBadRequest, newErrorResponse(err, "invalid_request"))
+func InternalServerError(c ctx.Context, err error) {
+	c.JSON(http.StatusInternalServerError, newDefaultError(err))
 }
 
-func NotFoundError(c *gin.Context, err error) {
-	c.JSON(http.StatusNotFound, newErrorResponse(err, "not_found"))
+func BadRequest(c ctx.Context, err error) {
+	c.JSON(http.StatusBadRequest, newDefaultError(err))
+}
+
+func NotFound(c ctx.Context, err error) {
+	c.JSON(http.StatusNotFound, newDefaultError(err))
 }
