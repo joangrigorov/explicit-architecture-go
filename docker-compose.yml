@@ -54,8 +54,8 @@ services:
     environment:
       <<: *x-backend-app-environment
     command: air
-    ports:
-      - "8080:8080"
+#    ports:
+#      - "8080:8080"
     depends_on:
       - db
       - jaeger
@@ -63,10 +63,10 @@ services:
       app_network:
         aliases:
           - app.lvh.me
+
   jaeger:
     image: jaegertracing/all-in-one:latest
     ports:
-      - "6831:6831/udp"
       - "16686:16686"        # Jaeger UI
     environment:
       - COLLECTOR_ZIPKIN_HOST_PORT=:9411
@@ -74,6 +74,48 @@ services:
       app_network:
         aliases:
           - jaeger.lvh.me
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.3
+    command:
+      - start
+      - --db=postgres
+      - --db-url-host=db
+      - --db-url-port=5432
+      - --db-url-database=keycloak
+      - --db-username=user
+      - --db-password=password
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HOSTNAME: localhost
+      KC_HTTP_ENABLED: "true"
+    depends_on:
+      - db
+    ports:
+      - "8081:8080"
+    networks:
+      app_network:
+        aliases:
+          - auth.lvh.me
+
+  oathkeeper:
+    image: oryd/oathkeeper:v0.40
+    command: serve --config /etc/config/oathkeeper.yml
+    volumes:
+      - ./config/oathkeeper.yml:/etc/config/oathkeeper.yml:ro
+      - ./config/access-rules.yml:/etc/config/access-rules.yml:ro
+    ports:
+      - "4455:4455"  # proxy
+      - "4456:4456"  # API
+    depends_on:
+      - keycloak
+      - app
+    networks:
+      app_network:
+        aliases:
+          - oathkeeper.lvh.me
+
 #  app:
 #    container_name: app
 #    platform: linux/amd64

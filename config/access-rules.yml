@@ -1,0 +1,21 @@
+- id: protected-backend
+  upstream:
+    url: http://app:8080
+  match:
+    url: http://localhost:4455/<.*>
+    methods:
+      - GET
+      - POST
+  authenticators:
+    - handler: jwt
+  authorizer:
+    handler: allow
+  mutators:
+    - handler: header
+      config:
+        headers:
+          X-User-ID: "{{ print .Subject }}"
+          X-User-Roles: "{{ index .Extra.realm_access.roles 0 }}"
+#          Traceparent: "{{ .MatchContext.Header.Get \"Traceparent\" }}"
+#          B3: "{{ .MatchContext.Header.Get \"B3\" }}"
+#          authorization: ""

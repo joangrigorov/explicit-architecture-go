@@ -33,6 +33,10 @@ func RecordRequestData(c *gin.Context) {
 		attrs = append(attrs, attribute.String("http.path_param."+p.Key, p.Value))
 	}
 
+	for n, h := range c.Request.Header {
+		attrs = append(attrs, attribute.String("http.header."+n, h[0]))
+	}
+
 	if len(attrs) > 0 {
 		span.AddEvent("http.request.params", trace.WithAttributes(attrs...))
 	}

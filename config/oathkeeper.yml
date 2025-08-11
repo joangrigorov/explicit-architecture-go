@@ -1,0 +1,50 @@
+serve:
+  proxy:
+    port: 4455
+    cache:
+      enabled: true
+      ttl: 5m
+      stale: 10s
+  api:
+    port: 4456
+
+authorizers:
+  allow:
+    enabled: true
+authenticators:
+  jwt:
+    enabled: true
+    config:
+      jwks_urls:
+        - http://keycloak:8080/realms/demo/protocol/openid-connect/certs
+      scope_strategy: none
+      # Optional, add if you want to restrict tokens to a specific audience:
+      target_audience:
+        - account
+      # Optional, restrict trusted issuers (issuer claim in tokens)
+      trusted_issuers:
+        - http://localhost:8081/realms/demo
+      # Optional, specify allowed algorithms (Keycloak typically uses RS256)
+      allowed_algorithms:
+        - RS256
+      # Default token location is Authorization header "Bearer <token>", so no need to override token_from unless your client sends tokens differently.
+
+mutators:
+  header:
+    enabled: true
+    config:
+      headers: { }
+
+access_rules:
+  repositories:
+    - file:///etc/config/access-rules.yml
+
+tracing:
+  provider: otel
+  service_name: oathkeeper
+  providers:
+    otlp:
+      server_url: jaeger:4318
+      insecure: true
+      sampling:
+        sampling_ratio: 1.0
