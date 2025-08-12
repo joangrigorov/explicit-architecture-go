@@ -1,1 +1,1 @@
-![coverage](https://raw.githubusercontent.com/joangrigorov/explicit-architecture-go/coverage-badges/.badges/master/coverage.svg)
+![coverage](https://raw.githubusercontent.com/joangrigorov/explicit-architecture-go/badges/.badges/master/coverage.svg)
