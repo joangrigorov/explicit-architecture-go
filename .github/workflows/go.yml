@@ -35,13 +35,12 @@ jobs:
     - name: Run unit tests (with coverage)
       run: go test ./... -coverprofile=./cover.out -covermode=atomic -coverpkg=./...
 
-    - name: Unit tests - visualize coverage
-      run: go tool cover -html=cover.out -o=cover.html
-
     - name: Unit tests - check thresholds
       uses: vladopajic/go-test-coverage@v2
       with:
         config: ./.testcoverage.yml
+        git-token: ${{ github.ref_name == 'master' && secrets.GITHUB_TOKEN || '' }}
+        git-branch: coverage-badges
 #
 #    - name: Test
 #      run: go test -coverprofile=coverage.txt -v ./...

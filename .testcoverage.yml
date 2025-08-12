@@ -2,9 +2,9 @@ profile: cover.out
 
 # Holds coverage thresholds percentages, values should be in range [0-100].
 threshold:
-  file: 70
-  package: 80
-  total: 95
+  file: 100
+  package: 100
+  total: 100
 
 exclude:
   paths:
