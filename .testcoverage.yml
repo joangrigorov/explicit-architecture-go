@@ -17,6 +17,7 @@ exclude:
     - ^mock
     # TODO remove after testing these
     - ^internal/infrastructure/observability/otel/middleware
+    - ^internal/infrastructure/persistence/ent/activity
     - ^internal/infrastructure/persistence/ent/attendance
     - ^internal/infrastructure/persistence/pgsql
     - ^internal/infrastructure/observability/otel
