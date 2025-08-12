@@ -35,7 +35,7 @@ jobs:
     - name: generate test coverage
       run: go test ./... -coverprofile=./cover.out -covermode=atomic -coverpkg=./...
 
-    - name: check test coverage
+    - name: Unit tests (with coverage)
       uses: vladopajic/go-test-coverage@v2
       with:
         config: ./.testcoverage.yml

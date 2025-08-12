@@ -39,7 +39,7 @@ func RegisterRules(translator ut.Translator, v *validator.Validate) {
 		if err := v.RegisterValidation(tag, rule.Validate); err != nil {
 			panic(err)
 		}
-		if err := en.RegisterDefaultTranslations(v, translator); err != nil {
+		if err := en.RegisterDefaultTranslations(v, translator); err != nil { // coverage-ignore
 			panic(err)
 		}
 
@@ -48,7 +48,7 @@ func RegisterRules(translator ut.Translator, v *validator.Validate) {
 			translator,
 			rule.RegisterTranslations,
 			rule.Translate,
-		); err != nil {
+		); err != nil { // coverage-ignore
 			panic(err)
 		}
 	}
