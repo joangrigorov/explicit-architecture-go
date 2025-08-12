@@ -32,10 +32,13 @@ jobs:
     - name: Check Architecture Layers
       run: go-arch-lint check
 
-    - name: generate test coverage
+    - name: Run unit tests (with coverage)
       run: go test ./... -coverprofile=./cover.out -covermode=atomic -coverpkg=./...
 
-    - name: Unit tests (with coverage)
+    - name: Unit tests - visualize coverage
+      run: go tool cover -html=cover.out -o=cover.html
+
+    - name: Unit tests - check thresholds
       uses: vladopajic/go-test-coverage@v2
       with:
         config: ./.testcoverage.yml
