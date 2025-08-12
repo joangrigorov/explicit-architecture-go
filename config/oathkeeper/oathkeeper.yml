@@ -1,10 +1,6 @@
 serve:
   proxy:
     port: 4455
-    cache:
-      enabled: true
-      ttl: 5m
-      stale: 10s
   api:
     port: 4456
 
@@ -19,8 +15,8 @@ authenticators:
         - http://keycloak:8080/realms/demo/protocol/openid-connect/certs
       scope_strategy: none
       # Optional, add if you want to restrict tokens to a specific audience:
-      target_audience:
-        - account
+#      target_audience:
+#        - account
       # Optional, restrict trusted issuers (issuer claim in tokens)
       trusted_issuers:
         - http://localhost:8081/realms/demo

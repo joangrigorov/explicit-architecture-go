@@ -3,7 +3,6 @@ package bootstrap
 import (
 	"app/config"
 	"app/internal/infrastructure/observability/otel"
-	"app/internal/infrastructure/persistence/ent"
 	"app/internal/infrastructure/persistence/ent/activity"
 	"app/internal/infrastructure/persistence/ent/attendance"
 	"app/internal/presentation/web/core/component/activity/v1/controllers/activities"
@@ -18,9 +17,11 @@ var providers = fx.Options(
 		// configuration providers
 		config.NewConfig,
 
-		// database (ent) related providers
-		ent.NewDB,
+		// persistence providers
+		activity.NewConnection,
 		activity.NewClient,
+
+		attendance.NewConnection,
 		attendance.NewClient,
 
 		// framework providers

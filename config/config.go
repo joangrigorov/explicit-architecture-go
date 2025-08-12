@@ -9,7 +9,6 @@ import (
 type Config struct {
 	App     App
 	DB      DB
-	PG      PG
 	Tracing Tracing
 }
 type App struct {
@@ -17,13 +16,34 @@ type App struct {
 }
 
 type DB struct {
-	Driver string `env:"DB_DRIVER" envDefault:"postgres"`
-	PG     PG
+	Activity   DBActivity
+	Attendance DBAttendance
 }
 
-type PG struct {
-	PoolMax int    `env:"PG_POOL_MAX,required"`
-	URL     string `env:"PG_URL,required"`
+type DBActivity struct {
+	Driver          string `env:"DB_ACTIVITY_DRIVER" envDefault:"postgres"`
+	Host            string `env:"DB_ACTIVITY_HOST" envDefault:"localhost"`
+	Port            string `env:"DB_ACTIVITY_PORT" envDefault:"5432"`
+	User            string `env:"DB_ACTIVITY_USER" envDefault:"postgres"`
+	Password        string `env:"DB_ACTIVITY_PASSWORD" envDefault:"secret"`
+	Database        string `env:"DB_ACTIVITY_DATABASE" envDefault:"activity"`
+	SslMode         string `env:"DB_ACTIVITY_SSLMODE" envDefault:"disable"`
+	MaxOpenConns    int    `env:"DB_ACTIVITY_MAX_OPEN_CONNS" envDefault:"5"`
+	MaxIdleConns    int    `env:"DB_ACTIVITY_MAX_IDLE_CONNS" envDefault:"2"`
+	ConnMaxLifetime int    `env:"DB_ACTIVITY_CONN_MAX_LIFETIME_MINS" envDefault:"30"`
+}
+
+type DBAttendance struct {
+	Driver          string `env:"DB_ATTENDANCE_DRIVER" envDefault:"postgres"`
+	Host            string `env:"DB_ATTENDANCE_HOST" envDefault:"localhost"`
+	Port            string `env:"DB_ATTENDANCE_PORT" envDefault:"5432"`
+	User            string `env:"DB_ATTENDANCE_USER" envDefault:"postgres"`
+	Password        string `env:"DB_ATTENDANCE_PASSWORD" envDefault:"secret"`
+	Database        string `env:"DB_ATTENDANCE_DATABASE" envDefault:"attendance"`
+	SslMode         string `env:"DB_ATTENDANCE_SSLMODE" envDefault:"disable"`
+	MaxOpenConns    int    `env:"DB_ATTENDANCE_MAX_OPEN_CONNS" envDefault:"5"`
+	MaxIdleConns    int    `env:"DB_ATTENDANCE_MAX_IDLE_CONNS" envDefault:"2"`
+	ConnMaxLifetime int    `env:"DB_ATTENDANCE_CONN_MAX_LIFETIME_MINS" envDefault:"30"`
 }
 
 type Tracing struct {

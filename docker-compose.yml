@@ -10,8 +10,25 @@ x-backend-app-environment: &x-backend-app-environment
   # App settings
   APP_NAME: "activity-planner"
 
-  # Database
-  DB_DRIVER: "postgres"
+  ### Databases
+
+  # Activity context
+  DB_ACTIVITY_DRIVER: "postgres"
+  DB_ACTIVITY_HOST: "db"
+  DB_ACTIVITY_PORT: "5432"
+  DB_ACTIVITY_USER: "user"
+  DB_ACTIVITY_PASSWORD: "password"
+  DB_ACTIVITY_DATABASE: "activity"
+  DB_ACTIVITY_SSLMODE: "disable"
+
+  # Attendance context
+  DB_ATTENDANCE_DRIVER: "postgres"
+  DB_ATTENDANCE_HOST: "db"
+  DB_ATTENDANCE_PORT: "5432"
+  DB_ATTENDANCE_USER: "user"
+  DB_ATTENDANCE_PASSWORD: "password"
+  DB_ATTENDANCE_DATABASE: "attendance"
+  DB_ATTENDANCE_SSLMODE: "disable"
 
   # Postgres
   PG_POOL_MAX: "2"
@@ -34,6 +51,7 @@ services:
       <<: *x-db-environment
     volumes:
       - db_data:/var/lib/postgresql/data
+      - ./database/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
     ports:
       - "5432:5432"
     healthcheck:
@@ -78,7 +96,8 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:26.3
     command:
-      - start
+      - start-dev
+      - --import-realm
       - --db=postgres
       - --db-url-host=db
       - --db-url-port=5432
@@ -86,14 +105,16 @@ services:
       - --db-username=user
       - --db-password=password
     environment:
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
       KC_HOSTNAME: localhost
       KC_HTTP_ENABLED: "true"
     depends_on:
       - db
     ports:
       - "8081:8080"
+    volumes:
+      - ./config/keycloak/realms:/opt/keycloak/data/import:ro
     networks:
       app_network:
         aliases:
@@ -103,8 +124,8 @@ services:
     image: oryd/oathkeeper:v0.40
     command: serve --config /etc/config/oathkeeper.yml
     volumes:
-      - ./config/oathkeeper.yml:/etc/config/oathkeeper.yml:ro
-      - ./config/access-rules.yml:/etc/config/access-rules.yml:ro
+      - ./config/oathkeeper/oathkeeper.yml:/etc/config/oathkeeper.yml:ro
+      - ./config/oathkeeper/access-rules.yml:/etc/config/access-rules.yml:ro
     ports:
       - "4455:4455"  # proxy
       - "4456:4456"  # API
