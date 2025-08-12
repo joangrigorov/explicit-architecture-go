@@ -1,0 +1,16 @@
+profile: cover.out
+
+# Holds coverage thresholds percentages, values should be in range [0-100].
+threshold:
+  file: 70
+  package: 80
+  total: 95
+
+exclude:
+  paths:
+    - ^bootstrap
+    - ^cmd
+    - ^config
+    - ^database
+    - ^internal/infrastructure/persistence/ent/generated
+    - ^mock

@@ -19,7 +19,9 @@ func TestNewClient(t *testing.T) {
 
 	cfg := &config.Config{
 		DB: config.DB{
-			Driver: "sqlite3",
+			Activity: config.DBActivity{
+				Driver: "sqlite3",
+			},
 		},
 	}
 

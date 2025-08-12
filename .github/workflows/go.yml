@@ -32,12 +32,20 @@ jobs:
     - name: Check Architecture Layers
       run: go-arch-lint check
 
-    - name: Test
-      run: go test -coverprofile=coverage.txt -v ./...
+    - name: generate test coverage
+      run: go test ./... -coverprofile=./cover.out -covermode=atomic -coverpkg=./...
 
-    - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v5
+    - name: check test coverage
+      uses: vladopajic/go-test-coverage@v2
       with:
-        fail_ci_if_error: true
-        verbose: true
-        token: ${{ secrets.CODECOV_TOKEN }}
+        config: ./.testcoverage.yml
+#
+#    - name: Test
+#      run: go test -coverprofile=coverage.txt -v ./...
+#
+#    - name: Upload coverage reports to Codecov
+#      uses: codecov/codecov-action@v5
+#      with:
+#        fail_ci_if_error: true
+#        verbose: true
+#        token: ${{ secrets.CODECOV_TOKEN }}
