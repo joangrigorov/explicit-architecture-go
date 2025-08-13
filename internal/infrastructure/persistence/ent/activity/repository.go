@@ -10,15 +10,15 @@ import (
 	"time"
 )
 
-type ActivityRepository struct {
+type Repository struct {
 	client *activity.Client
 }
 
 func NewActivityRepository(client *activity.Client) repositories.ActivityRepository {
-	return &ActivityRepository{client: client}
+	return &Repository{client: client}
 }
 
-func (r *ActivityRepository) GetById(ctx context.Context, id domain.ActivityId) (*domain.Activity, error) {
+func (r *Repository) GetById(ctx context.Context, id domain.ActivityId) (*domain.Activity, error) {
 	parse := uuid.Parse(id)
 
 	dto, err := r.client.Activity.
@@ -36,7 +36,7 @@ func (r *ActivityRepository) GetById(ctx context.Context, id domain.ActivityId) 
 	return mapEntity(dto), nil
 }
 
-func (r *ActivityRepository) Create(ctx context.Context, ac *domain.Activity) error {
+func (r *Repository) Create(ctx context.Context, ac *domain.Activity) error {
 	builder := r.client.Activity.Create()
 
 	_, err := builder.
@@ -55,7 +55,7 @@ func (r *ActivityRepository) Create(ctx context.Context, ac *domain.Activity) er
 	return err
 }
 
-func (r *ActivityRepository) Update(ctx context.Context, ac *domain.Activity) error {
+func (r *Repository) Update(ctx context.Context, ac *domain.Activity) error {
 	updatedAt := time.Now()
 	_, err := r.client.Activity.
 		UpdateOneID(uuid.Parse(ac.Id)).
@@ -75,7 +75,7 @@ func (r *ActivityRepository) Update(ctx context.Context, ac *domain.Activity) er
 	return err
 }
 
-func (r *ActivityRepository) GetAll(ctx context.Context) ([]*domain.Activity, error) {
+func (r *Repository) GetAll(ctx context.Context) ([]*domain.Activity, error) {
 	entries, err := r.client.Activity.
 		Query().
 		Where(ent.DeletedAtIsNil()).
@@ -94,7 +94,7 @@ func (r *ActivityRepository) GetAll(ctx context.Context) ([]*domain.Activity, er
 	return collection, nil
 }
 
-func (r *ActivityRepository) Delete(ctx context.Context, ac *domain.Activity) error {
+func (r *Repository) Delete(ctx context.Context, ac *domain.Activity) error {
 	_, err := r.client.Activity.
 		UpdateOneID(uuid.Parse(ac.Id)).
 		SetDeletedAt(time.Now()).

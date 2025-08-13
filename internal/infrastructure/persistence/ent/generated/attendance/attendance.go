@@ -61,7 +61,7 @@ func (*Attendance) scanValues(columns []string) ([]any, error) {
 
 // assignValues assigns the values that were returned from sql.Rows (after scanning)
 // to the Attendance fields.
-func (a *Attendance) assignValues(columns []string, values []any) error {
+func (_m *Attendance) assignValues(columns []string, values []any) error {
 	if m, n := len(values), len(columns); m < n {
 		return fmt.Errorf("mismatch number of scan values: %d != %d", m, n)
 	}
@@ -71,71 +71,71 @@ func (a *Attendance) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*uuid.UUID); !ok {
 				return fmt.Errorf("unexpected type %T for field id", values[i])
 			} else if value != nil {
-				a.ID = *value
+				_m.ID = *value
 			}
 		case attendance.FieldAttendeeID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
 				return fmt.Errorf("unexpected type %T for field attendee_id", values[i])
 			} else if value != nil {
-				a.AttendeeID = *value
+				_m.AttendeeID = *value
 			}
 		case attendance.FieldActivityID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
 				return fmt.Errorf("unexpected type %T for field activity_id", values[i])
 			} else if value != nil {
-				a.ActivityID = *value
+				_m.ActivityID = *value
 			}
 		case attendance.FieldActivitySlug:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field activity_slug", values[i])
 			} else if value.Valid {
-				a.ActivitySlug = value.String
+				_m.ActivitySlug = value.String
 			}
 		case attendance.FieldActivityTitle:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field activity_title", values[i])
 			} else if value.Valid {
-				a.ActivityTitle = value.String
+				_m.ActivityTitle = value.String
 			}
 		case attendance.FieldActivityPosterImageURL:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field activity_poster_image_url", values[i])
 			} else if value.Valid {
-				a.ActivityPosterImageURL = value.String
+				_m.ActivityPosterImageURL = value.String
 			}
 		case attendance.FieldActivityShortDescription:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field activity_short_description", values[i])
 			} else if value.Valid {
-				a.ActivityShortDescription = value.String
+				_m.ActivityShortDescription = value.String
 			}
 		case attendance.FieldActivityHappensAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field activity_happens_at", values[i])
 			} else if value.Valid {
-				a.ActivityHappensAt = value.Time
+				_m.ActivityHappensAt = value.Time
 			}
 		case attendance.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field created_at", values[i])
 			} else if value.Valid {
-				a.CreatedAt = value.Time
+				_m.CreatedAt = value.Time
 			}
 		case attendance.FieldUpdatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				a.UpdatedAt = value.Time
+				_m.UpdatedAt = value.Time
 			}
 		case attendance.FieldDeletedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
 			} else if value.Valid {
-				a.DeletedAt = new(time.Time)
-				*a.DeletedAt = value.Time
+				_m.DeletedAt = new(time.Time)
+				*_m.DeletedAt = value.Time
 			}
 		default:
-			a.selectValues.Set(columns[i], values[i])
+			_m.selectValues.Set(columns[i], values[i])
 		}
 	}
 	return nil
@@ -143,61 +143,61 @@ func (a *Attendance) assignValues(columns []string, values []any) error {
 
 // Value returns the ent.Value that was dynamically selected and assigned to the Attendance.
 // This includes values selected through modifiers, order, etc.
-func (a *Attendance) Value(name string) (ent.Value, error) {
-	return a.selectValues.Get(name)
+func (_m *Attendance) Value(name string) (ent.Value, error) {
+	return _m.selectValues.Get(name)
 }
 
 // Update returns a builder for updating this Attendance.
 // Note that you need to call Attendance.Unwrap() before calling this method if this Attendance
 // was returned from a transaction, and the transaction was committed or rolled back.
-func (a *Attendance) Update() *AttendanceUpdateOne {
-	return NewAttendanceClient(a.config).UpdateOne(a)
+func (_m *Attendance) Update() *AttendanceUpdateOne {
+	return NewAttendanceClient(_m.config).UpdateOne(_m)
 }
 
 // Unwrap unwraps the Attendance entity that was returned from a transaction after it was closed,
 // so that all future queries will be executed through the driver which created the transaction.
-func (a *Attendance) Unwrap() *Attendance {
-	_tx, ok := a.config.driver.(*txDriver)
+func (_m *Attendance) Unwrap() *Attendance {
+	_tx, ok := _m.config.driver.(*txDriver)
 	if !ok {
 		panic("attendance: Attendance is not a transactional entity")
 	}
-	a.config.driver = _tx.drv
-	return a
+	_m.config.driver = _tx.drv
+	return _m
 }
 
 // String implements the fmt.Stringer.
-func (a *Attendance) String() string {
+func (_m *Attendance) String() string {
 	var builder strings.Builder
 	builder.WriteString("Attendance(")
-	builder.WriteString(fmt.Sprintf("id=%v, ", a.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", _m.ID))
 	builder.WriteString("attendee_id=")
-	builder.WriteString(fmt.Sprintf("%v", a.AttendeeID))
+	builder.WriteString(fmt.Sprintf("%v", _m.AttendeeID))
 	builder.WriteString(", ")
 	builder.WriteString("activity_id=")
-	builder.WriteString(fmt.Sprintf("%v", a.ActivityID))
+	builder.WriteString(fmt.Sprintf("%v", _m.ActivityID))
 	builder.WriteString(", ")
 	builder.WriteString("activity_slug=")
-	builder.WriteString(a.ActivitySlug)
+	builder.WriteString(_m.ActivitySlug)
 	builder.WriteString(", ")
 	builder.WriteString("activity_title=")
-	builder.WriteString(a.ActivityTitle)
+	builder.WriteString(_m.ActivityTitle)
 	builder.WriteString(", ")
 	builder.WriteString("activity_poster_image_url=")
-	builder.WriteString(a.ActivityPosterImageURL)
+	builder.WriteString(_m.ActivityPosterImageURL)
 	builder.WriteString(", ")
 	builder.WriteString("activity_short_description=")
-	builder.WriteString(a.ActivityShortDescription)
+	builder.WriteString(_m.ActivityShortDescription)
 	builder.WriteString(", ")
 	builder.WriteString("activity_happens_at=")
-	builder.WriteString(a.ActivityHappensAt.Format(time.ANSIC))
+	builder.WriteString(_m.ActivityHappensAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("created_at=")
-	builder.WriteString(a.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("updated_at=")
-	builder.WriteString(a.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString(_m.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	if v := a.DeletedAt; v != nil {
+	if v := _m.DeletedAt; v != nil {
 		builder.WriteString("deleted_at=")
 		builder.WriteString(v.Format(time.ANSIC))
 	}

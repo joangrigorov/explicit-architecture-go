@@ -23,177 +23,177 @@ type ActivityUpdate struct {
 }
 
 // Where appends a list predicates to the ActivityUpdate builder.
-func (au *ActivityUpdate) Where(ps ...predicate.Activity) *ActivityUpdate {
-	au.mutation.Where(ps...)
-	return au
+func (_u *ActivityUpdate) Where(ps ...predicate.Activity) *ActivityUpdate {
+	_u.mutation.Where(ps...)
+	return _u
 }
 
 // SetSlug sets the "slug" field.
-func (au *ActivityUpdate) SetSlug(s string) *ActivityUpdate {
-	au.mutation.SetSlug(s)
-	return au
+func (_u *ActivityUpdate) SetSlug(v string) *ActivityUpdate {
+	_u.mutation.SetSlug(v)
+	return _u
 }
 
 // SetNillableSlug sets the "slug" field if the given value is not nil.
-func (au *ActivityUpdate) SetNillableSlug(s *string) *ActivityUpdate {
-	if s != nil {
-		au.SetSlug(*s)
+func (_u *ActivityUpdate) SetNillableSlug(v *string) *ActivityUpdate {
+	if v != nil {
+		_u.SetSlug(*v)
 	}
-	return au
+	return _u
 }
 
 // SetTitle sets the "title" field.
-func (au *ActivityUpdate) SetTitle(s string) *ActivityUpdate {
-	au.mutation.SetTitle(s)
-	return au
+func (_u *ActivityUpdate) SetTitle(v string) *ActivityUpdate {
+	_u.mutation.SetTitle(v)
+	return _u
 }
 
 // SetNillableTitle sets the "title" field if the given value is not nil.
-func (au *ActivityUpdate) SetNillableTitle(s *string) *ActivityUpdate {
-	if s != nil {
-		au.SetTitle(*s)
+func (_u *ActivityUpdate) SetNillableTitle(v *string) *ActivityUpdate {
+	if v != nil {
+		_u.SetTitle(*v)
 	}
-	return au
+	return _u
 }
 
 // SetPosterImageURL sets the "poster_image_url" field.
-func (au *ActivityUpdate) SetPosterImageURL(s string) *ActivityUpdate {
-	au.mutation.SetPosterImageURL(s)
-	return au
+func (_u *ActivityUpdate) SetPosterImageURL(v string) *ActivityUpdate {
+	_u.mutation.SetPosterImageURL(v)
+	return _u
 }
 
 // SetNillablePosterImageURL sets the "poster_image_url" field if the given value is not nil.
-func (au *ActivityUpdate) SetNillablePosterImageURL(s *string) *ActivityUpdate {
-	if s != nil {
-		au.SetPosterImageURL(*s)
+func (_u *ActivityUpdate) SetNillablePosterImageURL(v *string) *ActivityUpdate {
+	if v != nil {
+		_u.SetPosterImageURL(*v)
 	}
-	return au
+	return _u
 }
 
 // SetShortDescription sets the "short_description" field.
-func (au *ActivityUpdate) SetShortDescription(s string) *ActivityUpdate {
-	au.mutation.SetShortDescription(s)
-	return au
+func (_u *ActivityUpdate) SetShortDescription(v string) *ActivityUpdate {
+	_u.mutation.SetShortDescription(v)
+	return _u
 }
 
 // SetNillableShortDescription sets the "short_description" field if the given value is not nil.
-func (au *ActivityUpdate) SetNillableShortDescription(s *string) *ActivityUpdate {
-	if s != nil {
-		au.SetShortDescription(*s)
+func (_u *ActivityUpdate) SetNillableShortDescription(v *string) *ActivityUpdate {
+	if v != nil {
+		_u.SetShortDescription(*v)
 	}
-	return au
+	return _u
 }
 
 // SetFullDescription sets the "full_description" field.
-func (au *ActivityUpdate) SetFullDescription(s string) *ActivityUpdate {
-	au.mutation.SetFullDescription(s)
-	return au
+func (_u *ActivityUpdate) SetFullDescription(v string) *ActivityUpdate {
+	_u.mutation.SetFullDescription(v)
+	return _u
 }
 
 // SetNillableFullDescription sets the "full_description" field if the given value is not nil.
-func (au *ActivityUpdate) SetNillableFullDescription(s *string) *ActivityUpdate {
-	if s != nil {
-		au.SetFullDescription(*s)
+func (_u *ActivityUpdate) SetNillableFullDescription(v *string) *ActivityUpdate {
+	if v != nil {
+		_u.SetFullDescription(*v)
 	}
-	return au
+	return _u
 }
 
 // SetHappensAt sets the "happens_at" field.
-func (au *ActivityUpdate) SetHappensAt(t time.Time) *ActivityUpdate {
-	au.mutation.SetHappensAt(t)
-	return au
+func (_u *ActivityUpdate) SetHappensAt(v time.Time) *ActivityUpdate {
+	_u.mutation.SetHappensAt(v)
+	return _u
 }
 
 // SetNillableHappensAt sets the "happens_at" field if the given value is not nil.
-func (au *ActivityUpdate) SetNillableHappensAt(t *time.Time) *ActivityUpdate {
-	if t != nil {
-		au.SetHappensAt(*t)
+func (_u *ActivityUpdate) SetNillableHappensAt(v *time.Time) *ActivityUpdate {
+	if v != nil {
+		_u.SetHappensAt(*v)
 	}
-	return au
+	return _u
 }
 
 // SetAttendants sets the "attendants" field.
-func (au *ActivityUpdate) SetAttendants(i int) *ActivityUpdate {
-	au.mutation.ResetAttendants()
-	au.mutation.SetAttendants(i)
-	return au
+func (_u *ActivityUpdate) SetAttendants(v int) *ActivityUpdate {
+	_u.mutation.ResetAttendants()
+	_u.mutation.SetAttendants(v)
+	return _u
 }
 
 // SetNillableAttendants sets the "attendants" field if the given value is not nil.
-func (au *ActivityUpdate) SetNillableAttendants(i *int) *ActivityUpdate {
-	if i != nil {
-		au.SetAttendants(*i)
+func (_u *ActivityUpdate) SetNillableAttendants(v *int) *ActivityUpdate {
+	if v != nil {
+		_u.SetAttendants(*v)
 	}
-	return au
+	return _u
 }
 
-// AddAttendants adds i to the "attendants" field.
-func (au *ActivityUpdate) AddAttendants(i int) *ActivityUpdate {
-	au.mutation.AddAttendants(i)
-	return au
+// AddAttendants adds value to the "attendants" field.
+func (_u *ActivityUpdate) AddAttendants(v int) *ActivityUpdate {
+	_u.mutation.AddAttendants(v)
+	return _u
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (au *ActivityUpdate) SetCreatedAt(t time.Time) *ActivityUpdate {
-	au.mutation.SetCreatedAt(t)
-	return au
+func (_u *ActivityUpdate) SetCreatedAt(v time.Time) *ActivityUpdate {
+	_u.mutation.SetCreatedAt(v)
+	return _u
 }
 
 // SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
-func (au *ActivityUpdate) SetNillableCreatedAt(t *time.Time) *ActivityUpdate {
-	if t != nil {
-		au.SetCreatedAt(*t)
+func (_u *ActivityUpdate) SetNillableCreatedAt(v *time.Time) *ActivityUpdate {
+	if v != nil {
+		_u.SetCreatedAt(*v)
 	}
-	return au
+	return _u
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (au *ActivityUpdate) SetUpdatedAt(t time.Time) *ActivityUpdate {
-	au.mutation.SetUpdatedAt(t)
-	return au
+func (_u *ActivityUpdate) SetUpdatedAt(v time.Time) *ActivityUpdate {
+	_u.mutation.SetUpdatedAt(v)
+	return _u
 }
 
 // SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (au *ActivityUpdate) SetNillableUpdatedAt(t *time.Time) *ActivityUpdate {
-	if t != nil {
-		au.SetUpdatedAt(*t)
+func (_u *ActivityUpdate) SetNillableUpdatedAt(v *time.Time) *ActivityUpdate {
+	if v != nil {
+		_u.SetUpdatedAt(*v)
 	}
-	return au
+	return _u
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (au *ActivityUpdate) SetDeletedAt(t time.Time) *ActivityUpdate {
-	au.mutation.SetDeletedAt(t)
-	return au
+func (_u *ActivityUpdate) SetDeletedAt(v time.Time) *ActivityUpdate {
+	_u.mutation.SetDeletedAt(v)
+	return _u
 }
 
 // SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
-func (au *ActivityUpdate) SetNillableDeletedAt(t *time.Time) *ActivityUpdate {
-	if t != nil {
-		au.SetDeletedAt(*t)
+func (_u *ActivityUpdate) SetNillableDeletedAt(v *time.Time) *ActivityUpdate {
+	if v != nil {
+		_u.SetDeletedAt(*v)
 	}
-	return au
+	return _u
 }
 
 // ClearDeletedAt clears the value of the "deleted_at" field.
-func (au *ActivityUpdate) ClearDeletedAt() *ActivityUpdate {
-	au.mutation.ClearDeletedAt()
-	return au
+func (_u *ActivityUpdate) ClearDeletedAt() *ActivityUpdate {
+	_u.mutation.ClearDeletedAt()
+	return _u
 }
 
 // Mutation returns the ActivityMutation object of the builder.
-func (au *ActivityUpdate) Mutation() *ActivityMutation {
-	return au.mutation
+func (_u *ActivityUpdate) Mutation() *ActivityMutation {
+	return _u.mutation
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
-func (au *ActivityUpdate) Save(ctx context.Context) (int, error) {
-	return withHooks(ctx, au.sqlSave, au.mutation, au.hooks)
+func (_u *ActivityUpdate) Save(ctx context.Context) (int, error) {
+	return withHooks(ctx, _u.sqlSave, _u.mutation, _u.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (au *ActivityUpdate) SaveX(ctx context.Context) int {
-	affected, err := au.Save(ctx)
+func (_u *ActivityUpdate) SaveX(ctx context.Context) int {
+	affected, err := _u.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -201,64 +201,64 @@ func (au *ActivityUpdate) SaveX(ctx context.Context) int {
 }
 
 // Exec executes the query.
-func (au *ActivityUpdate) Exec(ctx context.Context) error {
-	_, err := au.Save(ctx)
+func (_u *ActivityUpdate) Exec(ctx context.Context) error {
+	_, err := _u.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (au *ActivityUpdate) ExecX(ctx context.Context) {
-	if err := au.Exec(ctx); err != nil {
+func (_u *ActivityUpdate) ExecX(ctx context.Context) {
+	if err := _u.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
-func (au *ActivityUpdate) sqlSave(ctx context.Context) (n int, err error) {
+func (_u *ActivityUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	_spec := sqlgraph.NewUpdateSpec(activity.Table, activity.Columns, sqlgraph.NewFieldSpec(activity.FieldID, field.TypeUUID))
-	if ps := au.mutation.predicates; len(ps) > 0 {
+	if ps := _u.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	if value, ok := au.mutation.Slug(); ok {
+	if value, ok := _u.mutation.Slug(); ok {
 		_spec.SetField(activity.FieldSlug, field.TypeString, value)
 	}
-	if value, ok := au.mutation.Title(); ok {
+	if value, ok := _u.mutation.Title(); ok {
 		_spec.SetField(activity.FieldTitle, field.TypeString, value)
 	}
-	if value, ok := au.mutation.PosterImageURL(); ok {
+	if value, ok := _u.mutation.PosterImageURL(); ok {
 		_spec.SetField(activity.FieldPosterImageURL, field.TypeString, value)
 	}
-	if value, ok := au.mutation.ShortDescription(); ok {
+	if value, ok := _u.mutation.ShortDescription(); ok {
 		_spec.SetField(activity.FieldShortDescription, field.TypeString, value)
 	}
-	if value, ok := au.mutation.FullDescription(); ok {
+	if value, ok := _u.mutation.FullDescription(); ok {
 		_spec.SetField(activity.FieldFullDescription, field.TypeString, value)
 	}
-	if value, ok := au.mutation.HappensAt(); ok {
+	if value, ok := _u.mutation.HappensAt(); ok {
 		_spec.SetField(activity.FieldHappensAt, field.TypeTime, value)
 	}
-	if value, ok := au.mutation.Attendants(); ok {
+	if value, ok := _u.mutation.Attendants(); ok {
 		_spec.SetField(activity.FieldAttendants, field.TypeInt, value)
 	}
-	if value, ok := au.mutation.AddedAttendants(); ok {
+	if value, ok := _u.mutation.AddedAttendants(); ok {
 		_spec.AddField(activity.FieldAttendants, field.TypeInt, value)
 	}
-	if value, ok := au.mutation.CreatedAt(); ok {
+	if value, ok := _u.mutation.CreatedAt(); ok {
 		_spec.SetField(activity.FieldCreatedAt, field.TypeTime, value)
 	}
-	if value, ok := au.mutation.UpdatedAt(); ok {
+	if value, ok := _u.mutation.UpdatedAt(); ok {
 		_spec.SetField(activity.FieldUpdatedAt, field.TypeTime, value)
 	}
-	if value, ok := au.mutation.DeletedAt(); ok {
+	if value, ok := _u.mutation.DeletedAt(); ok {
 		_spec.SetField(activity.FieldDeletedAt, field.TypeTime, value)
 	}
-	if au.mutation.DeletedAtCleared() {
+	if _u.mutation.DeletedAtCleared() {
 		_spec.ClearField(activity.FieldDeletedAt, field.TypeTime)
 	}
-	if n, err = sqlgraph.UpdateNodes(ctx, au.driver, _spec); err != nil {
+	if _node, err = sqlgraph.UpdateNodes(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{activity.Label}
 		} else if sqlgraph.IsConstraintError(err) {
@@ -266,8 +266,8 @@ func (au *ActivityUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		return 0, err
 	}
-	au.mutation.done = true
-	return n, nil
+	_u.mutation.done = true
+	return _node, nil
 }
 
 // ActivityUpdateOne is the builder for updating a single Activity entity.
@@ -279,184 +279,184 @@ type ActivityUpdateOne struct {
 }
 
 // SetSlug sets the "slug" field.
-func (auo *ActivityUpdateOne) SetSlug(s string) *ActivityUpdateOne {
-	auo.mutation.SetSlug(s)
-	return auo
+func (_u *ActivityUpdateOne) SetSlug(v string) *ActivityUpdateOne {
+	_u.mutation.SetSlug(v)
+	return _u
 }
 
 // SetNillableSlug sets the "slug" field if the given value is not nil.
-func (auo *ActivityUpdateOne) SetNillableSlug(s *string) *ActivityUpdateOne {
-	if s != nil {
-		auo.SetSlug(*s)
+func (_u *ActivityUpdateOne) SetNillableSlug(v *string) *ActivityUpdateOne {
+	if v != nil {
+		_u.SetSlug(*v)
 	}
-	return auo
+	return _u
 }
 
 // SetTitle sets the "title" field.
-func (auo *ActivityUpdateOne) SetTitle(s string) *ActivityUpdateOne {
-	auo.mutation.SetTitle(s)
-	return auo
+func (_u *ActivityUpdateOne) SetTitle(v string) *ActivityUpdateOne {
+	_u.mutation.SetTitle(v)
+	return _u
 }
 
 // SetNillableTitle sets the "title" field if the given value is not nil.
-func (auo *ActivityUpdateOne) SetNillableTitle(s *string) *ActivityUpdateOne {
-	if s != nil {
-		auo.SetTitle(*s)
+func (_u *ActivityUpdateOne) SetNillableTitle(v *string) *ActivityUpdateOne {
+	if v != nil {
+		_u.SetTitle(*v)
 	}
-	return auo
+	return _u
 }
 
 // SetPosterImageURL sets the "poster_image_url" field.
-func (auo *ActivityUpdateOne) SetPosterImageURL(s string) *ActivityUpdateOne {
-	auo.mutation.SetPosterImageURL(s)
-	return auo
+func (_u *ActivityUpdateOne) SetPosterImageURL(v string) *ActivityUpdateOne {
+	_u.mutation.SetPosterImageURL(v)
+	return _u
 }
 
 // SetNillablePosterImageURL sets the "poster_image_url" field if the given value is not nil.
-func (auo *ActivityUpdateOne) SetNillablePosterImageURL(s *string) *ActivityUpdateOne {
-	if s != nil {
-		auo.SetPosterImageURL(*s)
+func (_u *ActivityUpdateOne) SetNillablePosterImageURL(v *string) *ActivityUpdateOne {
+	if v != nil {
+		_u.SetPosterImageURL(*v)
 	}
-	return auo
+	return _u
 }
 
 // SetShortDescription sets the "short_description" field.
-func (auo *ActivityUpdateOne) SetShortDescription(s string) *ActivityUpdateOne {
-	auo.mutation.SetShortDescription(s)
-	return auo
+func (_u *ActivityUpdateOne) SetShortDescription(v string) *ActivityUpdateOne {
+	_u.mutation.SetShortDescription(v)
+	return _u
 }
 
 // SetNillableShortDescription sets the "short_description" field if the given value is not nil.
-func (auo *ActivityUpdateOne) SetNillableShortDescription(s *string) *ActivityUpdateOne {
-	if s != nil {
-		auo.SetShortDescription(*s)
+func (_u *ActivityUpdateOne) SetNillableShortDescription(v *string) *ActivityUpdateOne {
+	if v != nil {
+		_u.SetShortDescription(*v)
 	}
-	return auo
+	return _u
 }
 
 // SetFullDescription sets the "full_description" field.
-func (auo *ActivityUpdateOne) SetFullDescription(s string) *ActivityUpdateOne {
-	auo.mutation.SetFullDescription(s)
-	return auo
+func (_u *ActivityUpdateOne) SetFullDescription(v string) *ActivityUpdateOne {
+	_u.mutation.SetFullDescription(v)
+	return _u
 }
 
 // SetNillableFullDescription sets the "full_description" field if the given value is not nil.
-func (auo *ActivityUpdateOne) SetNillableFullDescription(s *string) *ActivityUpdateOne {
-	if s != nil {
-		auo.SetFullDescription(*s)
+func (_u *ActivityUpdateOne) SetNillableFullDescription(v *string) *ActivityUpdateOne {
+	if v != nil {
+		_u.SetFullDescription(*v)
 	}
-	return auo
+	return _u
 }
 
 // SetHappensAt sets the "happens_at" field.
-func (auo *ActivityUpdateOne) SetHappensAt(t time.Time) *ActivityUpdateOne {
-	auo.mutation.SetHappensAt(t)
-	return auo
+func (_u *ActivityUpdateOne) SetHappensAt(v time.Time) *ActivityUpdateOne {
+	_u.mutation.SetHappensAt(v)
+	return _u
 }
 
 // SetNillableHappensAt sets the "happens_at" field if the given value is not nil.
-func (auo *ActivityUpdateOne) SetNillableHappensAt(t *time.Time) *ActivityUpdateOne {
-	if t != nil {
-		auo.SetHappensAt(*t)
+func (_u *ActivityUpdateOne) SetNillableHappensAt(v *time.Time) *ActivityUpdateOne {
+	if v != nil {
+		_u.SetHappensAt(*v)
 	}
-	return auo
+	return _u
 }
 
 // SetAttendants sets the "attendants" field.
-func (auo *ActivityUpdateOne) SetAttendants(i int) *ActivityUpdateOne {
-	auo.mutation.ResetAttendants()
-	auo.mutation.SetAttendants(i)
-	return auo
+func (_u *ActivityUpdateOne) SetAttendants(v int) *ActivityUpdateOne {
+	_u.mutation.ResetAttendants()
+	_u.mutation.SetAttendants(v)
+	return _u
 }
 
 // SetNillableAttendants sets the "attendants" field if the given value is not nil.
-func (auo *ActivityUpdateOne) SetNillableAttendants(i *int) *ActivityUpdateOne {
-	if i != nil {
-		auo.SetAttendants(*i)
+func (_u *ActivityUpdateOne) SetNillableAttendants(v *int) *ActivityUpdateOne {
+	if v != nil {
+		_u.SetAttendants(*v)
 	}
-	return auo
+	return _u
 }
 
-// AddAttendants adds i to the "attendants" field.
-func (auo *ActivityUpdateOne) AddAttendants(i int) *ActivityUpdateOne {
-	auo.mutation.AddAttendants(i)
-	return auo
+// AddAttendants adds value to the "attendants" field.
+func (_u *ActivityUpdateOne) AddAttendants(v int) *ActivityUpdateOne {
+	_u.mutation.AddAttendants(v)
+	return _u
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (auo *ActivityUpdateOne) SetCreatedAt(t time.Time) *ActivityUpdateOne {
-	auo.mutation.SetCreatedAt(t)
-	return auo
+func (_u *ActivityUpdateOne) SetCreatedAt(v time.Time) *ActivityUpdateOne {
+	_u.mutation.SetCreatedAt(v)
+	return _u
 }
 
 // SetNillableCreatedAt sets the "created_at" field if the given value is not nil.
-func (auo *ActivityUpdateOne) SetNillableCreatedAt(t *time.Time) *ActivityUpdateOne {
-	if t != nil {
-		auo.SetCreatedAt(*t)
+func (_u *ActivityUpdateOne) SetNillableCreatedAt(v *time.Time) *ActivityUpdateOne {
+	if v != nil {
+		_u.SetCreatedAt(*v)
 	}
-	return auo
+	return _u
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (auo *ActivityUpdateOne) SetUpdatedAt(t time.Time) *ActivityUpdateOne {
-	auo.mutation.SetUpdatedAt(t)
-	return auo
+func (_u *ActivityUpdateOne) SetUpdatedAt(v time.Time) *ActivityUpdateOne {
+	_u.mutation.SetUpdatedAt(v)
+	return _u
 }
 
 // SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (auo *ActivityUpdateOne) SetNillableUpdatedAt(t *time.Time) *ActivityUpdateOne {
-	if t != nil {
-		auo.SetUpdatedAt(*t)
+func (_u *ActivityUpdateOne) SetNillableUpdatedAt(v *time.Time) *ActivityUpdateOne {
+	if v != nil {
+		_u.SetUpdatedAt(*v)
 	}
-	return auo
+	return _u
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (auo *ActivityUpdateOne) SetDeletedAt(t time.Time) *ActivityUpdateOne {
-	auo.mutation.SetDeletedAt(t)
-	return auo
+func (_u *ActivityUpdateOne) SetDeletedAt(v time.Time) *ActivityUpdateOne {
+	_u.mutation.SetDeletedAt(v)
+	return _u
 }
 
 // SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
-func (auo *ActivityUpdateOne) SetNillableDeletedAt(t *time.Time) *ActivityUpdateOne {
-	if t != nil {
-		auo.SetDeletedAt(*t)
+func (_u *ActivityUpdateOne) SetNillableDeletedAt(v *time.Time) *ActivityUpdateOne {
+	if v != nil {
+		_u.SetDeletedAt(*v)
 	}
-	return auo
+	return _u
 }
 
 // ClearDeletedAt clears the value of the "deleted_at" field.
-func (auo *ActivityUpdateOne) ClearDeletedAt() *ActivityUpdateOne {
-	auo.mutation.ClearDeletedAt()
-	return auo
+func (_u *ActivityUpdateOne) ClearDeletedAt() *ActivityUpdateOne {
+	_u.mutation.ClearDeletedAt()
+	return _u
 }
 
 // Mutation returns the ActivityMutation object of the builder.
-func (auo *ActivityUpdateOne) Mutation() *ActivityMutation {
-	return auo.mutation
+func (_u *ActivityUpdateOne) Mutation() *ActivityMutation {
+	return _u.mutation
 }
 
 // Where appends a list predicates to the ActivityUpdate builder.
-func (auo *ActivityUpdateOne) Where(ps ...predicate.Activity) *ActivityUpdateOne {
-	auo.mutation.Where(ps...)
-	return auo
+func (_u *ActivityUpdateOne) Where(ps ...predicate.Activity) *ActivityUpdateOne {
+	_u.mutation.Where(ps...)
+	return _u
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
 // The default is selecting all fields defined in the entity schema.
-func (auo *ActivityUpdateOne) Select(field string, fields ...string) *ActivityUpdateOne {
-	auo.fields = append([]string{field}, fields...)
-	return auo
+func (_u *ActivityUpdateOne) Select(field string, fields ...string) *ActivityUpdateOne {
+	_u.fields = append([]string{field}, fields...)
+	return _u
 }
 
 // Save executes the query and returns the updated Activity entity.
-func (auo *ActivityUpdateOne) Save(ctx context.Context) (*Activity, error) {
-	return withHooks(ctx, auo.sqlSave, auo.mutation, auo.hooks)
+func (_u *ActivityUpdateOne) Save(ctx context.Context) (*Activity, error) {
+	return withHooks(ctx, _u.sqlSave, _u.mutation, _u.hooks)
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (auo *ActivityUpdateOne) SaveX(ctx context.Context) *Activity {
-	node, err := auo.Save(ctx)
+func (_u *ActivityUpdateOne) SaveX(ctx context.Context) *Activity {
+	node, err := _u.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -464,26 +464,26 @@ func (auo *ActivityUpdateOne) SaveX(ctx context.Context) *Activity {
 }
 
 // Exec executes the query on the entity.
-func (auo *ActivityUpdateOne) Exec(ctx context.Context) error {
-	_, err := auo.Save(ctx)
+func (_u *ActivityUpdateOne) Exec(ctx context.Context) error {
+	_, err := _u.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (auo *ActivityUpdateOne) ExecX(ctx context.Context) {
-	if err := auo.Exec(ctx); err != nil {
+func (_u *ActivityUpdateOne) ExecX(ctx context.Context) {
+	if err := _u.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
-func (auo *ActivityUpdateOne) sqlSave(ctx context.Context) (_node *Activity, err error) {
+func (_u *ActivityUpdateOne) sqlSave(ctx context.Context) (_node *Activity, err error) {
 	_spec := sqlgraph.NewUpdateSpec(activity.Table, activity.Columns, sqlgraph.NewFieldSpec(activity.FieldID, field.TypeUUID))
-	id, ok := auo.mutation.ID()
+	id, ok := _u.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`activity: missing "Activity.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
-	if fields := auo.fields; len(fields) > 0 {
+	if fields := _u.fields; len(fields) > 0 {
 		_spec.Node.Columns = make([]string, 0, len(fields))
 		_spec.Node.Columns = append(_spec.Node.Columns, activity.FieldID)
 		for _, f := range fields {
@@ -495,53 +495,53 @@ func (auo *ActivityUpdateOne) sqlSave(ctx context.Context) (_node *Activity, err
 			}
 		}
 	}
-	if ps := auo.mutation.predicates; len(ps) > 0 {
+	if ps := _u.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
 	}
-	if value, ok := auo.mutation.Slug(); ok {
+	if value, ok := _u.mutation.Slug(); ok {
 		_spec.SetField(activity.FieldSlug, field.TypeString, value)
 	}
-	if value, ok := auo.mutation.Title(); ok {
+	if value, ok := _u.mutation.Title(); ok {
 		_spec.SetField(activity.FieldTitle, field.TypeString, value)
 	}
-	if value, ok := auo.mutation.PosterImageURL(); ok {
+	if value, ok := _u.mutation.PosterImageURL(); ok {
 		_spec.SetField(activity.FieldPosterImageURL, field.TypeString, value)
 	}
-	if value, ok := auo.mutation.ShortDescription(); ok {
+	if value, ok := _u.mutation.ShortDescription(); ok {
 		_spec.SetField(activity.FieldShortDescription, field.TypeString, value)
 	}
-	if value, ok := auo.mutation.FullDescription(); ok {
+	if value, ok := _u.mutation.FullDescription(); ok {
 		_spec.SetField(activity.FieldFullDescription, field.TypeString, value)
 	}
-	if value, ok := auo.mutation.HappensAt(); ok {
+	if value, ok := _u.mutation.HappensAt(); ok {
 		_spec.SetField(activity.FieldHappensAt, field.TypeTime, value)
 	}
-	if value, ok := auo.mutation.Attendants(); ok {
+	if value, ok := _u.mutation.Attendants(); ok {
 		_spec.SetField(activity.FieldAttendants, field.TypeInt, value)
 	}
-	if value, ok := auo.mutation.AddedAttendants(); ok {
+	if value, ok := _u.mutation.AddedAttendants(); ok {
 		_spec.AddField(activity.FieldAttendants, field.TypeInt, value)
 	}
-	if value, ok := auo.mutation.CreatedAt(); ok {
+	if value, ok := _u.mutation.CreatedAt(); ok {
 		_spec.SetField(activity.FieldCreatedAt, field.TypeTime, value)
 	}
-	if value, ok := auo.mutation.UpdatedAt(); ok {
+	if value, ok := _u.mutation.UpdatedAt(); ok {
 		_spec.SetField(activity.FieldUpdatedAt, field.TypeTime, value)
 	}
-	if value, ok := auo.mutation.DeletedAt(); ok {
+	if value, ok := _u.mutation.DeletedAt(); ok {
 		_spec.SetField(activity.FieldDeletedAt, field.TypeTime, value)
 	}
-	if auo.mutation.DeletedAtCleared() {
+	if _u.mutation.DeletedAtCleared() {
 		_spec.ClearField(activity.FieldDeletedAt, field.TypeTime)
 	}
-	_node = &Activity{config: auo.config}
+	_node = &Activity{config: _u.config}
 	_spec.Assign = _node.assignValues
 	_spec.ScanValues = _node.scanValues
-	if err = sqlgraph.UpdateNode(ctx, auo.driver, _spec); err != nil {
+	if err = sqlgraph.UpdateNode(ctx, _u.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{activity.Label}
 		} else if sqlgraph.IsConstraintError(err) {
@@ -549,6 +549,6 @@ func (auo *ActivityUpdateOne) sqlSave(ctx context.Context) (_node *Activity, err
 		}
 		return nil, err
 	}
-	auo.mutation.done = true
+	_u.mutation.done = true
 	return _node, nil
 }

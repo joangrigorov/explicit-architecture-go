@@ -1,11 +1,6 @@
 package bootstrap
 
 import (
-	"app/database/ent/schema/activity"
-	"app/database/ent/schema/attendance"
-	"app/internal/infrastructure/observability/otel"
-	"app/internal/presentation/web/core"
-	"app/internal/presentation/web/infrastructure/framework/validation"
 	"context"
 	"errors"
 	"fmt"
@@ -40,23 +35,5 @@ func runServer(lc fx.Lifecycle, router *gin.Engine) {
 }
 
 func NewApp() *fx.App {
-	return fx.New(
-		providers,
-		fx.Invoke(
-			// observability
-			otel.RegisterTracer,
-			otel.AddOpenTelemetryMiddleware,
-
-			// Migrations
-			activity.MigrateSchema,
-			activities.MigrateSchema,
-
-			// bootstrap
-			core.RegisterRoutes,
-			validation.RegisterRules,
-
-			// initiate
-			runServer,
-		),
-	)
+	return fx.New(providers, bootstraps)
 }

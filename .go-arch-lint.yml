@@ -62,20 +62,21 @@ deps:
     anyVendorDeps: true
     mayDependOn:
       - presentation # self
+      - infrastructure
+      - core/ports
       - core/domain/activity
       - core/domain/attendance
       - core/application/activity
       - core/application/attendance
-      - infrastructure
   infrastructure:
     anyVendorDeps: true
     mayDependOn:
       - infrastructure # self
+      - core/ports
       - core/domain/activity
       - core/domain/attendance
       - core/application/activity
       - core/application/attendance
-      - core/ports
   bootstrap:
     anyVendorDeps: true
     mayDependOn:

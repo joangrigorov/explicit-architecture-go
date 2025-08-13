@@ -18,6 +18,7 @@ type App struct {
 type DB struct {
 	Activity   DBActivity
 	Attendance DBAttendance
+	User       DBUser
 }
 
 type DBActivity struct {
@@ -44,6 +45,19 @@ type DBAttendance struct {
 	MaxOpenConns    int    `env:"DB_ATTENDANCE_MAX_OPEN_CONNS" envDefault:"5"`
 	MaxIdleConns    int    `env:"DB_ATTENDANCE_MAX_IDLE_CONNS" envDefault:"2"`
 	ConnMaxLifetime int    `env:"DB_ATTENDANCE_CONN_MAX_LIFETIME_MINS" envDefault:"30"`
+}
+
+type DBUser struct {
+	Driver          string `env:"DB_USER_DRIVER" envDefault:"postgres"`
+	Host            string `env:"DB_USER_HOST" envDefault:"localhost"`
+	Port            string `env:"DB_USER_PORT" envDefault:"5432"`
+	User            string `env:"DB_USER_USER" envDefault:"postgres"`
+	Password        string `env:"DB_USER_PASSWORD" envDefault:"secret"`
+	Database        string `env:"DB_USER_DATABASE" envDefault:"user"`
+	SslMode         string `env:"DB_USER_SSLMODE" envDefault:"disable"`
+	MaxOpenConns    int    `env:"DB_USER_MAX_OPEN_CONNS" envDefault:"5"`
+	MaxIdleConns    int    `env:"DB_USER_MAX_IDLE_CONNS" envDefault:"2"`
+	ConnMaxLifetime int    `env:"DB_USER_CONN_MAX_LIFETIME_MINS" envDefault:"30"`
 }
 
 type Tracing struct {

@@ -9,15 +9,15 @@ import (
 	"time"
 )
 
-type AttendanceRepository struct {
+type Repository struct {
 	client *attendance.Client
 }
 
-func NewAttendanceRepository(client *attendance.Client) *AttendanceRepository {
-	return &AttendanceRepository{client: client}
+func NewAttendanceRepository(client *attendance.Client) *Repository {
+	return &Repository{client: client}
 }
 
-func (r *AttendanceRepository) GetById(ctx context.Context, id domain.AttendanceId) (*domain.Attendance, error) {
+func (r *Repository) GetById(ctx context.Context, id domain.AttendanceId) (*domain.Attendance, error) {
 	dto, err := r.client.Attendance.
 		Query().
 		Where(
@@ -33,7 +33,7 @@ func (r *AttendanceRepository) GetById(ctx context.Context, id domain.Attendance
 	return mapEntity(dto), nil
 }
 
-func (r *AttendanceRepository) GetAll(ctx context.Context) ([]*domain.Attendance, error) {
+func (r *Repository) GetAll(ctx context.Context) ([]*domain.Attendance, error) {
 	entries, err := r.client.Attendance.
 		Query().
 		Where(ent.DeletedAtIsNil()).
@@ -52,7 +52,7 @@ func (r *AttendanceRepository) GetAll(ctx context.Context) ([]*domain.Attendance
 	return collection, nil
 }
 
-func (r *AttendanceRepository) Create(ctx context.Context, at *domain.Attendance) error {
+func (r *Repository) Create(ctx context.Context, at *domain.Attendance) error {
 	builder := r.client.Attendance.Create()
 
 	_, err := builder.
@@ -71,7 +71,7 @@ func (r *AttendanceRepository) Create(ctx context.Context, at *domain.Attendance
 	return err
 }
 
-func (r *AttendanceRepository) Update(ctx context.Context, at *domain.Attendance) error {
+func (r *Repository) Update(ctx context.Context, at *domain.Attendance) error {
 	dto := mapDto(at)
 
 	_, err := r.client.Attendance.UpdateOne(dto).Save(ctx)
@@ -79,7 +79,7 @@ func (r *AttendanceRepository) Update(ctx context.Context, at *domain.Attendance
 	return err
 }
 
-func (r *AttendanceRepository) Delete(ctx context.Context, at *domain.Attendance) error {
+func (r *Repository) Delete(ctx context.Context, at *domain.Attendance) error {
 	_, err := r.client.Attendance.
 		UpdateOneID(uuid.Parse(at.Id)).
 		SetDeletedAt(time.Now()).

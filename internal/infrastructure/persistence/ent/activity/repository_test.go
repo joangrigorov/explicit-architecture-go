@@ -45,7 +45,7 @@ func TestActivityRepository_GetById(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		repo := &ActivityRepository{client: client}
+		repo := &Repository{client: client}
 
 		got, err := repo.GetById(ctx, domain.ActivityId(id.String()))
 		if err != nil {
@@ -82,7 +82,7 @@ func TestActivityRepository_GetById(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		repo := &ActivityRepository{client: client}
+		repo := &Repository{client: client}
 
 		_, err = repo.GetById(ctx, domain.ActivityId(uuid.New().String()))
 
@@ -112,7 +112,7 @@ func TestActivityRepository_Create(t *testing.T) {
 		UpdatedAt:        updatedAt,
 	}
 
-	r := &ActivityRepository{client: client}
+	r := &Repository{client: client}
 
 	assert.NoError(t, r.Create(ctx, ac))
 }
@@ -155,7 +155,7 @@ func TestActivityRepository_Update(t *testing.T) {
 		CreatedAt:        createdAt,
 	}
 
-	r := &ActivityRepository{client: client}
+	r := &Repository{client: client}
 	assert.NoError(t, r.Update(ctx, ac))
 
 	assert.NotNil(t, ac.UpdatedAt)
@@ -234,7 +234,7 @@ func TestActivityRepository_GetAll(t *testing.T) {
 
 	assert.NoError(t, err)
 
-	r := &ActivityRepository{client: client}
+	r := &Repository{client: client}
 
 	entries, err := r.GetAll(ctx)
 
@@ -277,7 +277,7 @@ func TestActivityRepository_Delete(t *testing.T) {
 
 	assert.NoError(t, err)
 
-	r := &ActivityRepository{client: client}
+	r := &Repository{client: client}
 	err = r.Delete(ctx, &domain.Activity{Id: domain.ActivityId(id.String())})
 	assert.NoError(t, err)
 

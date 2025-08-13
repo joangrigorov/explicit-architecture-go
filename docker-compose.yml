@@ -2,7 +2,7 @@ x-db-environment: &x-db-environment
   POSTGRES_SSL_MODE: "disable"
   POSTGRES_HOST: "db"
   POSTGRES_PORT: "5432"
-  POSTGRES_DB: "db"
+  POSTGRES_DB: "postgres"
   POSTGRES_PASSWORD: "password"
   POSTGRES_USER: "user"
 
@@ -30,9 +30,15 @@ x-backend-app-environment: &x-backend-app-environment
   DB_ATTENDANCE_DATABASE: "attendance"
   DB_ATTENDANCE_SSLMODE: "disable"
 
-  # Postgres
-  PG_POOL_MAX: "2"
-  PG_URL: "postgres://user:password@db:5432/db?sslmode=disable"
+  # User context
+  DB_USER_DRIVER: "postgres"
+  DB_USER_HOST: "db"
+  DB_USER_PORT: "5432"
+  DB_USER_USER: "user"
+  DB_USER_PASSWORD: "password"
+  DB_USER_DATABASE: "user"
+  DB_USER_SSLMODE: "disable"
+
   # Go
   GO111MODULE: on
 

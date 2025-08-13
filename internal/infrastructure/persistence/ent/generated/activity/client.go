@@ -253,8 +253,8 @@ func (c *ActivityClient) Update() *ActivityUpdate {
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *ActivityClient) UpdateOne(a *Activity) *ActivityUpdateOne {
-	mutation := newActivityMutation(c.config, OpUpdateOne, withActivity(a))
+func (c *ActivityClient) UpdateOne(_m *Activity) *ActivityUpdateOne {
+	mutation := newActivityMutation(c.config, OpUpdateOne, withActivity(_m))
 	return &ActivityUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
@@ -271,8 +271,8 @@ func (c *ActivityClient) Delete() *ActivityDelete {
 }
 
 // DeleteOne returns a builder for deleting the given entity.
-func (c *ActivityClient) DeleteOne(a *Activity) *ActivityDeleteOne {
-	return c.DeleteOneID(a.ID)
+func (c *ActivityClient) DeleteOne(_m *Activity) *ActivityDeleteOne {
+	return c.DeleteOneID(_m.ID)
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.

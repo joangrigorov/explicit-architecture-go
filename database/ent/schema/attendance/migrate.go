@@ -1,4 +1,4 @@
-package activities
+package attendance
 
 import (
 	"app/internal/infrastructure/persistence/ent/generated/attendance"

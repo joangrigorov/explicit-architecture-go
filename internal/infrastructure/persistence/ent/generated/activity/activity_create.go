@@ -22,92 +22,92 @@ type ActivityCreate struct {
 }
 
 // SetSlug sets the "slug" field.
-func (ac *ActivityCreate) SetSlug(s string) *ActivityCreate {
-	ac.mutation.SetSlug(s)
-	return ac
+func (_c *ActivityCreate) SetSlug(v string) *ActivityCreate {
+	_c.mutation.SetSlug(v)
+	return _c
 }
 
 // SetTitle sets the "title" field.
-func (ac *ActivityCreate) SetTitle(s string) *ActivityCreate {
-	ac.mutation.SetTitle(s)
-	return ac
+func (_c *ActivityCreate) SetTitle(v string) *ActivityCreate {
+	_c.mutation.SetTitle(v)
+	return _c
 }
 
 // SetPosterImageURL sets the "poster_image_url" field.
-func (ac *ActivityCreate) SetPosterImageURL(s string) *ActivityCreate {
-	ac.mutation.SetPosterImageURL(s)
-	return ac
+func (_c *ActivityCreate) SetPosterImageURL(v string) *ActivityCreate {
+	_c.mutation.SetPosterImageURL(v)
+	return _c
 }
 
 // SetShortDescription sets the "short_description" field.
-func (ac *ActivityCreate) SetShortDescription(s string) *ActivityCreate {
-	ac.mutation.SetShortDescription(s)
-	return ac
+func (_c *ActivityCreate) SetShortDescription(v string) *ActivityCreate {
+	_c.mutation.SetShortDescription(v)
+	return _c
 }
 
 // SetFullDescription sets the "full_description" field.
-func (ac *ActivityCreate) SetFullDescription(s string) *ActivityCreate {
-	ac.mutation.SetFullDescription(s)
-	return ac
+func (_c *ActivityCreate) SetFullDescription(v string) *ActivityCreate {
+	_c.mutation.SetFullDescription(v)
+	return _c
 }
 
 // SetHappensAt sets the "happens_at" field.
-func (ac *ActivityCreate) SetHappensAt(t time.Time) *ActivityCreate {
-	ac.mutation.SetHappensAt(t)
-	return ac
+func (_c *ActivityCreate) SetHappensAt(v time.Time) *ActivityCreate {
+	_c.mutation.SetHappensAt(v)
+	return _c
 }
 
 // SetAttendants sets the "attendants" field.
-func (ac *ActivityCreate) SetAttendants(i int) *ActivityCreate {
-	ac.mutation.SetAttendants(i)
-	return ac
+func (_c *ActivityCreate) SetAttendants(v int) *ActivityCreate {
+	_c.mutation.SetAttendants(v)
+	return _c
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (ac *ActivityCreate) SetCreatedAt(t time.Time) *ActivityCreate {
-	ac.mutation.SetCreatedAt(t)
-	return ac
+func (_c *ActivityCreate) SetCreatedAt(v time.Time) *ActivityCreate {
+	_c.mutation.SetCreatedAt(v)
+	return _c
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (ac *ActivityCreate) SetUpdatedAt(t time.Time) *ActivityCreate {
-	ac.mutation.SetUpdatedAt(t)
-	return ac
+func (_c *ActivityCreate) SetUpdatedAt(v time.Time) *ActivityCreate {
+	_c.mutation.SetUpdatedAt(v)
+	return _c
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (ac *ActivityCreate) SetDeletedAt(t time.Time) *ActivityCreate {
-	ac.mutation.SetDeletedAt(t)
-	return ac
+func (_c *ActivityCreate) SetDeletedAt(v time.Time) *ActivityCreate {
+	_c.mutation.SetDeletedAt(v)
+	return _c
 }
 
 // SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
-func (ac *ActivityCreate) SetNillableDeletedAt(t *time.Time) *ActivityCreate {
-	if t != nil {
-		ac.SetDeletedAt(*t)
+func (_c *ActivityCreate) SetNillableDeletedAt(v *time.Time) *ActivityCreate {
+	if v != nil {
+		_c.SetDeletedAt(*v)
 	}
-	return ac
+	return _c
 }
 
 // SetID sets the "id" field.
-func (ac *ActivityCreate) SetID(u uuid.UUID) *ActivityCreate {
-	ac.mutation.SetID(u)
-	return ac
+func (_c *ActivityCreate) SetID(v uuid.UUID) *ActivityCreate {
+	_c.mutation.SetID(v)
+	return _c
 }
 
 // Mutation returns the ActivityMutation object of the builder.
-func (ac *ActivityCreate) Mutation() *ActivityMutation {
-	return ac.mutation
+func (_c *ActivityCreate) Mutation() *ActivityMutation {
+	return _c.mutation
 }
 
 // Save creates the Activity in the database.
-func (ac *ActivityCreate) Save(ctx context.Context) (*Activity, error) {
-	return withHooks(ctx, ac.sqlSave, ac.mutation, ac.hooks)
+func (_c *ActivityCreate) Save(ctx context.Context) (*Activity, error) {
+	return withHooks(ctx, _c.sqlSave, _c.mutation, _c.hooks)
 }
 
 // SaveX calls Save and panics if Save returns an error.
-func (ac *ActivityCreate) SaveX(ctx context.Context) *Activity {
-	v, err := ac.Save(ctx)
+func (_c *ActivityCreate) SaveX(ctx context.Context) *Activity {
+	v, err := _c.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -115,56 +115,56 @@ func (ac *ActivityCreate) SaveX(ctx context.Context) *Activity {
 }
 
 // Exec executes the query.
-func (ac *ActivityCreate) Exec(ctx context.Context) error {
-	_, err := ac.Save(ctx)
+func (_c *ActivityCreate) Exec(ctx context.Context) error {
+	_, err := _c.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (ac *ActivityCreate) ExecX(ctx context.Context) {
-	if err := ac.Exec(ctx); err != nil {
+func (_c *ActivityCreate) ExecX(ctx context.Context) {
+	if err := _c.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
-func (ac *ActivityCreate) check() error {
-	if _, ok := ac.mutation.Slug(); !ok {
+func (_c *ActivityCreate) check() error {
+	if _, ok := _c.mutation.Slug(); !ok {
 		return &ValidationError{Name: "slug", err: errors.New(`activity: missing required field "Activity.slug"`)}
 	}
-	if _, ok := ac.mutation.Title(); !ok {
+	if _, ok := _c.mutation.Title(); !ok {
 		return &ValidationError{Name: "title", err: errors.New(`activity: missing required field "Activity.title"`)}
 	}
-	if _, ok := ac.mutation.PosterImageURL(); !ok {
+	if _, ok := _c.mutation.PosterImageURL(); !ok {
 		return &ValidationError{Name: "poster_image_url", err: errors.New(`activity: missing required field "Activity.poster_image_url"`)}
 	}
-	if _, ok := ac.mutation.ShortDescription(); !ok {
+	if _, ok := _c.mutation.ShortDescription(); !ok {
 		return &ValidationError{Name: "short_description", err: errors.New(`activity: missing required field "Activity.short_description"`)}
 	}
-	if _, ok := ac.mutation.FullDescription(); !ok {
+	if _, ok := _c.mutation.FullDescription(); !ok {
 		return &ValidationError{Name: "full_description", err: errors.New(`activity: missing required field "Activity.full_description"`)}
 	}
-	if _, ok := ac.mutation.HappensAt(); !ok {
+	if _, ok := _c.mutation.HappensAt(); !ok {
 		return &ValidationError{Name: "happens_at", err: errors.New(`activity: missing required field "Activity.happens_at"`)}
 	}
-	if _, ok := ac.mutation.Attendants(); !ok {
+	if _, ok := _c.mutation.Attendants(); !ok {
 		return &ValidationError{Name: "attendants", err: errors.New(`activity: missing required field "Activity.attendants"`)}
 	}
-	if _, ok := ac.mutation.CreatedAt(); !ok {
+	if _, ok := _c.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`activity: missing required field "Activity.created_at"`)}
 	}
-	if _, ok := ac.mutation.UpdatedAt(); !ok {
+	if _, ok := _c.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updated_at", err: errors.New(`activity: missing required field "Activity.updated_at"`)}
 	}
 	return nil
 }
 
-func (ac *ActivityCreate) sqlSave(ctx context.Context) (*Activity, error) {
-	if err := ac.check(); err != nil {
+func (_c *ActivityCreate) sqlSave(ctx context.Context) (*Activity, error) {
+	if err := _c.check(); err != nil {
 		return nil, err
 	}
-	_node, _spec := ac.createSpec()
-	if err := sqlgraph.CreateNode(ctx, ac.driver, _spec); err != nil {
+	_node, _spec := _c.createSpec()
+	if err := sqlgraph.CreateNode(ctx, _c.driver, _spec); err != nil {
 		if sqlgraph.IsConstraintError(err) {
 			err = &ConstraintError{msg: err.Error(), wrap: err}
 		}
@@ -177,57 +177,57 @@ func (ac *ActivityCreate) sqlSave(ctx context.Context) (*Activity, error) {
 			return nil, err
 		}
 	}
-	ac.mutation.id = &_node.ID
-	ac.mutation.done = true
+	_c.mutation.id = &_node.ID
+	_c.mutation.done = true
 	return _node, nil
 }
 
-func (ac *ActivityCreate) createSpec() (*Activity, *sqlgraph.CreateSpec) {
+func (_c *ActivityCreate) createSpec() (*Activity, *sqlgraph.CreateSpec) {
 	var (
-		_node = &Activity{config: ac.config}
+		_node = &Activity{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(activity.Table, sqlgraph.NewFieldSpec(activity.FieldID, field.TypeUUID))
 	)
-	if id, ok := ac.mutation.ID(); ok {
+	if id, ok := _c.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = &id
 	}
-	if value, ok := ac.mutation.Slug(); ok {
+	if value, ok := _c.mutation.Slug(); ok {
 		_spec.SetField(activity.FieldSlug, field.TypeString, value)
 		_node.Slug = value
 	}
-	if value, ok := ac.mutation.Title(); ok {
+	if value, ok := _c.mutation.Title(); ok {
 		_spec.SetField(activity.FieldTitle, field.TypeString, value)
 		_node.Title = value
 	}
-	if value, ok := ac.mutation.PosterImageURL(); ok {
+	if value, ok := _c.mutation.PosterImageURL(); ok {
 		_spec.SetField(activity.FieldPosterImageURL, field.TypeString, value)
 		_node.PosterImageURL = value
 	}
-	if value, ok := ac.mutation.ShortDescription(); ok {
+	if value, ok := _c.mutation.ShortDescription(); ok {
 		_spec.SetField(activity.FieldShortDescription, field.TypeString, value)
 		_node.ShortDescription = value
 	}
-	if value, ok := ac.mutation.FullDescription(); ok {
+	if value, ok := _c.mutation.FullDescription(); ok {
 		_spec.SetField(activity.FieldFullDescription, field.TypeString, value)
 		_node.FullDescription = value
 	}
-	if value, ok := ac.mutation.HappensAt(); ok {
+	if value, ok := _c.mutation.HappensAt(); ok {
 		_spec.SetField(activity.FieldHappensAt, field.TypeTime, value)
 		_node.HappensAt = value
 	}
-	if value, ok := ac.mutation.Attendants(); ok {
+	if value, ok := _c.mutation.Attendants(); ok {
 		_spec.SetField(activity.FieldAttendants, field.TypeInt, value)
 		_node.Attendants = value
 	}
-	if value, ok := ac.mutation.CreatedAt(); ok {
+	if value, ok := _c.mutation.CreatedAt(); ok {
 		_spec.SetField(activity.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := ac.mutation.UpdatedAt(); ok {
+	if value, ok := _c.mutation.UpdatedAt(); ok {
 		_spec.SetField(activity.FieldUpdatedAt, field.TypeTime, value)
 		_node.UpdatedAt = value
 	}
-	if value, ok := ac.mutation.DeletedAt(); ok {
+	if value, ok := _c.mutation.DeletedAt(); ok {
 		_spec.SetField(activity.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
 	}
@@ -242,16 +242,16 @@ type ActivityCreateBulk struct {
 }
 
 // Save creates the Activity entities in the database.
-func (acb *ActivityCreateBulk) Save(ctx context.Context) ([]*Activity, error) {
-	if acb.err != nil {
-		return nil, acb.err
+func (_c *ActivityCreateBulk) Save(ctx context.Context) ([]*Activity, error) {
+	if _c.err != nil {
+		return nil, _c.err
 	}
-	specs := make([]*sqlgraph.CreateSpec, len(acb.builders))
-	nodes := make([]*Activity, len(acb.builders))
-	mutators := make([]Mutator, len(acb.builders))
-	for i := range acb.builders {
+	specs := make([]*sqlgraph.CreateSpec, len(_c.builders))
+	nodes := make([]*Activity, len(_c.builders))
+	mutators := make([]Mutator, len(_c.builders))
+	for i := range _c.builders {
 		func(i int, root context.Context) {
-			builder := acb.builders[i]
+			builder := _c.builders[i]
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*ActivityMutation)
 				if !ok {
@@ -264,11 +264,11 @@ func (acb *ActivityCreateBulk) Save(ctx context.Context) ([]*Activity, error) {
 				var err error
 				nodes[i], specs[i] = builder.createSpec()
 				if i < len(mutators)-1 {
-					_, err = mutators[i+1].Mutate(root, acb.builders[i+1].mutation)
+					_, err = mutators[i+1].Mutate(root, _c.builders[i+1].mutation)
 				} else {
 					spec := &sqlgraph.BatchCreateSpec{Nodes: specs}
 					// Invoke the actual operation on the latest mutation in the chain.
-					if err = sqlgraph.BatchCreate(ctx, acb.driver, spec); err != nil {
+					if err = sqlgraph.BatchCreate(ctx, _c.driver, spec); err != nil {
 						if sqlgraph.IsConstraintError(err) {
 							err = &ConstraintError{msg: err.Error(), wrap: err}
 						}
@@ -288,7 +288,7 @@ func (acb *ActivityCreateBulk) Save(ctx context.Context) ([]*Activity, error) {
 		}(i, ctx)
 	}
 	if len(mutators) > 0 {
-		if _, err := mutators[0].Mutate(ctx, acb.builders[0].mutation); err != nil {
+		if _, err := mutators[0].Mutate(ctx, _c.builders[0].mutation); err != nil {
 			return nil, err
 		}
 	}
@@ -296,8 +296,8 @@ func (acb *ActivityCreateBulk) Save(ctx context.Context) ([]*Activity, error) {
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (acb *ActivityCreateBulk) SaveX(ctx context.Context) []*Activity {
-	v, err := acb.Save(ctx)
+func (_c *ActivityCreateBulk) SaveX(ctx context.Context) []*Activity {
+	v, err := _c.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -305,14 +305,14 @@ func (acb *ActivityCreateBulk) SaveX(ctx context.Context) []*Activity {
 }
 
 // Exec executes the query.
-func (acb *ActivityCreateBulk) Exec(ctx context.Context) error {
-	_, err := acb.Save(ctx)
+func (_c *ActivityCreateBulk) Exec(ctx context.Context) error {
+	_, err := _c.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (acb *ActivityCreateBulk) ExecX(ctx context.Context) {
-	if err := acb.Exec(ctx); err != nil {
+func (_c *ActivityCreateBulk) ExecX(ctx context.Context) {
+	if err := _c.Exec(ctx); err != nil {
 		panic(err)
 	}
 }

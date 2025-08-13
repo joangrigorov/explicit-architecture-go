@@ -22,92 +22,92 @@ type AttendanceCreate struct {
 }
 
 // SetAttendeeID sets the "attendee_id" field.
-func (ac *AttendanceCreate) SetAttendeeID(u uuid.UUID) *AttendanceCreate {
-	ac.mutation.SetAttendeeID(u)
-	return ac
+func (_c *AttendanceCreate) SetAttendeeID(v uuid.UUID) *AttendanceCreate {
+	_c.mutation.SetAttendeeID(v)
+	return _c
 }
 
 // SetActivityID sets the "activity_id" field.
-func (ac *AttendanceCreate) SetActivityID(u uuid.UUID) *AttendanceCreate {
-	ac.mutation.SetActivityID(u)
-	return ac
+func (_c *AttendanceCreate) SetActivityID(v uuid.UUID) *AttendanceCreate {
+	_c.mutation.SetActivityID(v)
+	return _c
 }
 
 // SetActivitySlug sets the "activity_slug" field.
-func (ac *AttendanceCreate) SetActivitySlug(s string) *AttendanceCreate {
-	ac.mutation.SetActivitySlug(s)
-	return ac
+func (_c *AttendanceCreate) SetActivitySlug(v string) *AttendanceCreate {
+	_c.mutation.SetActivitySlug(v)
+	return _c
 }
 
 // SetActivityTitle sets the "activity_title" field.
-func (ac *AttendanceCreate) SetActivityTitle(s string) *AttendanceCreate {
-	ac.mutation.SetActivityTitle(s)
-	return ac
+func (_c *AttendanceCreate) SetActivityTitle(v string) *AttendanceCreate {
+	_c.mutation.SetActivityTitle(v)
+	return _c
 }
 
 // SetActivityPosterImageURL sets the "activity_poster_image_url" field.
-func (ac *AttendanceCreate) SetActivityPosterImageURL(s string) *AttendanceCreate {
-	ac.mutation.SetActivityPosterImageURL(s)
-	return ac
+func (_c *AttendanceCreate) SetActivityPosterImageURL(v string) *AttendanceCreate {
+	_c.mutation.SetActivityPosterImageURL(v)
+	return _c
 }
 
 // SetActivityShortDescription sets the "activity_short_description" field.
-func (ac *AttendanceCreate) SetActivityShortDescription(s string) *AttendanceCreate {
-	ac.mutation.SetActivityShortDescription(s)
-	return ac
+func (_c *AttendanceCreate) SetActivityShortDescription(v string) *AttendanceCreate {
+	_c.mutation.SetActivityShortDescription(v)
+	return _c
 }
 
 // SetActivityHappensAt sets the "activity_happens_at" field.
-func (ac *AttendanceCreate) SetActivityHappensAt(t time.Time) *AttendanceCreate {
-	ac.mutation.SetActivityHappensAt(t)
-	return ac
+func (_c *AttendanceCreate) SetActivityHappensAt(v time.Time) *AttendanceCreate {
+	_c.mutation.SetActivityHappensAt(v)
+	return _c
 }
 
 // SetCreatedAt sets the "created_at" field.
-func (ac *AttendanceCreate) SetCreatedAt(t time.Time) *AttendanceCreate {
-	ac.mutation.SetCreatedAt(t)
-	return ac
+func (_c *AttendanceCreate) SetCreatedAt(v time.Time) *AttendanceCreate {
+	_c.mutation.SetCreatedAt(v)
+	return _c
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (ac *AttendanceCreate) SetUpdatedAt(t time.Time) *AttendanceCreate {
-	ac.mutation.SetUpdatedAt(t)
-	return ac
+func (_c *AttendanceCreate) SetUpdatedAt(v time.Time) *AttendanceCreate {
+	_c.mutation.SetUpdatedAt(v)
+	return _c
 }
 
 // SetDeletedAt sets the "deleted_at" field.
-func (ac *AttendanceCreate) SetDeletedAt(t time.Time) *AttendanceCreate {
-	ac.mutation.SetDeletedAt(t)
-	return ac
+func (_c *AttendanceCreate) SetDeletedAt(v time.Time) *AttendanceCreate {
+	_c.mutation.SetDeletedAt(v)
+	return _c
 }
 
 // SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
-func (ac *AttendanceCreate) SetNillableDeletedAt(t *time.Time) *AttendanceCreate {
-	if t != nil {
-		ac.SetDeletedAt(*t)
+func (_c *AttendanceCreate) SetNillableDeletedAt(v *time.Time) *AttendanceCreate {
+	if v != nil {
+		_c.SetDeletedAt(*v)
 	}
-	return ac
+	return _c
 }
 
 // SetID sets the "id" field.
-func (ac *AttendanceCreate) SetID(u uuid.UUID) *AttendanceCreate {
-	ac.mutation.SetID(u)
-	return ac
+func (_c *AttendanceCreate) SetID(v uuid.UUID) *AttendanceCreate {
+	_c.mutation.SetID(v)
+	return _c
 }
 
 // Mutation returns the AttendanceMutation object of the builder.
-func (ac *AttendanceCreate) Mutation() *AttendanceMutation {
-	return ac.mutation
+func (_c *AttendanceCreate) Mutation() *AttendanceMutation {
+	return _c.mutation
 }
 
 // Save creates the Attendance in the database.
-func (ac *AttendanceCreate) Save(ctx context.Context) (*Attendance, error) {
-	return withHooks(ctx, ac.sqlSave, ac.mutation, ac.hooks)
+func (_c *AttendanceCreate) Save(ctx context.Context) (*Attendance, error) {
+	return withHooks(ctx, _c.sqlSave, _c.mutation, _c.hooks)
 }
 
 // SaveX calls Save and panics if Save returns an error.
-func (ac *AttendanceCreate) SaveX(ctx context.Context) *Attendance {
-	v, err := ac.Save(ctx)
+func (_c *AttendanceCreate) SaveX(ctx context.Context) *Attendance {
+	v, err := _c.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -115,56 +115,56 @@ func (ac *AttendanceCreate) SaveX(ctx context.Context) *Attendance {
 }
 
 // Exec executes the query.
-func (ac *AttendanceCreate) Exec(ctx context.Context) error {
-	_, err := ac.Save(ctx)
+func (_c *AttendanceCreate) Exec(ctx context.Context) error {
+	_, err := _c.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (ac *AttendanceCreate) ExecX(ctx context.Context) {
-	if err := ac.Exec(ctx); err != nil {
+func (_c *AttendanceCreate) ExecX(ctx context.Context) {
+	if err := _c.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
-func (ac *AttendanceCreate) check() error {
-	if _, ok := ac.mutation.AttendeeID(); !ok {
+func (_c *AttendanceCreate) check() error {
+	if _, ok := _c.mutation.AttendeeID(); !ok {
 		return &ValidationError{Name: "attendee_id", err: errors.New(`attendance: missing required field "Attendance.attendee_id"`)}
 	}
-	if _, ok := ac.mutation.ActivityID(); !ok {
+	if _, ok := _c.mutation.ActivityID(); !ok {
 		return &ValidationError{Name: "activity_id", err: errors.New(`attendance: missing required field "Attendance.activity_id"`)}
 	}
-	if _, ok := ac.mutation.ActivitySlug(); !ok {
+	if _, ok := _c.mutation.ActivitySlug(); !ok {
 		return &ValidationError{Name: "activity_slug", err: errors.New(`attendance: missing required field "Attendance.activity_slug"`)}
 	}
-	if _, ok := ac.mutation.ActivityTitle(); !ok {
+	if _, ok := _c.mutation.ActivityTitle(); !ok {
 		return &ValidationError{Name: "activity_title", err: errors.New(`attendance: missing required field "Attendance.activity_title"`)}
 	}
-	if _, ok := ac.mutation.ActivityPosterImageURL(); !ok {
+	if _, ok := _c.mutation.ActivityPosterImageURL(); !ok {
 		return &ValidationError{Name: "activity_poster_image_url", err: errors.New(`attendance: missing required field "Attendance.activity_poster_image_url"`)}
 	}
-	if _, ok := ac.mutation.ActivityShortDescription(); !ok {
+	if _, ok := _c.mutation.ActivityShortDescription(); !ok {
 		return &ValidationError{Name: "activity_short_description", err: errors.New(`attendance: missing required field "Attendance.activity_short_description"`)}
 	}
-	if _, ok := ac.mutation.ActivityHappensAt(); !ok {
+	if _, ok := _c.mutation.ActivityHappensAt(); !ok {
 		return &ValidationError{Name: "activity_happens_at", err: errors.New(`attendance: missing required field "Attendance.activity_happens_at"`)}
 	}
-	if _, ok := ac.mutation.CreatedAt(); !ok {
+	if _, ok := _c.mutation.CreatedAt(); !ok {
 		return &ValidationError{Name: "created_at", err: errors.New(`attendance: missing required field "Attendance.created_at"`)}
 	}
-	if _, ok := ac.mutation.UpdatedAt(); !ok {
+	if _, ok := _c.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updated_at", err: errors.New(`attendance: missing required field "Attendance.updated_at"`)}
 	}
 	return nil
 }
 
-func (ac *AttendanceCreate) sqlSave(ctx context.Context) (*Attendance, error) {
-	if err := ac.check(); err != nil {
+func (_c *AttendanceCreate) sqlSave(ctx context.Context) (*Attendance, error) {
+	if err := _c.check(); err != nil {
 		return nil, err
 	}
-	_node, _spec := ac.createSpec()
-	if err := sqlgraph.CreateNode(ctx, ac.driver, _spec); err != nil {
+	_node, _spec := _c.createSpec()
+	if err := sqlgraph.CreateNode(ctx, _c.driver, _spec); err != nil {
 		if sqlgraph.IsConstraintError(err) {
 			err = &ConstraintError{msg: err.Error(), wrap: err}
 		}
@@ -177,57 +177,57 @@ func (ac *AttendanceCreate) sqlSave(ctx context.Context) (*Attendance, error) {
 			return nil, err
 		}
 	}
-	ac.mutation.id = &_node.ID
-	ac.mutation.done = true
+	_c.mutation.id = &_node.ID
+	_c.mutation.done = true
 	return _node, nil
 }
 
-func (ac *AttendanceCreate) createSpec() (*Attendance, *sqlgraph.CreateSpec) {
+func (_c *AttendanceCreate) createSpec() (*Attendance, *sqlgraph.CreateSpec) {
 	var (
-		_node = &Attendance{config: ac.config}
+		_node = &Attendance{config: _c.config}
 		_spec = sqlgraph.NewCreateSpec(attendance.Table, sqlgraph.NewFieldSpec(attendance.FieldID, field.TypeUUID))
 	)
-	if id, ok := ac.mutation.ID(); ok {
+	if id, ok := _c.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = &id
 	}
-	if value, ok := ac.mutation.AttendeeID(); ok {
+	if value, ok := _c.mutation.AttendeeID(); ok {
 		_spec.SetField(attendance.FieldAttendeeID, field.TypeUUID, value)
 		_node.AttendeeID = value
 	}
-	if value, ok := ac.mutation.ActivityID(); ok {
+	if value, ok := _c.mutation.ActivityID(); ok {
 		_spec.SetField(attendance.FieldActivityID, field.TypeUUID, value)
 		_node.ActivityID = value
 	}
-	if value, ok := ac.mutation.ActivitySlug(); ok {
+	if value, ok := _c.mutation.ActivitySlug(); ok {
 		_spec.SetField(attendance.FieldActivitySlug, field.TypeString, value)
 		_node.ActivitySlug = value
 	}
-	if value, ok := ac.mutation.ActivityTitle(); ok {
+	if value, ok := _c.mutation.ActivityTitle(); ok {
 		_spec.SetField(attendance.FieldActivityTitle, field.TypeString, value)
 		_node.ActivityTitle = value
 	}
-	if value, ok := ac.mutation.ActivityPosterImageURL(); ok {
+	if value, ok := _c.mutation.ActivityPosterImageURL(); ok {
 		_spec.SetField(attendance.FieldActivityPosterImageURL, field.TypeString, value)
 		_node.ActivityPosterImageURL = value
 	}
-	if value, ok := ac.mutation.ActivityShortDescription(); ok {
+	if value, ok := _c.mutation.ActivityShortDescription(); ok {
 		_spec.SetField(attendance.FieldActivityShortDescription, field.TypeString, value)
 		_node.ActivityShortDescription = value
 	}
-	if value, ok := ac.mutation.ActivityHappensAt(); ok {
+	if value, ok := _c.mutation.ActivityHappensAt(); ok {
 		_spec.SetField(attendance.FieldActivityHappensAt, field.TypeTime, value)
 		_node.ActivityHappensAt = value
 	}
-	if value, ok := ac.mutation.CreatedAt(); ok {
+	if value, ok := _c.mutation.CreatedAt(); ok {
 		_spec.SetField(attendance.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
-	if value, ok := ac.mutation.UpdatedAt(); ok {
+	if value, ok := _c.mutation.UpdatedAt(); ok {
 		_spec.SetField(attendance.FieldUpdatedAt, field.TypeTime, value)
 		_node.UpdatedAt = value
 	}
-	if value, ok := ac.mutation.DeletedAt(); ok {
+	if value, ok := _c.mutation.DeletedAt(); ok {
 		_spec.SetField(attendance.FieldDeletedAt, field.TypeTime, value)
 		_node.DeletedAt = &value
 	}
@@ -242,16 +242,16 @@ type AttendanceCreateBulk struct {
 }
 
 // Save creates the Attendance entities in the database.
-func (acb *AttendanceCreateBulk) Save(ctx context.Context) ([]*Attendance, error) {
-	if acb.err != nil {
-		return nil, acb.err
+func (_c *AttendanceCreateBulk) Save(ctx context.Context) ([]*Attendance, error) {
+	if _c.err != nil {
+		return nil, _c.err
 	}
-	specs := make([]*sqlgraph.CreateSpec, len(acb.builders))
-	nodes := make([]*Attendance, len(acb.builders))
-	mutators := make([]Mutator, len(acb.builders))
-	for i := range acb.builders {
+	specs := make([]*sqlgraph.CreateSpec, len(_c.builders))
+	nodes := make([]*Attendance, len(_c.builders))
+	mutators := make([]Mutator, len(_c.builders))
+	for i := range _c.builders {
 		func(i int, root context.Context) {
-			builder := acb.builders[i]
+			builder := _c.builders[i]
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*AttendanceMutation)
 				if !ok {
@@ -264,11 +264,11 @@ func (acb *AttendanceCreateBulk) Save(ctx context.Context) ([]*Attendance, error
 				var err error
 				nodes[i], specs[i] = builder.createSpec()
 				if i < len(mutators)-1 {
-					_, err = mutators[i+1].Mutate(root, acb.builders[i+1].mutation)
+					_, err = mutators[i+1].Mutate(root, _c.builders[i+1].mutation)
 				} else {
 					spec := &sqlgraph.BatchCreateSpec{Nodes: specs}
 					// Invoke the actual operation on the latest mutation in the chain.
-					if err = sqlgraph.BatchCreate(ctx, acb.driver, spec); err != nil {
+					if err = sqlgraph.BatchCreate(ctx, _c.driver, spec); err != nil {
 						if sqlgraph.IsConstraintError(err) {
 							err = &ConstraintError{msg: err.Error(), wrap: err}
 						}
@@ -288,7 +288,7 @@ func (acb *AttendanceCreateBulk) Save(ctx context.Context) ([]*Attendance, error
 		}(i, ctx)
 	}
 	if len(mutators) > 0 {
-		if _, err := mutators[0].Mutate(ctx, acb.builders[0].mutation); err != nil {
+		if _, err := mutators[0].Mutate(ctx, _c.builders[0].mutation); err != nil {
 			return nil, err
 		}
 	}
@@ -296,8 +296,8 @@ func (acb *AttendanceCreateBulk) Save(ctx context.Context) ([]*Attendance, error
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (acb *AttendanceCreateBulk) SaveX(ctx context.Context) []*Attendance {
-	v, err := acb.Save(ctx)
+func (_c *AttendanceCreateBulk) SaveX(ctx context.Context) []*Attendance {
+	v, err := _c.Save(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -305,14 +305,14 @@ func (acb *AttendanceCreateBulk) SaveX(ctx context.Context) []*Attendance {
 }
 
 // Exec executes the query.
-func (acb *AttendanceCreateBulk) Exec(ctx context.Context) error {
-	_, err := acb.Save(ctx)
+func (_c *AttendanceCreateBulk) Exec(ctx context.Context) error {
+	_, err := _c.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (acb *AttendanceCreateBulk) ExecX(ctx context.Context) {
-	if err := acb.Exec(ctx); err != nil {
+func (_c *AttendanceCreateBulk) ExecX(ctx context.Context) {
+	if err := _c.Exec(ctx); err != nil {
 		panic(err)
 	}
 }

@@ -253,8 +253,8 @@ func (c *AttendanceClient) Update() *AttendanceUpdate {
 }
 
 // UpdateOne returns an update builder for the given entity.
-func (c *AttendanceClient) UpdateOne(a *Attendance) *AttendanceUpdateOne {
-	mutation := newAttendanceMutation(c.config, OpUpdateOne, withAttendance(a))
+func (c *AttendanceClient) UpdateOne(_m *Attendance) *AttendanceUpdateOne {
+	mutation := newAttendanceMutation(c.config, OpUpdateOne, withAttendance(_m))
 	return &AttendanceUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
 }
 
@@ -271,8 +271,8 @@ func (c *AttendanceClient) Delete() *AttendanceDelete {
 }
 
 // DeleteOne returns a builder for deleting the given entity.
-func (c *AttendanceClient) DeleteOne(a *Attendance) *AttendanceDeleteOne {
-	return c.DeleteOneID(a.ID)
+func (c *AttendanceClient) DeleteOne(_m *Attendance) *AttendanceDeleteOne {
+	return c.DeleteOneID(_m.ID)
 }
 
 // DeleteOneID returns a builder for deleting the given entity by its id.

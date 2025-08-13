@@ -1,4 +1,4 @@
-package activities
+package attendance
 
 import (
 	"entgo.io/ent"

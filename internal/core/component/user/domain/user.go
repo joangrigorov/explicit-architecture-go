@@ -1,0 +1,75 @@
+package domain
+
+import (
+	"app/internal/core/shared_kernel/events"
+	"time"
+)
+
+type IdPUserId string
+
+type User struct {
+	Id          events.UserId
+	Username    string
+	Email       string
+	FirstName   string
+	LastName    string
+	ConfirmedAt *time.Time
+	Role        Role
+	IdPUserId   *IdPUserId
+
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}
+
+func (u *User) Confirm() {
+	now := time.Now()
+	u.ConfirmedAt = &now
+}
+
+func NewUser(
+	id events.UserId,
+	username string,
+	email string,
+	fName string,
+	lName string,
+	role Role,
+) *User {
+	return &User{
+		Id:        id,
+		Username:  username,
+		Email:     email,
+		FirstName: fName,
+		LastName:  lName,
+		Role:      role,
+
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+}
+
+func ReconstituteUser(
+	id events.UserId,
+	username string,
+	email string,
+	firstName string,
+	lastName string,
+	role Role,
+	idpUserId *IdPUserId,
+	confirmedAt *time.Time,
+	createdAt time.Time,
+	updatedAt time.Time,
+) *User {
+	return &User{
+		Id:          id,
+		Username:    username,
+		Email:       email,
+		FirstName:   firstName,
+		LastName:    lastName,
+		Role:        role,
+		IdPUserId:   idpUserId,
+		ConfirmedAt: confirmedAt,
+
+		CreatedAt: createdAt,
+		UpdatedAt: updatedAt,
+	}
+}
