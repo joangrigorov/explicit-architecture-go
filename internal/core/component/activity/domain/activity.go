@@ -4,12 +4,10 @@ import (
 	"time"
 )
 
-type ActivityId string
+type ActivityID string
 
 type Activity struct {
-	events []ActivityEvent
-
-	Id               ActivityId
+	ID               ActivityID
 	Slug             string
 	Title            string
 	PosterImageUrl   string
@@ -22,7 +20,7 @@ type Activity struct {
 }
 
 func NewActivity(
-	id ActivityId,
+	id ActivityID,
 	slug string,
 	title string,
 	posterImageUrl string,
@@ -32,11 +30,7 @@ func NewActivity(
 	attendants int,
 ) *Activity {
 	return &Activity{
-		events: []ActivityEvent{
-			NewActivityCreated(),
-		},
-
-		Id:               id,
+		ID:               id,
 		Slug:             slug,
 		Title:            title,
 		PosterImageUrl:   posterImageUrl,
@@ -51,7 +45,7 @@ func NewActivity(
 }
 
 func ReconstituteActivity(
-	id ActivityId,
+	id ActivityID,
 	slug string,
 	title string,
 	posterImageUrl string,
@@ -63,9 +57,7 @@ func ReconstituteActivity(
 	updatedAt time.Time,
 ) *Activity {
 	return &Activity{
-		events: []ActivityEvent{},
-
-		Id:               id,
+		ID:               id,
 		Slug:             slug,
 		Title:            title,
 		PosterImageUrl:   posterImageUrl,

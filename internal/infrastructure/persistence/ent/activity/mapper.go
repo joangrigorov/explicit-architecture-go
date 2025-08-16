@@ -7,7 +7,7 @@ import (
 
 func mapEntity(dto *activity.Activity) *domain.Activity {
 	return domain.ReconstituteActivity(
-		domain.ActivityId(dto.ID.String()),
+		domain.ActivityID(dto.ID.String()),
 		dto.Slug,
 		dto.Title,
 		dto.PosterImageURL,

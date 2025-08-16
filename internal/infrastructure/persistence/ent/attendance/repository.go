@@ -17,7 +17,7 @@ func NewAttendanceRepository(client *attendance.Client) *Repository {
 	return &Repository{client: client}
 }
 
-func (r *Repository) GetById(ctx context.Context, id domain.AttendanceId) (*domain.Attendance, error) {
+func (r *Repository) GetById(ctx context.Context, id domain.AttendanceID) (*domain.Attendance, error) {
 	dto, err := r.client.Attendance.
 		Query().
 		Where(
@@ -56,9 +56,9 @@ func (r *Repository) Create(ctx context.Context, at *domain.Attendance) error {
 	builder := r.client.Attendance.Create()
 
 	_, err := builder.
-		SetID(uuid.Parse(at.Id)).
-		SetAttendeeID(uuid.Parse(at.Attendee.Id)).
-		SetActivityID(uuid.Parse(at.Activity.Id)).
+		SetID(uuid.Parse(at.ID)).
+		SetAttendeeID(uuid.Parse(at.Attendee.ID)).
+		SetActivityID(uuid.Parse(at.Activity.ID)).
 		SetActivitySlug(at.Activity.Slug).
 		SetActivityTitle(at.Activity.Title).
 		SetActivityShortDescription(at.Activity.ShortDescription).
@@ -81,7 +81,7 @@ func (r *Repository) Update(ctx context.Context, at *domain.Attendance) error {
 
 func (r *Repository) Delete(ctx context.Context, at *domain.Attendance) error {
 	_, err := r.client.Attendance.
-		UpdateOneID(uuid.Parse(at.Id)).
+		UpdateOneID(uuid.Parse(at.ID)).
 		SetDeletedAt(time.Now()).
 		Save(ctx)
 

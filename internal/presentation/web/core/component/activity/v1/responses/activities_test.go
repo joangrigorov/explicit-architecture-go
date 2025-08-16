@@ -24,7 +24,7 @@ func TestOne(t *testing.T) {
 	updatedAt := f.Time().Time(time.Now())
 
 	activity := &domain.Activity{
-		Id:               domain.ActivityId(id),
+		ID:               domain.ActivityID(id),
 		Slug:             slug,
 		Title:            title,
 		PosterImageUrl:   posterImageUrl,
@@ -66,7 +66,7 @@ func TestMany(t *testing.T) {
 	updatedAt := f.Time().Time(time.Now())
 
 	activities := []*domain.Activity{{
-		Id:               domain.ActivityId(id),
+		ID:               domain.ActivityID(id),
 		Slug:             slug,
 		Title:            title,
 		PosterImageUrl:   posterImageUrl,

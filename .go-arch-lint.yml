@@ -16,10 +16,14 @@ components:
     in: internal/core/component/activity/domain/**
   core/domain/attendance:
     in: internal/core/component/attendance/domain/**
+  core/domain/user:
+    in: internal/core/component/user/domain/**
   core/application/activity:
     in: internal/core/component/activity/application/**
   core/application/attendance:
     in: internal/core/component/attendance/application/**
+  core/application/user:
+    in: internal/core/component/user/application/**
   core/ports:
     in: internal/core/port/**
   core/shared_kernel:
@@ -46,6 +50,10 @@ deps:
     mayDependOn:
       - core/domain/attendance # self
       - core/shared_kernel
+  core/domain/user:
+    mayDependOn:
+      - core/domain/user # self
+      - core/shared_kernel
   core/application/activity:
     mayDependOn:
       - core/application/activity # self
@@ -58,25 +66,50 @@ deps:
       - core/domain/attendance
       - core/ports
       - core/shared_kernel
+  core/application/user:
+    mayDependOn:
+      - core/application/user # self
+      - core/domain/user
+      - core/ports
+      - core/shared_kernel
+  core/ports:
+    mayDependOn:
+      - core/ports # self
+      - core/shared_kernel
+  core/shared_kernel:
+    mayDependOn:
+      - core/shared_kernel # self
   presentation:
     anyVendorDeps: true
     mayDependOn:
       - presentation # self
       - infrastructure
       - core/ports
+      - core/shared_kernel
+      # activity
       - core/domain/activity
-      - core/domain/attendance
       - core/application/activity
+      # attendance
+      - core/domain/attendance
       - core/application/attendance
+      # user
+      - core/domain/user
+      - core/application/user
   infrastructure:
     anyVendorDeps: true
     mayDependOn:
       - infrastructure # self
       - core/ports
+      - core/shared_kernel
+      # activity
       - core/domain/activity
-      - core/domain/attendance
       - core/application/activity
+      # attendance
+      - core/domain/attendance
       - core/application/attendance
+      # user
+      - core/domain/user
+      - core/application/user
   bootstrap:
     anyVendorDeps: true
     mayDependOn:

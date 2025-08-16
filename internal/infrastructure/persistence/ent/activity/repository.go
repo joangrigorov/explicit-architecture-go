@@ -18,7 +18,7 @@ func NewActivityRepository(client *activity.Client) repositories.ActivityReposit
 	return &Repository{client: client}
 }
 
-func (r *Repository) GetById(ctx context.Context, id domain.ActivityId) (*domain.Activity, error) {
+func (r *Repository) GetById(ctx context.Context, id domain.ActivityID) (*domain.Activity, error) {
 	parse := uuid.Parse(id)
 
 	dto, err := r.client.Activity.
@@ -40,7 +40,7 @@ func (r *Repository) Create(ctx context.Context, ac *domain.Activity) error {
 	builder := r.client.Activity.Create()
 
 	_, err := builder.
-		SetID(uuid.Parse(ac.Id)).
+		SetID(uuid.Parse(ac.ID)).
 		SetSlug(ac.Slug).
 		SetTitle(ac.Title).
 		SetPosterImageURL(ac.PosterImageUrl).
@@ -58,7 +58,7 @@ func (r *Repository) Create(ctx context.Context, ac *domain.Activity) error {
 func (r *Repository) Update(ctx context.Context, ac *domain.Activity) error {
 	updatedAt := time.Now()
 	_, err := r.client.Activity.
-		UpdateOneID(uuid.Parse(ac.Id)).
+		UpdateOneID(uuid.Parse(ac.ID)).
 		SetSlug(ac.Slug).
 		SetTitle(ac.Title).
 		SetPosterImageURL(ac.PosterImageUrl).
@@ -96,7 +96,7 @@ func (r *Repository) GetAll(ctx context.Context) ([]*domain.Activity, error) {
 
 func (r *Repository) Delete(ctx context.Context, ac *domain.Activity) error {
 	_, err := r.client.Activity.
-		UpdateOneID(uuid.Parse(ac.Id)).
+		UpdateOneID(uuid.Parse(ac.ID)).
 		SetDeletedAt(time.Now()).
 		Save(ctx)
 	return err

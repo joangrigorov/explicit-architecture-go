@@ -2,14 +2,12 @@ package domain
 
 import "time"
 
-type AttendanceId string
-type AttendeeId string
-type ActivityId string
+type AttendanceID string
+type AttendeeID string
+type ActivityID string
 
 type Attendance struct {
-	events []AttendanceEvent
-
-	Id AttendanceId
+	ID AttendanceID
 
 	Attendee *Attendee
 	Activity *Activity
@@ -19,16 +17,12 @@ type Attendance struct {
 }
 
 func NewAttendance(
-	id AttendanceId,
+	id AttendanceID,
 	attendee *Attendee,
 	activity *Activity,
 ) *Attendance {
 	return &Attendance{
-		events: []AttendanceEvent{
-			NewAttendanceCreated(),
-		},
-
-		Id:       id,
+		ID:       id,
 		Attendee: attendee,
 		Activity: activity,
 
@@ -38,11 +32,11 @@ func NewAttendance(
 }
 
 type Attendee struct {
-	Id AttendeeId
+	ID AttendeeID
 }
 
 type Activity struct {
-	Id               ActivityId
+	ID               ActivityID
 	Slug             string
 	Title            string
 	PosterImageUrl   string
@@ -51,9 +45,9 @@ type Activity struct {
 }
 
 func ReconstituteAttendance(
-	id AttendanceId,
-	attendeeId AttendeeId,
-	activityId ActivityId,
+	id AttendanceID,
+	attendeeId AttendeeID,
+	activityId ActivityID,
 	activitySlug string,
 	activityTitle string,
 	activityPosterImageUrl string,
@@ -63,13 +57,11 @@ func ReconstituteAttendance(
 	updatedAt time.Time,
 ) *Attendance {
 	return &Attendance{
-		events: []AttendanceEvent{},
+		ID: id,
 
-		Id: id,
-
-		Attendee: &Attendee{Id: attendeeId},
+		Attendee: &Attendee{ID: attendeeId},
 		Activity: &Activity{
-			Id:               activityId,
+			ID:               activityId,
 			Slug:             activitySlug,
 			Title:            activityTitle,
 			PosterImageUrl:   activityPosterImageUrl,

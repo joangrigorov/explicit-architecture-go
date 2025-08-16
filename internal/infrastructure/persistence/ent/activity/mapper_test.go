@@ -42,7 +42,7 @@ func TestMapEntity(t *testing.T) {
 
 	assert.NotNil(t, ac)
 
-	assert.Equal(t, domain.ActivityId(id.String()), ac.Id)
+	assert.Equal(t, domain.ActivityID(id.String()), ac.ID)
 	assert.Equal(t, slug, ac.Slug)
 	assert.Equal(t, title, ac.Title)
 	assert.Equal(t, posterImageUrl, ac.PosterImageUrl)

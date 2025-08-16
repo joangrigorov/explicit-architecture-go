@@ -11,11 +11,11 @@ import (
 var f = faker.New()
 
 func TestNewAttendance(t *testing.T) {
-	id := AttendanceId(f.UUID().V4())
+	id := AttendanceID(f.UUID().V4())
 
-	attendeeId := AttendeeId(f.UUID().V4())
+	attendeeId := AttendeeID(f.UUID().V4())
 
-	activityId := ActivityId(f.UUID().V4())
+	activityId := ActivityID(f.UUID().V4())
 	activitySlug := f.Lorem().Word() + "-" + f.Lorem().Word()
 	activityTitle := f.Lorem().Sentence(3)
 	activityPosterImageUrl := f.ProfileImage().Image().Name()
@@ -24,9 +24,9 @@ func TestNewAttendance(t *testing.T) {
 
 	attendance := NewAttendance(
 		id,
-		&Attendee{Id: attendeeId},
+		&Attendee{ID: attendeeId},
 		&Activity{
-			Id:               activityId,
+			ID:               activityId,
 			Slug:             activitySlug,
 			Title:            activityTitle,
 			PosterImageUrl:   activityPosterImageUrl,
@@ -37,11 +37,11 @@ func TestNewAttendance(t *testing.T) {
 
 	assert.NotNil(t, attendance)
 
-	assert.Equal(t, id, attendance.Id)
+	assert.Equal(t, id, attendance.ID)
 
-	assert.Equal(t, attendeeId, attendance.Attendee.Id)
+	assert.Equal(t, attendeeId, attendance.Attendee.ID)
 
-	assert.Equal(t, activityId, attendance.Activity.Id)
+	assert.Equal(t, activityId, attendance.Activity.ID)
 	assert.Equal(t, activitySlug, attendance.Activity.Slug)
 	assert.Equal(t, activityPosterImageUrl, attendance.Activity.PosterImageUrl)
 	assert.Equal(t, activityTitle, attendance.Activity.Title)
@@ -49,17 +49,14 @@ func TestNewAttendance(t *testing.T) {
 	assert.Equal(t, activityHappensAt, attendance.Activity.HappensAt)
 	assert.NotNil(t, attendance.CreatedAt)
 	assert.NotNil(t, attendance.UpdatedAt)
-
-	assert.Len(t, attendance.events, 1)
-	assert.IsType(t, &AttendanceCreated{}, attendance.events[0])
 }
 
 func TestReconstituteAttendance(t *testing.T) {
-	id := AttendanceId(f.UUID().V4())
+	id := AttendanceID(f.UUID().V4())
 
-	attendeeId := AttendeeId(f.UUID().V4())
+	attendeeId := AttendeeID(f.UUID().V4())
 
-	activityId := ActivityId(f.UUID().V4())
+	activityId := ActivityID(f.UUID().V4())
 	activitySlug := f.Lorem().Word() + "-" + f.Lorem().Word()
 	activityTitle := f.Lorem().Sentence(3)
 	activityPosterImageUrl := f.ProfileImage().Image().Name()
@@ -84,14 +81,12 @@ func TestReconstituteAttendance(t *testing.T) {
 
 	assert.NotNil(t, attendance)
 
-	assert.Equal(t, id, attendance.Id)
-	assert.Equal(t, attendeeId, attendance.Attendee.Id)
-	assert.Equal(t, activityId, attendance.Activity.Id)
+	assert.Equal(t, id, attendance.ID)
+	assert.Equal(t, attendeeId, attendance.Attendee.ID)
+	assert.Equal(t, activityId, attendance.Activity.ID)
 	assert.Equal(t, activitySlug, attendance.Activity.Slug)
 	assert.Equal(t, activityTitle, attendance.Activity.Title)
 	assert.Equal(t, activityPosterImageUrl, attendance.Activity.PosterImageUrl)
 	assert.Equal(t, activityShortDescription, attendance.Activity.ShortDescription)
 	assert.Equal(t, activityHappensAt, attendance.Activity.HappensAt)
-
-	assert.Len(t, attendance.events, 0)
 }

@@ -1,14 +1,14 @@
 package domain
 
 import (
-	"app/internal/core/shared_kernel/events"
+	"app/internal/core/shared_kernel/domain"
 	"time"
 )
 
 type IdPUserId string
 
 type User struct {
-	Id          events.UserId
+	ID          domain.UserID
 	Username    string
 	Email       string
 	FirstName   string
@@ -27,7 +27,7 @@ func (u *User) Confirm() {
 }
 
 func NewUser(
-	id events.UserId,
+	id domain.UserID,
 	username string,
 	email string,
 	fName string,
@@ -35,7 +35,7 @@ func NewUser(
 	role Role,
 ) *User {
 	return &User{
-		Id:        id,
+		ID:        id,
 		Username:  username,
 		Email:     email,
 		FirstName: fName,
@@ -48,7 +48,7 @@ func NewUser(
 }
 
 func ReconstituteUser(
-	id events.UserId,
+	id domain.UserID,
 	username string,
 	email string,
 	firstName string,
@@ -60,7 +60,7 @@ func ReconstituteUser(
 	updatedAt time.Time,
 ) *User {
 	return &User{
-		Id:          id,
+		ID:          id,
 		Username:    username,
 		Email:       email,
 		FirstName:   firstName,

@@ -65,7 +65,7 @@ func TestController_Index(t *testing.T) {
 
 		entries := []*domain.Activity{
 			{
-				Id:               domain.ActivityId(firstId),
+				ID:               domain.ActivityID(firstId),
 				Slug:             slug,
 				Title:            title,
 				PosterImageUrl:   posterImageUrl,

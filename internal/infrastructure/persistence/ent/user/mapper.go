@@ -1,20 +1,20 @@
 package user
 
 import (
-	"app/internal/core/component/user/domain"
-	"app/internal/core/shared_kernel/events"
+	. "app/internal/core/component/user/domain"
+	. "app/internal/core/shared_kernel/domain"
 	"app/internal/infrastructure/persistence/ent/generated/user"
 	roles "app/internal/infrastructure/persistence/ent/generated/user/user"
 	"fmt"
 )
 
-func mapDomainRole(role roles.Role) domain.Role {
-	var domainRole domain.Role
+func mapDomainRole(role roles.Role) Role {
+	var domainRole Role
 	switch role.String() {
 	case "admin":
-		domainRole = &domain.Admin{}
+		domainRole = &Admin{}
 	case "member":
-		domainRole = &domain.Member{}
+		domainRole = &Member{}
 	default:
 		panic(fmt.Sprintf("unknown dto role %s", role.String()))
 	}
@@ -22,9 +22,9 @@ func mapDomainRole(role roles.Role) domain.Role {
 	return domainRole
 }
 
-func mapDtoRole(role domain.Role) roles.Role {
+func mapDtoRole(role Role) roles.Role {
 	var dtoRole roles.Role
-	switch role.String() {
+	switch role.ID() {
 	case "admin":
 		dtoRole = roles.RoleAdmin
 	case "member":
@@ -36,10 +36,10 @@ func mapDtoRole(role domain.Role) roles.Role {
 	return dtoRole
 }
 
-func mapEntity(dto *user.User) *domain.User {
-	idPUserId := domain.IdPUserId(*dto.IdpUserID)
-	return domain.ReconstituteUser(
-		events.UserId(dto.ID.String()),
+func mapEntity(dto *user.User) *User {
+	idPUserId := IdPUserId(*dto.IdpUserID)
+	return ReconstituteUser(
+		UserID(dto.ID.String()),
 		dto.Username,
 		dto.Email,
 		dto.FirstName,

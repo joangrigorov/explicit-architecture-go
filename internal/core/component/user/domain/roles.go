@@ -2,27 +2,22 @@ package domain
 
 type RoleId string
 
+func (roleId RoleId) String() string {
+	return string(roleId)
+}
+
 type Role interface {
-	Id() RoleId
-	String() string
+	ID() RoleId
 }
 
 type Member struct{}
 
-func (m *Member) String() string {
-	return string(m.Id())
-}
-
-func (m *Member) Id() RoleId {
+func (m Member) ID() RoleId {
 	return "member"
 }
 
 type Admin struct{}
 
-func (a *Admin) String() string {
-	return string(a.Id())
-}
-
-func (a *Admin) Id() RoleId {
+func (a Admin) ID() RoleId {
 	return "admin"
 }

@@ -28,7 +28,7 @@ func TestMapDomainRole(t *testing.T) {
 
 type unsupportedRole struct{}
 
-func (u *unsupportedRole) Id() domain.RoleId {
+func (u *unsupportedRole) ID() domain.RoleId {
 	return "unsupported"
 }
 
@@ -76,12 +76,12 @@ func TestMapEntity(t *testing.T) {
 		UpdatedAt:   updatedAt,
 	})
 
-	assert.Equal(t, id, string(entity.Id))
+	assert.Equal(t, id, string(entity.ID))
 	assert.Equal(t, username, entity.Username)
 	assert.Equal(t, email, entity.Email)
 	assert.Equal(t, fName, entity.FirstName)
 	assert.Equal(t, lName, entity.LastName)
-	assert.Equal(t, role, entity.Role.String())
+	assert.Equal(t, role, entity.Role.ID().String())
 	assert.Equal(t, idPUserId, string(*entity.IdPUserId))
 	assert.Equal(t, &confirmedAt, entity.ConfirmedAt)
 	assert.Equal(t, createdAt, entity.CreatedAt)

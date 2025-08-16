@@ -20,7 +20,7 @@ type ActivityResponse struct {
 
 func One(ac *domain.Activity) *ActivityResponse {
 	return &ActivityResponse{
-		Id:               string(ac.Id),
+		Id:               string(ac.ID),
 		Slug:             ac.Slug,
 		Title:            ac.Title,
 		PosterImageUrl:   ac.PosterImageUrl,

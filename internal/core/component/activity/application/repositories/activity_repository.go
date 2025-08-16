@@ -6,7 +6,7 @@ import (
 )
 
 type ActivityRepository interface {
-	GetById(context.Context, domain.ActivityId) (*domain.Activity, error)
+	GetById(context.Context, domain.ActivityID) (*domain.Activity, error)
 	GetAll(context.Context) ([]*domain.Activity, error)
 	Create(context.Context, *domain.Activity) error
 	Update(context.Context, *domain.Activity) error

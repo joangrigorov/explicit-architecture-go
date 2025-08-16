@@ -8,7 +8,20 @@ package mock
 // Repository mocks
 //go:generate mockgen -source=../internal/core/component/activity/application/repositories/activity_repository.go -destination=core/component/activity/application/repositories/mock_activity_repository.go -package=repositories
 //go:generate mockgen -source=../internal/core/component/attendance/application/repositories/attendance_repository.go -destination=core/component/attendance/application/repositories/mock_attendance_repository.go -package=repositories
+//go:generate mockgen -source=../internal/core/component/user/application/repositories/user_repository.go -destination=core/component/user/application/repositories/mock_user_repository.go -package=repositories
 
-//go:generate mockgen -source=../internal/presentation/web/infrastructure/framework/validation/rules.go -destination=presentation/web/infrastructure/framework/validation/mock_rules.go -package=validation
+// Application port mocks
+//go:generate mockgen -source=../internal/core/port/events/bus.go -destination=core/port/events/mock_bus.go -package=events
+//go:generate mockgen -source=../internal/core/port/uuid/generator.go -destination=core/port/uuid/mock_generator.go -package=uuid
+
+// Shared kernel mocks
+//go:generate mockgen -source=../internal/core/shared_kernel/events/event.go -destination=core/shared_kernel/events/mock_event.go -package=events
+
+// Presentation port mocks
 //go:generate mockgen -source=../internal/presentation/web/port/http/router.go -destination=presentation/web/port/http/mock_router.go -package=http
 //go:generate mockgen -source=../internal/presentation/web/port/http/context.go -destination=presentation/web/port/http/mock_context.go -package=http
+
+//go:generate mockgen -source=../internal/presentation/web/infrastructure/framework/validation/rules.go -destination=presentation/web/infrastructure/framework/validation/mock_rules.go -package=validation
+
+// Infrastructure mocks
+//go:generate mockgen -source=../internal/infrastructure/events/subscriber.go -destination=infrastructure/events/mock_subscriber.go -package=events

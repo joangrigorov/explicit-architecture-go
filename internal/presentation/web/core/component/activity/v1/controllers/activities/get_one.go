@@ -11,7 +11,7 @@ import (
 func (pc *Controller) GetOne(c Context) {
 	id := c.ParamString("id")
 
-	p, err := pc.activityRepository.GetById(c.Context(), domain.ActivityId(id))
+	p, err := pc.activityRepository.GetById(c.Context(), domain.ActivityID(id))
 	if err != nil {
 		NotFound(c, NewDefaultError(err))
 		return

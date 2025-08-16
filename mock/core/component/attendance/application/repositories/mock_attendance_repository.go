@@ -85,7 +85,7 @@ func (mr *MockAttendanceRepositoryMockRecorder) GetAll(arg0 any) *gomock.Call {
 }
 
 // GetById mocks base method.
-func (m *MockAttendanceRepository) GetById(arg0 context.Context, arg1 domain.AttendanceId) (*domain.Attendance, error) {
+func (m *MockAttendanceRepository) GetById(arg0 context.Context, arg1 domain.AttendanceID) (*domain.Attendance, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetById", arg0, arg1)
 	ret0, _ := ret[0].(*domain.Attendance)

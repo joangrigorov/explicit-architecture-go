@@ -47,12 +47,12 @@ func TestActivityRepository_GetById(t *testing.T) {
 
 		repo := &Repository{client: client}
 
-		got, err := repo.GetById(ctx, domain.ActivityId(id.String()))
+		got, err := repo.GetById(ctx, domain.ActivityID(id.String()))
 		if err != nil {
 			t.Fatal(err)
 		}
 
-		assert.Equal(t, domain.ActivityId(id.String()), got.Id)
+		assert.Equal(t, domain.ActivityID(id.String()), got.ID)
 		assert.Equal(t, slug, got.Slug)
 		assert.Equal(t, title, got.Title)
 		assert.Equal(t, posterImageUrl, got.PosterImageUrl)
@@ -84,7 +84,7 @@ func TestActivityRepository_GetById(t *testing.T) {
 
 		repo := &Repository{client: client}
 
-		_, err = repo.GetById(ctx, domain.ActivityId(uuid.New().String()))
+		_, err = repo.GetById(ctx, domain.ActivityID(uuid.New().String()))
 
 		assert.ErrorContains(t, err, "activity not found")
 	})
@@ -100,7 +100,7 @@ func TestActivityRepository_Create(t *testing.T) {
 	id, slug, title, posterImageUrl, shortDescription, fullDescription, happensAt, attendants, createdAt, updatedAt := fakeActivityData(f)
 
 	ac := &domain.Activity{
-		Id:               domain.ActivityId(id.String()),
+		ID:               domain.ActivityID(id.String()),
 		Slug:             slug,
 		Title:            title,
 		PosterImageUrl:   posterImageUrl,
@@ -144,7 +144,7 @@ func TestActivityRepository_Update(t *testing.T) {
 	_, slug, title, posterImageUrl, shortDescription, fullDescription, happensAt, attendants, createdAt, _ := fakeActivityData(f)
 
 	ac := &domain.Activity{
-		Id:               domain.ActivityId(id.String()),
+		ID:               domain.ActivityID(id.String()),
 		Slug:             slug,
 		Title:            title,
 		PosterImageUrl:   posterImageUrl,
@@ -241,7 +241,7 @@ func TestActivityRepository_GetAll(t *testing.T) {
 	assert.NoError(t, err)
 
 	assert.Len(t, entries, 6)
-	assert.Equal(t, id.String(), string(entries[0].Id))
+	assert.Equal(t, id.String(), string(entries[0].ID))
 	assert.Equal(t, slug, entries[0].Slug)
 	assert.Equal(t, title, entries[0].Title)
 	assert.Equal(t, posterImageUrl, entries[0].PosterImageUrl)
@@ -278,7 +278,7 @@ func TestActivityRepository_Delete(t *testing.T) {
 	assert.NoError(t, err)
 
 	r := &Repository{client: client}
-	err = r.Delete(ctx, &domain.Activity{Id: domain.ActivityId(id.String())})
+	err = r.Delete(ctx, &domain.Activity{ID: domain.ActivityID(id.String())})
 	assert.NoError(t, err)
 
 	dto, err := client.Activity.Get(ctx, id)

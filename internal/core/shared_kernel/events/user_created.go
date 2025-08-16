@@ -1,11 +1,23 @@
 package events
 
+import (
+	"app/internal/core/shared_kernel/domain"
+)
+
 type UserCreated struct {
-	UserId   UserId
-	Email    string
-	Password string
+	userId   domain.UserID
+	email    string
+	password string
 }
 
-func (u *UserCreated) ID() string {
-	return "app.UserCreated"
+func (u UserCreated) ID() EventID {
+	return makeEventID(u)
+}
+
+func NewUserCreated(id domain.UserID, email string, password string) UserCreated {
+	return UserCreated{
+		userId:   id,
+		email:    email,
+		password: password,
+	}
 }

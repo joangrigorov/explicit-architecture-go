@@ -32,7 +32,7 @@ func TestController_GetOne(t *testing.T) {
 		ctx.EXPECT().ParamString("id").Return(f.UUID().V4())
 		ctx.EXPECT().Context().Return(goCtx)
 		activityRepository.EXPECT().
-			GetById(goCtx, gomock.AssignableToTypeOf(domain.ActivityId(""))).
+			GetById(goCtx, gomock.AssignableToTypeOf(domain.ActivityID(""))).
 			Return(nil, errors.New("not found"))
 
 		ctx.EXPECT().JSON(404, responses.DefaultError{Error: "not found"})
@@ -54,7 +54,7 @@ func TestController_GetOne(t *testing.T) {
 		updatedAt := f.Time().Time(time.Now())
 
 		activity := &domain.Activity{
-			Id:               domain.ActivityId(id),
+			ID:               domain.ActivityID(id),
 			Slug:             slug,
 			Title:            title,
 			PosterImageUrl:   posterImageUrl,
@@ -69,7 +69,7 @@ func TestController_GetOne(t *testing.T) {
 		ctx.EXPECT().ParamString("id").Return(id)
 		ctx.EXPECT().Context().Return(goCtx)
 		activityRepository.EXPECT().
-			GetById(goCtx, gomock.AssignableToTypeOf(domain.ActivityId(""))).
+			GetById(goCtx, gomock.AssignableToTypeOf(domain.ActivityID(""))).
 			Return(activity, nil)
 
 		ctx.EXPECT().

@@ -8,9 +8,9 @@ import (
 
 func mapEntity(dto *attendance.Attendance) *domain.Attendance {
 	return domain.ReconstituteAttendance(
-		domain.AttendanceId(dto.ID.String()),
-		domain.AttendeeId(dto.AttendeeID.String()),
-		domain.ActivityId(dto.ActivityID.String()),
+		domain.AttendanceID(dto.ID.String()),
+		domain.AttendeeID(dto.AttendeeID.String()),
+		domain.ActivityID(dto.ActivityID.String()),
 		dto.ActivitySlug,
 		dto.ActivityTitle,
 		dto.ActivityPosterImageURL,
@@ -23,9 +23,9 @@ func mapEntity(dto *attendance.Attendance) *domain.Attendance {
 
 func mapDto(at *domain.Attendance) *attendance.Attendance {
 	return &attendance.Attendance{
-		ID:                       uuid.Parse(at.Id),
-		AttendeeID:               uuid.Parse(at.Attendee.Id),
-		ActivityID:               uuid.Parse(at.Activity.Id),
+		ID:                       uuid.Parse(at.ID),
+		AttendeeID:               uuid.Parse(at.Attendee.ID),
+		ActivityID:               uuid.Parse(at.Activity.ID),
 		ActivitySlug:             at.Activity.Slug,
 		ActivityTitle:            at.Activity.Title,
 		ActivityPosterImageURL:   at.Activity.PosterImageUrl,

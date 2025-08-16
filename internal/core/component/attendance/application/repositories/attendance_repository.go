@@ -6,7 +6,7 @@ import (
 )
 
 type AttendanceRepository interface {
-	GetById(context.Context, domain.AttendanceId) (*domain.Attendance, error)
+	GetById(context.Context, domain.AttendanceID) (*domain.Attendance, error)
 	GetAll(context.Context) ([]*domain.Attendance, error)
 	Create(context.Context, *domain.Attendance) error
 	Update(context.Context, *domain.Attendance) error

@@ -2,6 +2,7 @@ package bootstrap
 
 import (
 	"app/config"
+	"app/internal/infrastructure/events"
 	"app/internal/infrastructure/observability/otel"
 	"app/internal/infrastructure/persistence/ent/activity"
 	"app/internal/infrastructure/persistence/ent/attendance"
@@ -31,6 +32,10 @@ var providers = fx.Options(
 		http.NewRouter,
 		validation.NewValidatorValidate,
 		validation.NewTranslator,
+
+		// event bus providers
+		events.NewEventBus,
+		events.NewSimpleEventBus,
 
 		// observability providers
 		otel.NewTracerProvider,
