@@ -1,10 +1,9 @@
 package controllers
 
 import (
-	"app/internal/core/component/user/application/usecases"
-	eventBus "app/internal/core/port/events"
+	. "app/internal/core/component/user/application/commands"
+	"app/internal/core/port/commands"
 	"app/internal/presentation/api/core/component/user/v1/requests"
-	. "app/internal/presentation/api/core/component/user/v1/responses"
 	. "app/internal/presentation/api/core/shared/responses"
 	ctx "app/internal/presentation/api/port/http"
 
@@ -13,31 +12,18 @@ import (
 )
 
 type RegistrationController struct {
-	registrationUseCase *usecases.Registration
-	confirmationUseCase *usecases.Confirmation
-	eventBus            eventBus.EventBus
-	tr                  ut.Translator
+	commandBus commands.CommandBus
+	tr         ut.Translator
 }
 
-func NewRegistrationController(
-	registration *usecases.Registration,
-	confirmation *usecases.Confirmation,
-	bus eventBus.EventBus,
-	tr ut.Translator,
-) *RegistrationController {
-	return &RegistrationController{
-		registrationUseCase: registration,
-		confirmationUseCase: confirmation,
-		eventBus:            bus,
-		tr:                  tr,
-	}
+func NewRegistrationController(commandBus commands.CommandBus, tr ut.Translator) *RegistrationController {
+	return &RegistrationController{commandBus: commandBus, tr: tr}
 }
 
-func (ctrl *RegistrationController) Register(ctx ctx.Context) {
+func (c *RegistrationController) Register(ctx ctx.Context) {
 	f := faker.New()
 
-	user, err := ctrl.registrationUseCase.Execute(
-		ctx.Context(),
+	cmd := NewRegisterUserCommand(
 		f.Internet().User(),
 		f.Internet().Password(),
 		f.Internet().Email(),
@@ -45,22 +31,25 @@ func (ctrl *RegistrationController) Register(ctx ctx.Context) {
 		f.Person().LastName(),
 	)
 
+	err := c.commandBus.Dispatch(ctx.Context(), cmd)
+
 	if err != nil {
 		InternalServerError(ctx, NewDefaultError(err))
 		return
 	}
 
-	ctx.JSON(200, NewRegistrationResponse(user))
+	ctx.NoContent()
 }
 
-func (ctrl *RegistrationController) Confirm(ctx ctx.Context) {
+func (c *RegistrationController) Confirm(ctx ctx.Context) {
 	request := &requests.ConfirmationRequest{}
 	if err := ctx.ShouldBindJSON(request); err != nil {
-		UnprocessableEntity(ctx, Render(ctrl.tr, err, request))
+		UnprocessableEntity(ctx, Render(c.tr, err, request))
 		return
 	}
 
-	err := ctrl.confirmationUseCase.Execute(ctx.Context(), request.UserID)
+	err := c.commandBus.Dispatch(ctx.Context(), NewConfirmUserCommand(request.UserID))
+	
 	if err != nil {
 		BadRequest(ctx, NewDefaultError(err))
 		return

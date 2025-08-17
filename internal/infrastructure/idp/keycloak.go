@@ -57,7 +57,7 @@ func (i *KeycloakIdentityProvider) CreateUser(
 	username string,
 	email string,
 	password string,
-) (*domain.IdPUserId, error) {
+) (*domain.IdPUserID, error) {
 	token, err := i.getToken(ctx)
 	if err != nil {
 		return nil, err
@@ -86,12 +86,12 @@ func (i *KeycloakIdentityProvider) CreateUser(
 		return nil, err
 	}
 
-	keycloakUserID := domain.IdPUserId(id)
+	keycloakUserID := domain.IdPUserID(id)
 
 	return &keycloakUserID, nil
 }
 
-func (i *KeycloakIdentityProvider) ConfirmUser(ctx context.Context, id domain.IdPUserId) error {
+func (i *KeycloakIdentityProvider) ConfirmUser(ctx context.Context, id domain.IdPUserID) error {
 	token, err := i.getToken(ctx)
 	if err != nil {
 		return err

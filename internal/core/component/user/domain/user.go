@@ -13,7 +13,7 @@ type User struct {
 	LastName    string
 	ConfirmedAt *time.Time
 	Role        Role
-	IdPUserId   *domain.IdPUserId
+	IdPUserId   *domain.IdPUserID
 
 	CreatedAt time.Time
 	UpdatedAt time.Time
@@ -52,7 +52,7 @@ func ReconstituteUser(
 	firstName string,
 	lastName string,
 	role Role,
-	idpUserId *domain.IdPUserId,
+	idpUserId *domain.IdPUserID,
 	confirmedAt *time.Time,
 	createdAt time.Time,
 	updatedAt time.Time,

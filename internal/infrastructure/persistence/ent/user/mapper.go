@@ -37,9 +37,9 @@ func mapDtoRole(role Role) roles.Role {
 }
 
 func mapEntity(dto *user.User) *User {
-	var idPUserId *IdPUserId
+	var idPUserId *IdPUserID
 	if dto != nil && dto.IdpUserID != nil {
-		tmp := IdPUserId(*dto.IdpUserID)
+		tmp := IdPUserID(*dto.IdpUserID)
 		idPUserId = &tmp
 	} else {
 		idPUserId = nil

@@ -1,7 +1,7 @@
 package domain
 
-type IdPUserId string
+type IdPUserID string
 
-func (i IdPUserId) String() string {
+func (i IdPUserID) String() string {
 	return string(i)
 }

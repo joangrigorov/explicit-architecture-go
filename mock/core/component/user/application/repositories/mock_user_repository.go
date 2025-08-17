@@ -72,7 +72,7 @@ func (mr *MockUserRepositoryMockRecorder) GetById(arg0, arg1 any) *gomock.Call {
 }
 
 // GetByIdPUserId mocks base method.
-func (m *MockUserRepository) GetByIdPUserId(arg0 context.Context, arg1 domain0.IdPUserId) (*domain.User, error) {
+func (m *MockUserRepository) GetByIdPUserId(arg0 context.Context, arg1 domain0.IdPUserID) (*domain.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetByIdPUserId", arg0, arg1)
 	ret0, _ := ret[0].(*domain.User)

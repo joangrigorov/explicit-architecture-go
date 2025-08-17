@@ -56,7 +56,7 @@ func (r *Repository) GetById(ctx context.Context, id UserID) (*User, error) {
 	return entity, nil
 }
 
-func (r *Repository) GetByIdPUserId(ctx context.Context, idPUserId IdPUserId) (*User, error) {
+func (r *Repository) GetByIdPUserId(ctx context.Context, idPUserId IdPUserID) (*User, error) {
 	dto, err := r.
 		client().
 		Query().

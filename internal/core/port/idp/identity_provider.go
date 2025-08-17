@@ -6,6 +6,6 @@ import (
 )
 
 type IdentityProvider interface {
-	CreateUser(ctx context.Context, id domain.UserID, username string, email string, password string) (*domain.IdPUserId, error)
-	ConfirmUser(ctx context.Context, id domain.IdPUserId) error
+	CreateUser(ctx context.Context, id domain.UserID, username string, email string, password string) (*domain.IdPUserID, error)
+	ConfirmUser(ctx context.Context, id domain.IdPUserID) error
 }

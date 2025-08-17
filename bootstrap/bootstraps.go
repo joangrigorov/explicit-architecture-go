@@ -4,6 +4,7 @@ import (
 	"app/database/ent/schema/activity"
 	"app/database/ent/schema/attendance"
 	"app/database/ent/schema/user"
+	"app/internal/infrastructure/commands/handlers"
 	"app/internal/infrastructure/events/subscribers/create_keycloak_user"
 	"app/internal/infrastructure/logging/zap"
 	"app/internal/infrastructure/observability/otel"
@@ -31,6 +32,9 @@ var bootstraps = fx.Options(
 
 		// event subscribers
 		create_keycloak_user.Register,
+
+		// register CQRS commands
+		handlers.Register,
 
 		// initiate
 		runServer,

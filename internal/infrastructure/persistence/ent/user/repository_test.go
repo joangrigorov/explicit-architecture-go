@@ -284,14 +284,14 @@ func TestRepository_GetById(t *testing.T) {
 	})
 }
 
-func fakeUserData(f faker.Faker) (string, string, string, string, string, string, IdPUserId, time.Time, time.Time, time.Time) {
+func fakeUserData(f faker.Faker) (string, string, string, string, string, string, IdPUserID, time.Time, time.Time, time.Time) {
 	id := f.UUID().V4()
 	username := f.Internet().User()
 	email := f.Internet().Email()
 	fName := f.Person().FirstName()
 	lName := f.Person().LastName()
 	role := f.RandomStringElement([]string{"admin", "member"})
-	idPUserId := IdPUserId(f.UUID().V4())
+	idPUserId := IdPUserID(f.UUID().V4())
 	confirmedAt := f.Time().Time(time.Now())
 	createdAt := f.Time().Time(time.Now())
 	updatedAt := f.Time().Time(time.Now())

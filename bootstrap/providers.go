@@ -3,6 +3,7 @@ package bootstrap
 import (
 	"app/config"
 	"app/internal/core/component/user/application/usecases"
+	"app/internal/infrastructure/commands"
 	"app/internal/infrastructure/events"
 	"app/internal/infrastructure/framework/uuid"
 	"app/internal/infrastructure/idp"
@@ -41,6 +42,8 @@ var providers = fx.Options(
 		uuid.NewGenerator,
 		zap.NewZapLogger,
 		zap.NewLogger,
+		commands.NewCommandBus,
+		commands.NewSimpleCommandBus,
 
 		// keycloak providers
 		idp.NewGoCloakClient,
@@ -66,7 +69,5 @@ var providers = fx.Options(
 
 		// use cases
 		usecases.NewCreateIdPUser,
-		usecases.NewRegistration,
-		usecases.NewConfirmation,
 	),
 )
