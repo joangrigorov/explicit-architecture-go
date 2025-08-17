@@ -4,6 +4,7 @@ import (
 	. "app/internal/core/port/events"
 	"app/internal/core/port/logging"
 	. "app/internal/core/shared_kernel/events"
+	"context"
 	"fmt"
 	"reflect"
 	"sync"
@@ -12,9 +13,14 @@ import (
 // bufferSize of how many events can wait in the queue before they are processed
 const bufferSize = 100
 
+type event struct {
+	e   Event
+	ctx context.Context
+}
+
 type subscriberWorker struct {
 	sub Subscriber
-	ch  chan Event
+	ch  chan event
 }
 
 type SimpleEventBus struct {
@@ -36,22 +42,22 @@ func NewEventBus(bus *SimpleEventBus) EventBus {
 }
 
 // Subscribe to event
-func (b *SimpleEventBus) Subscribe(subscriber Subscriber, event Event) {
+func (b *SimpleEventBus) Subscribe(subscriber Subscriber, e Event) {
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
 	worker := &subscriberWorker{
 		sub: subscriber,
-		ch:  make(chan Event, bufferSize), // configurable buffer size. TODO use configuration value for buffer size
+		ch:  make(chan event, bufferSize), // configurable buffer size. TODO use configuration value for buffer size
 	}
 
 	b.wg.Add(1)
 	go func(w *subscriberWorker) {
 		defer b.wg.Done()
 
-		for e := range w.ch {
+		for ev := range w.ch {
 			// Wrap each dispatch in its own func scope
-			func(ev Event) {
+			func(ev event) {
 				defer func() {
 					if r := recover(); r != nil {
 						b.logger.Error(fmt.Sprintf(
@@ -61,39 +67,39 @@ func (b *SimpleEventBus) Subscribe(subscriber Subscriber, event Event) {
 					}
 				}()
 
-				if err := w.sub.Dispatch(ev); err != nil {
+				if err := w.sub.Dispatch(ev.ctx, ev.e); err != nil {
 					b.logger.Error(err)
 				} else {
 					b.logger.Debug(fmt.Sprintf(
 						"Dispatched event %s, handled by %s",
-						ev.ID(), reflect.TypeOf(w.sub).String(),
+						ev.e.ID(), reflect.TypeOf(w.sub).String(),
 					))
 				}
-			}(e)
+			}(ev)
 		}
 	}(worker)
 
-	b.subs[event.ID()] = append(b.subs[event.ID()], worker)
+	b.subs[e.ID()] = append(b.subs[e.ID()], worker)
 }
 
 // Publish sends to subscriber channels (non-blocking, log drops)
-func (b *SimpleEventBus) Publish(event Event) error {
+func (b *SimpleEventBus) Publish(ctx context.Context, e Event) error {
 	b.mu.RLock()
-	subs := append([]*subscriberWorker(nil), b.subs[event.ID()]...) // copy slice
+	subs := append([]*subscriberWorker(nil), b.subs[e.ID()]...) // copy slice
 	b.mu.RUnlock()
 
 	for _, w := range subs {
 		select {
-		case w.ch <- event:
+		case w.ch <- event{ctx: ctx, e: e}:
 			b.logger.Debug(fmt.Sprintf(
 				"Published event %s, handled by %s",
-				event.ID(),
+				e.ID(),
 				reflect.TypeOf(w.sub).String(),
 			))
 		default: // coverage-ignore
 			b.logger.Error(fmt.Sprintf(
 				"Dropped event %s for subscriber %s",
-				event.ID(),
+				e.ID(),
 				reflect.TypeOf(w.sub).String(),
 			))
 		}

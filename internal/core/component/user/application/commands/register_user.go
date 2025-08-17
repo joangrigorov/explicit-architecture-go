@@ -56,5 +56,5 @@ func (h *RegisterUserCommandHandler) Handle(ctx context.Context, c RegisterUserC
 		return err
 	}
 
-	return h.eventBus.Publish(events.NewUserCreated(id, c.username, c.email, c.password))
+	return h.eventBus.Publish(ctx, events.NewUserCreated(id, c.username, c.email, c.password))
 }

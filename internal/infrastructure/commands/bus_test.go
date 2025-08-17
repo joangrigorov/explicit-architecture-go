@@ -15,7 +15,8 @@ type myCmd struct {
 
 func TestSimpleCommandBus_Dispatch(t *testing.T) {
 	ctx := context.Background()
-	bus := NewCommandBus()
+	bus := NewSimpleCommandBus()
+
 	Register[myCmd](bus, func(ctx context.Context, command commands.Command, next Next) error {
 		return errors.New("this is an expected error")
 	})

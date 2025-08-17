@@ -6,6 +6,7 @@ import (
 	"app/internal/core/port/idp"
 	"app/internal/core/shared_kernel/domain"
 	"context"
+	errors2 "errors"
 )
 
 type CreateIdPUser struct {
@@ -27,7 +28,7 @@ func (u *CreateIdPUser) Execute(
 	user, err := u.userRepository.GetById(ctx, userID)
 
 	if err != nil {
-		return errors.NewUserNotFoundError()
+		return errors2.New(userID.String())
 	}
 
 	idpUserId, err := u.idp.CreateUser(ctx, userID, username, email, password)

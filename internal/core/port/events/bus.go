@@ -1,7 +1,10 @@
 package events
 
-import "app/internal/core/shared_kernel/events"
+import (
+	"app/internal/core/shared_kernel/events"
+	"context"
+)
 
 type EventBus interface {
-	Publish(events.Event) error
+	Publish(context.Context, events.Event) error
 }

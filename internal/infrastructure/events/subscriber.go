@@ -2,8 +2,9 @@ package events
 
 import (
 	eventBus "app/internal/core/shared_kernel/events"
+	"context"
 )
 
 type Subscriber interface {
-	Dispatch(eventBus.Event) error
+	Dispatch(context.Context, eventBus.Event) error
 }
