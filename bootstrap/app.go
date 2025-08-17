@@ -8,10 +8,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/fx"
+	"go.uber.org/zap"
 )
 
 // runServer Starts a server by registering an Fx lifecycle hook
-func runServer(lc fx.Lifecycle, router *gin.Engine) {
+func runServer(lc fx.Lifecycle, router *gin.Engine, zap *zap.SugaredLogger) {
 	server := &http.Server{
 		Addr:    ":8080",
 		Handler: router,
@@ -30,6 +31,12 @@ func runServer(lc fx.Lifecycle, router *gin.Engine) {
 		OnStop: func(ctx context.Context) error {
 			fmt.Println("Stopping server...")
 			return server.Shutdown(ctx)
+		},
+	})
+
+	lc.Append(fx.Hook{
+		OnStop: func(ctx context.Context) error {
+			return zap.Sync()
 		},
 	})
 }

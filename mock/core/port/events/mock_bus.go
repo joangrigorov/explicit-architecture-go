@@ -41,9 +41,11 @@ func (m *MockEventBus) EXPECT() *MockEventBusMockRecorder {
 }
 
 // Publish mocks base method.
-func (m *MockEventBus) Publish(arg0 events.Event) {
+func (m *MockEventBus) Publish(arg0 events.Event) error {
 	m.ctrl.T.Helper()
-	m.ctrl.Call(m, "Publish", arg0)
+	ret := m.ctrl.Call(m, "Publish", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // Publish indicates an expected call of Publish.

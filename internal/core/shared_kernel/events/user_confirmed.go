@@ -5,13 +5,17 @@ import (
 )
 
 type UserConfirmed struct {
-	userId domain.UserID
+	userID domain.UserID
 }
 
 func (u UserConfirmed) ID() EventID {
 	return makeEventID(u)
 }
 
+func (u UserConfirmed) UserID() domain.UserID {
+	return u.userID
+}
+
 func NewUserConfirmed(userId domain.UserID) UserConfirmed {
-	return UserConfirmed{userId: userId}
+	return UserConfirmed{userID: userId}
 }

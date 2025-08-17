@@ -1,30 +1,26 @@
 package usecases
 
 import (
-	. "app/internal/core/component/user/application/repositories"
+	"app/internal/core/component/user/application"
 	. "app/internal/core/component/user/domain"
-	. "app/internal/core/port/events"
 	"app/internal/core/port/uuid"
 	. "app/internal/core/shared_kernel/domain"
-	. "app/internal/core/shared_kernel/events"
+	"app/internal/core/shared_kernel/events"
 	"context"
 )
 
 type Registration struct {
-	userRepository UserRepository
-	uuidGenerator  uuid.Generator
-	eventBus       EventBus
+	uow           application.UnitOfWork
+	uuidGenerator uuid.Generator
 }
 
 func NewRegistration(
-	ur UserRepository,
+	uow application.UnitOfWork,
 	uuidGenerator uuid.Generator,
-	eventBus EventBus,
 ) *Registration {
 	return &Registration{
-		userRepository: ur,
-		uuidGenerator:  uuidGenerator,
-		eventBus:       eventBus,
+		uow:           uow,
+		uuidGenerator: uuidGenerator,
 	}
 }
 
@@ -35,16 +31,21 @@ func (r *Registration) Execute(
 	email string,
 	firstName string,
 	lastName string,
-) error {
+) (*User, error) {
 	id := UserID(r.uuidGenerator.Generate())
 	user := NewUser(id, username, email, firstName, lastName, &Member{})
 
-	err := r.userRepository.Create(ctx, user)
+	err := r.uow.Do(ctx, func(tx application.UnitOfWorkTx) error {
+		if err := tx.UserRepository().Create(ctx, user); err != nil {
+			return err
+		}
+
+		return tx.EventBus().Publish(events.NewUserCreated(id, username, email, password))
+	})
+
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	r.eventBus.Publish(NewUserCreated(id, email, password))
-
-	return nil
+	return user, nil
 }

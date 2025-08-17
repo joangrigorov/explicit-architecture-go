@@ -37,7 +37,14 @@ func mapDtoRole(role Role) roles.Role {
 }
 
 func mapEntity(dto *user.User) *User {
-	idPUserId := IdPUserId(*dto.IdpUserID)
+	var idPUserId *IdPUserId
+	if dto != nil && dto.IdpUserID != nil {
+		tmp := IdPUserId(*dto.IdpUserID)
+		idPUserId = &tmp
+	} else {
+		idPUserId = nil
+	}
+
 	return ReconstituteUser(
 		UserID(dto.ID.String()),
 		dto.Username,
@@ -45,7 +52,7 @@ func mapEntity(dto *user.User) *User {
 		dto.FirstName,
 		dto.LastName,
 		mapDomainRole(dto.Role),
-		&idPUserId,
+		idPUserId,
 		dto.ConfirmedAt,
 		dto.CreatedAt,
 		dto.UpdatedAt,

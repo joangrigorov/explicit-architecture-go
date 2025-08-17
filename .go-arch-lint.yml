@@ -112,7 +112,4 @@ deps:
       - core/application/user
   bootstrap:
     anyVendorDeps: true
-    mayDependOn:
-      - bootstrap # self
-      - infrastructure
-      - presentation
+    anyProjectDeps: true

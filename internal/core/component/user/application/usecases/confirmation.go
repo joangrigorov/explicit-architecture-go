@@ -1,42 +1,49 @@
 package usecases
 
 import (
+	"app/internal/core/component/user/application"
 	"app/internal/core/component/user/application/errors"
-	"app/internal/core/component/user/application/repositories"
-	eventBus "app/internal/core/port/events"
+	"app/internal/core/port/idp"
 	"app/internal/core/shared_kernel/domain"
 	"app/internal/core/shared_kernel/events"
 	"context"
 )
 
 type Confirmation struct {
-	userRepository repositories.UserRepository
-	eventBus       eventBus.EventBus
+	uow application.UnitOfWork
+	idp idp.IdentityProvider
 }
 
-func NewConfirmation(userRepository repositories.UserRepository, eventBus eventBus.EventBus) *Confirmation {
-	return &Confirmation{
-		userRepository: userRepository,
-		eventBus:       eventBus,
-	}
+func NewConfirmation(uow application.UnitOfWork, idp idp.IdentityProvider) *Confirmation {
+	return &Confirmation{uow: uow, idp: idp}
 }
 
 func (uc *Confirmation) Execute(ctx context.Context, userID string) error {
-	user, err := uc.userRepository.GetById(ctx, domain.UserID(userID))
+	return uc.uow.Do(ctx, func(tx application.UnitOfWorkTx) error {
+		user, err := tx.UserRepository().GetById(ctx, domain.UserID(userID))
 
-	if err != nil {
-		return errors.NewUserNotFoundError()
-	}
+		if err != nil {
+			return errors.NewUserNotFoundError()
+		}
 
-	user.Confirm()
+		if user.IdPUserId == nil {
+			return errors.NewIdPUserNotConnectedError()
+		}
 
-	err = uc.userRepository.Update(ctx, user)
+		err = uc.idp.ConfirmUser(ctx, *user.IdPUserId)
 
-	if err != nil {
-		return err
-	}
+		if err != nil {
+			return errors.NewIdPRequestError(err)
+		}
 
-	uc.eventBus.Publish(events.NewUserConfirmed(user.ID))
+		user.Confirm()
 
-	return err
+		err = tx.UserRepository().Update(ctx, user)
+
+		if err != nil {
+			return err
+		}
+
+		return tx.EventBus().Publish(events.NewUserConfirmed(user.ID))
+	})
 }

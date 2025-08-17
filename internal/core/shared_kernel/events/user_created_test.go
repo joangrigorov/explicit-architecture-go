@@ -11,10 +11,11 @@ import (
 func TestUserCreated_ID(t *testing.T) {
 	f := faker.New()
 	userId := domain.UserID(f.UUID().V4())
+	username := f.Internet().User()
 	email := f.Internet().Email()
 	password := f.Internet().Password()
 
-	e := NewUserCreated(userId, email, password)
+	e := NewUserCreated(userId, username, email, password)
 
 	assert.NotNil(t, e)
 	assert.Equal(t, "app/internal/core/shared_kernel/events.UserCreated", e.ID().String())

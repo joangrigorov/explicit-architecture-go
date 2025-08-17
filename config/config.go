@@ -7,14 +7,16 @@ import (
 )
 
 type Config struct {
-	App     App
-	DB      DB
-	Tracing Tracing
-}
-type App struct {
-	Name string `env:"APP_NAME"`
+	App      App
+	DB       DB
+	Tracing  Tracing
+	Keycloak Keycloak
 }
 
+type App struct {
+	Name    string `env:"APP_NAME"`
+	DevMode bool   `env:"APP_DEV_MODE" envDefault:"false"`
+}
 type DB struct {
 	Activity   DBActivity
 	Attendance DBAttendance
@@ -62,6 +64,14 @@ type DBUser struct {
 
 type Tracing struct {
 	Endpoint string `env:"TRACE_ENDPOINT"`
+}
+
+type Keycloak struct {
+	Url          string `env:"KEYCLOAK_URL"`
+	ClientId     string `env:"KEYCLOAK_OAUTH_CLIENT_ID"`
+	ClientSecret string `env:"KEYCLOAK_OAUTH_CLIENT_SECRET"`
+	Realm        string `env:"KEYCLOAK_REALM" envDefault:"app"`
+	Scopes       string `env:"KEYCLOAK_SCOPES"`
 }
 
 // NewConfig returns app config.

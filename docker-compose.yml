@@ -9,6 +9,7 @@ x-db-environment: &x-db-environment
 x-backend-app-environment: &x-backend-app-environment
   # App settings
   APP_NAME: "activity-planner"
+  APP_DEV_MODE: true
 
   ### Databases
 
@@ -39,6 +40,11 @@ x-backend-app-environment: &x-backend-app-environment
   DB_USER_DATABASE: "user"
   DB_USER_SSLMODE: "disable"
 
+  # Keycloak
+  KEYCLOAK_URL: "http://keycloak:8080"
+  KEYCLOAK_OAUTH_CLIENT_ID: "user-admin"
+  KEYCLOAK_OAUTH_CLIENT_SECRET: "secret"
+
   # Go
   GO111MODULE: on
 
@@ -61,7 +67,7 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U user -d db" ]
+      test: [ "CMD-SHELL", "pg_isready -U user -d postgres" ]
       interval: 5s
       retries: 5
     networks:
@@ -78,8 +84,8 @@ services:
     environment:
       <<: *x-backend-app-environment
     command: air
-#    ports:
-#      - "8080:8080"
+    ports:
+      - "8080:8080"
     depends_on:
       - db
       - jaeger

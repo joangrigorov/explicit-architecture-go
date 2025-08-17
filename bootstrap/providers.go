@@ -2,14 +2,19 @@ package bootstrap
 
 import (
 	"app/config"
+	"app/internal/core/component/user/application/usecases"
 	"app/internal/infrastructure/events"
+	"app/internal/infrastructure/framework/uuid"
+	"app/internal/infrastructure/idp"
+	"app/internal/infrastructure/logging/zap"
 	"app/internal/infrastructure/observability/otel"
 	"app/internal/infrastructure/persistence/ent/activity"
 	"app/internal/infrastructure/persistence/ent/attendance"
 	"app/internal/infrastructure/persistence/ent/user"
-	"app/internal/presentation/web/core/component/activity/v1/controllers/activities"
-	"app/internal/presentation/web/infrastructure/framework/http"
-	"app/internal/presentation/web/infrastructure/framework/validation"
+	"app/internal/presentation/api/core/component/activity/v1/controllers/activities"
+	"app/internal/presentation/api/core/component/user/v1/controllers"
+	"app/internal/presentation/api/infrastructure/framework/http"
+	"app/internal/presentation/api/infrastructure/framework/validation"
 
 	"go.uber.org/fx"
 )
@@ -26,12 +31,20 @@ var providers = fx.Options(
 		attendance.NewClient,
 		user.NewConnection,
 		user.NewClient,
+		user.NewUnitOfWork,
 
 		// framework providers
 		http.NewGinEngine,
 		http.NewRouter,
 		validation.NewValidatorValidate,
 		validation.NewTranslator,
+		uuid.NewGenerator,
+		zap.NewZapLogger,
+		zap.NewLogger,
+
+		// keycloak providers
+		idp.NewGoCloakClient,
+		idp.NewKeycloakIdentityProvider,
 
 		// event bus providers
 		events.NewEventBus,
@@ -45,8 +58,15 @@ var providers = fx.Options(
 		activity.NewActivityRepository,
 		attendance.NewAttendanceRepository,
 		user.NewRepository,
+		user.NewConcreteRepository,
 
-		// web controller providers
+		// api controller providers
 		activities.NewController,
+		controllers.NewRegistrationController,
+
+		// use cases
+		usecases.NewCreateIdPUser,
+		usecases.NewRegistration,
+		usecases.NewConfirmation,
 	),
 )

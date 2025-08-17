@@ -5,8 +5,6 @@ import (
 	"time"
 )
 
-type IdPUserId string
-
 type User struct {
 	ID          domain.UserID
 	Username    string
@@ -15,7 +13,7 @@ type User struct {
 	LastName    string
 	ConfirmedAt *time.Time
 	Role        Role
-	IdPUserId   *IdPUserId
+	IdPUserId   *domain.IdPUserId
 
 	CreatedAt time.Time
 	UpdatedAt time.Time
@@ -54,7 +52,7 @@ func ReconstituteUser(
 	firstName string,
 	lastName string,
 	role Role,
-	idpUserId *IdPUserId,
+	idpUserId *domain.IdPUserId,
 	confirmedAt *time.Time,
 	createdAt time.Time,
 	updatedAt time.Time,

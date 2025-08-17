@@ -41,7 +41,7 @@ func TestReconstituteUser(t *testing.T) {
 	fName := f.Person().FirstName()
 	lName := f.Person().LastName()
 	role := Admin{}
-	idPUserId := IdPUserId(f.UUID().V4())
+	idPUserId := domain.IdPUserId(f.UUID().V4())
 	createdAt := f.Time().Time(time.Now())
 	updatedAt := f.Time().Time(time.Now())
 	confirmedAt := f.Time().Time(time.Now())
