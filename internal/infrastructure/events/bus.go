@@ -90,7 +90,7 @@ func (b *SimpleEventBus) Publish(ctx context.Context, e Event) error {
 
 	for _, w := range subs {
 		select {
-		case w.ch <- event{ctx: ctx, e: e}:
+		case w.ch <- event{ctx: context.WithoutCancel(ctx), e: e}:
 			b.logger.Debug(fmt.Sprintf(
 				"Published event %s, handled by %s",
 				e.ID(),

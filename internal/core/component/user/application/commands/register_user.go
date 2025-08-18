@@ -8,6 +8,7 @@ import (
 	. "app/internal/core/shared_kernel/domain"
 	"app/internal/core/shared_kernel/events"
 	"context"
+	"encoding/json"
 )
 
 type RegisterUserCommand struct {
@@ -16,6 +17,15 @@ type RegisterUserCommand struct {
 	email     string
 	firstName string
 	lastName  string
+}
+
+func (r RegisterUserCommand) Serialize() ([]byte, error) {
+	return json.Marshal(map[string]interface{}{
+		"username":  r.username,
+		"email":     r.email,
+		"firstName": r.firstName,
+		"lastName":  r.lastName,
+	})
 }
 
 func NewRegisterUserCommand(

@@ -2,7 +2,9 @@ package commands
 
 import "context"
 
-type Command interface{}
+type Command interface {
+	Serialize() ([]byte, error)
+}
 
 type CommandHandler[C Command] interface {
 	Handle(context.Context, C) error

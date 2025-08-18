@@ -2,7 +2,6 @@ package bootstrap
 
 import (
 	"app/config"
-	"app/internal/core/component/user/application/usecases"
 	"app/internal/infrastructure/commands"
 	"app/internal/infrastructure/events"
 	"app/internal/infrastructure/framework/uuid"
@@ -32,7 +31,6 @@ var providers = fx.Options(
 		attendance.NewClient,
 		user.NewConnection,
 		user.NewClient,
-		user.NewUnitOfWork,
 
 		// framework providers
 		http.NewGinEngine,
@@ -66,8 +64,5 @@ var providers = fx.Options(
 		// api controller providers
 		activities.NewController,
 		controllers.NewRegistrationController,
-
-		// use cases
-		usecases.NewCreateIdPUser,
 	),
 )

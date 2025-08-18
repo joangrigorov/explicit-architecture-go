@@ -6,10 +6,17 @@ import (
 	"app/internal/core/port/idp"
 	"app/internal/core/shared_kernel/domain"
 	"context"
+	"encoding/json"
 )
 
 type ConfirmUserCommand struct {
 	userID string
+}
+
+func (c ConfirmUserCommand) Serialize() ([]byte, error) {
+	return json.Marshal(map[string]interface{}{
+		"userID": c.userID,
+	})
 }
 
 func NewConfirmUserCommand(userID string) ConfirmUserCommand {

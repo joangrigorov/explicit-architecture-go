@@ -29,4 +29,6 @@ func Register(
 
 	commands.Register[RegisterUserCommand](bus, HandleRegisterUserCommand(userRepository, eventBus, generator, entClient))
 	commands.Register[ConfirmUserCommand](bus, HandleConfirmUserCommand(userRepository, idp, entClient))
+	commands.Register[CreateIdPUserCommand](bus, HandleCreateIdPUserCommand(userRepository, idp, entClient))
 }
+ 
