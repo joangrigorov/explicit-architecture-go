@@ -3,7 +3,7 @@ package commands
 import "context"
 
 type Command interface {
-	Serialize() ([]byte, error)
+	LogBody() ([]byte, error)
 }
 
 type CommandHandler[C Command] interface {

@@ -2,6 +2,7 @@ package bootstrap
 
 import (
 	"app/config"
+	cqrs "app/internal/core/component/user/application/queries"
 	"app/internal/infrastructure/commands"
 	"app/internal/infrastructure/events"
 	"app/internal/infrastructure/framework/uuid"
@@ -11,6 +12,8 @@ import (
 	"app/internal/infrastructure/persistence/ent/activity"
 	"app/internal/infrastructure/persistence/ent/attendance"
 	"app/internal/infrastructure/persistence/ent/user"
+	"app/internal/infrastructure/persistence/ent/user/queries"
+	queryBus "app/internal/infrastructure/queries"
 	"app/internal/presentation/api/core/component/activity/v1/controllers/activities"
 	"app/internal/presentation/api/core/component/user/v1/controllers"
 	"app/internal/presentation/api/infrastructure/framework/http"
@@ -42,6 +45,8 @@ var providers = fx.Options(
 		zap.NewLogger,
 		commands.NewCommandBus,
 		commands.NewSimpleCommandBus,
+		queryBus.NewSimpleQueryBus,
+		queryBus.NewQueryBus,
 
 		// keycloak providers
 		idp.NewGoCloakClient,
@@ -64,5 +69,9 @@ var providers = fx.Options(
 		// api controller providers
 		activities.NewController,
 		controllers.NewRegistrationController,
+
+		// queries
+		cqrs.NewFindUserByIDHandler,
+		queries.NewUserQueries,
 	),
 )

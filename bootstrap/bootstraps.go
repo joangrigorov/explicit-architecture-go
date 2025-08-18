@@ -8,6 +8,7 @@ import (
 	"app/internal/infrastructure/events/subscribers/create_keycloak_user"
 	"app/internal/infrastructure/logging/zap"
 	"app/internal/infrastructure/observability/otel"
+	"app/internal/infrastructure/queries/middleware"
 	"app/internal/presentation/api/core"
 	"app/internal/presentation/api/infrastructure/framework/validation"
 
@@ -33,8 +34,9 @@ var bootstraps = fx.Options(
 		// event subscribers
 		create_keycloak_user.Register,
 
-		// register CQRS commands
+		// register CQRS
 		handlers.Register,
+		middleware.InitQueryBus,
 
 		// initiate
 		runServer,

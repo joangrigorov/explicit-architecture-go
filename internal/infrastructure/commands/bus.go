@@ -27,15 +27,15 @@ func NewSimpleCommandBus() *SimpleCommandBus {
 	}
 }
 
-func (s *SimpleCommandBus) Dispatch(ctx context.Context, command commands.Command) error {
+func (b *SimpleCommandBus) Dispatch(ctx context.Context, command commands.Command) error {
 	t := reflect.TypeOf(command)
-	chain, ok := s.handlers[t]
+	chain, ok := b.handlers[t]
 	if !ok {
 		return errors.New(fmt.Sprintf("no handlers found for command %T", command))
 	}
 
 	// prepend global middlewares
-	chain = append(s.middlewares, chain...)
+	chain = append(b.middlewares, chain...)
 
 	// build the chain runner
 	i := 0
@@ -57,8 +57,8 @@ func Register[C commands.Command](bus *SimpleCommandBus, handlers ...Middleware)
 	bus.handlers[t] = append(bus.handlers[t], handlers...)
 }
 
-func Use(bus *SimpleCommandBus, handlers ...Middleware) {
-	bus.middlewares = append(bus.middlewares, handlers...)
+func (b *SimpleCommandBus) Use(handlers ...Middleware) {
+	b.middlewares = append(b.middlewares, handlers...)
 }
 
 func typeOf[C any]() reflect.Type {

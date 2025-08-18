@@ -14,7 +14,7 @@ func Tracing(tracer trace.Tracer) commands.Middleware {
 	return func(ctx context.Context, command port.Command, next commands.Next) error {
 		ctx, span := tracer.Start(ctx, fmt.Sprintf("Command %T", command))
 		defer span.End()
-		payload, _ := command.Serialize()
+		payload, _ := command.LogBody()
 		span.AddEvent(
 			fmt.Sprintf("%T payload", command),
 			trace.WithAttributes(attribute.String("payload", string(payload))),

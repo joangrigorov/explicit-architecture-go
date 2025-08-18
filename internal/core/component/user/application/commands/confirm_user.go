@@ -13,7 +13,7 @@ type ConfirmUserCommand struct {
 	userID string
 }
 
-func (c ConfirmUserCommand) Serialize() ([]byte, error) {
+func (c ConfirmUserCommand) LogBody() ([]byte, error) {
 	return json.Marshal(map[string]interface{}{
 		"userID": c.userID,
 	})

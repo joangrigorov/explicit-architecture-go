@@ -16,7 +16,7 @@ type CreateIdPUserCommand struct {
 	password string
 }
 
-func (c CreateIdPUserCommand) Serialize() ([]byte, error) {
+func (c CreateIdPUserCommand) LogBody() ([]byte, error) {
 	return json.Marshal(map[string]interface{}{
 		"userId":   c.userID,
 		"username": c.username,

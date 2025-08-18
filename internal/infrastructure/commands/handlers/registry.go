@@ -4,7 +4,6 @@ import (
 	. "app/internal/core/component/user/application/commands"
 	"app/internal/core/port/idp"
 	"app/internal/core/port/logging"
-	"app/internal/core/port/uuid"
 	"app/internal/infrastructure/commands"
 	"app/internal/infrastructure/commands/middleware"
 	"app/internal/infrastructure/events"
@@ -21,14 +20,12 @@ func Register(
 	userRepository *user.Repository,
 	idp idp.IdentityProvider,
 	eventBus *events.SimpleEventBus,
-	generator uuid.Generator,
 	entClient *ent.Client,
 ) {
-	commands.Use(bus, middleware.Logger(l))
-	commands.Use(bus, middleware.Tracing(tracer))
+	bus.Use(middleware.Logger(l))
+	bus.Use(middleware.Tracing(tracer))
 
-	commands.Register[RegisterUserCommand](bus, HandleRegisterUserCommand(userRepository, eventBus, generator, entClient))
+	commands.Register[RegisterUserCommand](bus, HandleRegisterUserCommand(userRepository, eventBus, entClient))
 	commands.Register[ConfirmUserCommand](bus, HandleConfirmUserCommand(userRepository, idp, entClient))
 	commands.Register[CreateIdPUserCommand](bus, HandleCreateIdPUserCommand(userRepository, idp, entClient))
 }
- 

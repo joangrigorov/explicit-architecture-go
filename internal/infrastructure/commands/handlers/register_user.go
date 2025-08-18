@@ -3,7 +3,6 @@ package handlers
 import (
 	. "app/internal/core/component/user/application/commands"
 	port "app/internal/core/port/commands"
-	"app/internal/core/port/uuid"
 	"app/internal/infrastructure/commands"
 	"app/internal/infrastructure/events"
 	ent "app/internal/infrastructure/persistence/ent/generated/user"
@@ -14,7 +13,6 @@ import (
 func HandleRegisterUserCommand(
 	userRepository *user.Repository,
 	eventBus *events.SimpleEventBus,
-	uuidGenerator uuid.Generator,
 	entClient *ent.Client,
 ) commands.Middleware {
 	return func(ctx context.Context, command port.Command, next commands.Next) error {
@@ -44,7 +42,7 @@ func HandleRegisterUserCommand(
 			}
 		}()
 
-		handler := NewRegisterUserCommandHandler(userRepository.WithTx(tx), eventBus, uuidGenerator)
+		handler := NewRegisterUserCommandHandler(userRepository.WithTx(tx), eventBus)
 
 		err = handler.Handle(ctx, command.(RegisterUserCommand))
 		return err
