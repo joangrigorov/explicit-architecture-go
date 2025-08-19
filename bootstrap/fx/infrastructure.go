@@ -3,7 +3,6 @@ package fx
 import (
 	"app/bootstrap/cqrs"
 	"app/bootstrap/events"
-	"app/bootstrap/events/subscribers"
 	cBus "app/internal/infrastructure/cqrs/commands"
 	qBus "app/internal/infrastructure/cqrs/queries"
 	"app/internal/infrastructure/event_bus"
@@ -83,7 +82,6 @@ var idpAdapter = fx.Module("idp", fx.Provide(
 var eventBusAdapter = fx.Module("eventbus", fx.Provide(
 	event_bus.NewEventBus,
 	event_bus.NewSimpleEventBus,
-	subscribers.NewCreateKeycloakUserSubscriber,
 ), fx.Invoke(
 	events.WireSubscribers,
 ))

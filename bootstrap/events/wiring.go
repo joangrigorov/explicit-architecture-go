@@ -8,7 +8,6 @@ import (
 
 func WireSubscribers(
 	eventBus *eventBus.SimpleEventBus,
-
 	kcUserSub *subscribers.CreateKeycloakUserSubscriber,
 ) {
 	eventBus.Subscribe(kcUserSub, events.UserCreated{})
