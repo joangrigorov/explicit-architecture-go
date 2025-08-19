@@ -3,7 +3,7 @@ package commands
 import (
 	"app/internal/core/component/user/application/repositories"
 	. "app/internal/core/component/user/domain"
-	eventBus "app/internal/core/port/events"
+	eventBus "app/internal/core/port/event_bus"
 	. "app/internal/core/shared_kernel/domain"
 	"app/internal/core/shared_kernel/events"
 	"context"

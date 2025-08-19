@@ -4,9 +4,9 @@ import (
 	. "app/internal/core/component/user/application/repositories"
 	. "app/internal/core/component/user/domain"
 	. "app/internal/core/shared_kernel/domain"
-	"app/internal/infrastructure/framework/uuid"
 	"app/internal/infrastructure/persistence/ent/generated/user"
 	ent "app/internal/infrastructure/persistence/ent/generated/user/user"
+	"app/internal/infrastructure/uuid"
 	"context"
 	"time"
 )

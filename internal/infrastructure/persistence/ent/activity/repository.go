@@ -3,9 +3,9 @@ package activity
 import (
 	"app/internal/core/component/activity/application/repositories"
 	"app/internal/core/component/activity/domain"
-	"app/internal/infrastructure/framework/uuid"
 	"app/internal/infrastructure/persistence/ent/generated/activity"
 	ent "app/internal/infrastructure/persistence/ent/generated/activity/activity"
+	"app/internal/infrastructure/uuid"
 	"context"
 	"time"
 )

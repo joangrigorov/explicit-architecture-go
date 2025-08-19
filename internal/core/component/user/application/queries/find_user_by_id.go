@@ -2,7 +2,7 @@ package queries
 
 import (
 	. "app/internal/core/component/user/application/queries/port"
-	"app/internal/core/port/queries"
+	"app/internal/core/port/cqrs"
 	"context"
 	"encoding/json"
 )
@@ -21,7 +21,7 @@ type FindUserByIDHandler struct {
 	queries UserQueries
 }
 
-func NewFindUserByIDHandler(queries UserQueries) queries.QueryHandler[FindUserByIDQuery, *UserDTO] {
+func NewFindUserByIDHandler(queries UserQueries) cqrs.QueryHandler[FindUserByIDQuery, *UserDTO] {
 	return &FindUserByIDHandler{queries: queries}
 }
 

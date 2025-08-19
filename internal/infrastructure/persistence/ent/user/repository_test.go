@@ -3,9 +3,9 @@ package user
 import (
 	"app/internal/core/component/user/domain"
 	. "app/internal/core/shared_kernel/domain"
-	"app/internal/infrastructure/framework/uuid"
 	"app/internal/infrastructure/persistence/ent/generated/user/enttest"
 	"app/internal/infrastructure/persistence/ent/generated/user/user"
+	"app/internal/infrastructure/uuid"
 	"context"
 	"testing"
 	"time"

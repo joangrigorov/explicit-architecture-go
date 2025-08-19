@@ -2,9 +2,9 @@ package attendance
 
 import (
 	"app/internal/core/component/attendance/domain"
-	"app/internal/infrastructure/framework/uuid"
 	"app/internal/infrastructure/persistence/ent/generated/attendance"
 	ent "app/internal/infrastructure/persistence/ent/generated/attendance/attendance"
+	"app/internal/infrastructure/uuid"
 	"context"
 	"time"
 )

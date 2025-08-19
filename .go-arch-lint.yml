@@ -96,6 +96,7 @@ deps:
       - core/domain/user
       - core/application/user
   infrastructure:
+    deepScan: false
     anyVendorDeps: true
     mayDependOn:
       - infrastructure # self
@@ -111,5 +112,6 @@ deps:
       - core/domain/user
       - core/application/user
   bootstrap:
+    deepScan: false
     anyVendorDeps: true
     anyProjectDeps: true

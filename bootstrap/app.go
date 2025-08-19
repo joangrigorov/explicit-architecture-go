@@ -1,6 +1,7 @@
 package bootstrap
 
 import (
+	appfx "app/bootstrap/fx"
 	"context"
 	"errors"
 	"fmt"
@@ -42,5 +43,12 @@ func runServer(lc fx.Lifecycle, router *gin.Engine, zap *zap.SugaredLogger) {
 }
 
 func NewApp() *fx.App {
-	return fx.New(providers, bootstraps)
+	return fx.New(
+		appfx.Config,
+		appfx.Infrastructure,
+		appfx.Core,
+		appfx.Presentation,
+		appfx.Migrations,
+		fx.Invoke(runServer),
+	)
 }

@@ -2,8 +2,8 @@ package attendance
 
 import (
 	"app/internal/core/component/attendance/domain"
-	"app/internal/infrastructure/framework/uuid"
 	"app/internal/infrastructure/persistence/ent/generated/attendance"
+	"app/internal/infrastructure/uuid"
 )
 
 func mapEntity(dto *attendance.Attendance) *domain.Attendance {
