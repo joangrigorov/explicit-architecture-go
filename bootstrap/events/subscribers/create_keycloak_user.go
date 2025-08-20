@@ -38,7 +38,7 @@ func (c *CreateKeycloakUserSubscriber) Dispatch(ctx context.Context, e events.Ev
 		return errors.New(fmt.Sprintf("%T subscriber cannot subscribe to %s", c, reflect.TypeOf(e).Name()))
 	}
 
-	return c.commandBus.Dispatch(context.WithoutCancel(ctx), NewCreateIdPUserCommand(
+	return c.commandBus.Dispatch(ctx, NewCreateIdPUserCommand(
 		event.UserId(),
 		event.Username(),
 		event.Email(),

@@ -1,6 +1,7 @@
 package user
 
 import (
+	"app/internal/core/component/user/application/queries/dto"
 	"app/internal/core/component/user/application/queries/port"
 	"app/internal/infrastructure/persistence/ent/generated/user"
 	ent "app/internal/infrastructure/persistence/ent/generated/user/user"
@@ -16,7 +17,7 @@ func NewQueries(client *user.Client) port.UserQueries {
 	return &Queries{client: client}
 }
 
-func (u *Queries) FindById(ctx context.Context, id string) (*port.UserDTO, error) {
+func (u *Queries) FindById(ctx context.Context, id string) (*dto.UserDTO, error) {
 	entDto, err := u.client.User.
 		Query().
 		Where(ent.ID(uuid.Parse(id)), ent.DeletedAtIsNil()).
@@ -26,7 +27,7 @@ func (u *Queries) FindById(ctx context.Context, id string) (*port.UserDTO, error
 		return nil, err
 	}
 
-	return &port.UserDTO{
+	return &dto.UserDTO{
 		ID:          entDto.ID.String(),
 		Email:       entDto.Email,
 		Username:    entDto.Username,

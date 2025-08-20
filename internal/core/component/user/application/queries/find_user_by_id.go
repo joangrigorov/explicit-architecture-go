@@ -1,6 +1,7 @@
 package queries
 
 import (
+	. "app/internal/core/component/user/application/queries/dto"
 	. "app/internal/core/component/user/application/queries/port"
 	"app/internal/core/port/cqrs"
 	"context"

@@ -61,7 +61,14 @@ func NewRegisterUserCommandHandler(
 
 func (h *RegisterUserCommandHandler) Handle(ctx context.Context, c RegisterUserCommand) error {
 	id := UserID(c.userID)
-	user := NewUser(id, c.username, c.email, c.firstName, c.lastName, &Member{})
+	user := NewUser(
+		id,
+		c.username,
+		c.email,
+		c.firstName,
+		c.lastName,
+		&Member{},
+	)
 
 	if err := h.userRepository.Create(ctx, user); err != nil {
 		return err

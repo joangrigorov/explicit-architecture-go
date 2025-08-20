@@ -1,9 +1,10 @@
 package cqrs
 
 import (
-	"app/bootstrap/cqrs/decorators"
+	d "app/bootstrap/cqrs/decorators"
 	. "app/internal/core/component/user/application/commands"
 	. "app/internal/core/component/user/application/queries"
+	"app/internal/core/component/user/application/queries/dto"
 	"app/internal/core/component/user/application/queries/port"
 	"app/internal/core/port/idp"
 	"app/internal/core/port/logging"
@@ -30,9 +31,9 @@ func WireCommands(
 	bus.Use(cm.Logger(logger))
 	bus.Use(cm.Tracing(tracer))
 
-	commandBus.Register[RegisterUserCommand](bus, decorators.HandleRegisterUserCommand(userRepository, eventBus, entClient))
-	commandBus.Register[ConfirmUserCommand](bus, decorators.TransactionalConfirmUserCommand(userRepository, idp, entClient))
-	commandBus.Register[CreateIdPUserCommand](bus, decorators.HandleCreateIdPUserCommand(userRepository, idp, entClient))
+	commandBus.Register[RegisterUserCommand](bus, d.HandleRegisterUserCommand(userRepository, eventBus, entClient))
+	commandBus.Register[ConfirmUserCommand](bus, d.TransactionalConfirmUserCommand(userRepository, idp, entClient))
+	commandBus.Register[CreateIdPUserCommand](bus, d.HandleCreateIdPUserCommand(userRepository, idp, entClient))
 }
 
 func WireQueries(
@@ -44,6 +45,6 @@ func WireQueries(
 
 	queryBus.Register[FindUserByIDQuery](
 		bus,
-		qm.ExecuteQuery[FindUserByIDQuery, *port.UserDTO](NewFindUserByIDHandler(uq)),
+		qm.ExecuteQuery[FindUserByIDQuery, *dto.UserDTO](NewFindUserByIDHandler(uq)),
 	)
 }

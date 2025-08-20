@@ -3,7 +3,7 @@ package controllers
 import (
 	. "app/internal/core/component/user/application/commands"
 	qs "app/internal/core/component/user/application/queries"
-	"app/internal/core/component/user/application/queries/port"
+	"app/internal/core/component/user/application/queries/dto"
 	. "app/internal/core/port/cqrs"
 	"app/internal/infrastructure/cqrs/queries"
 	ctx "app/internal/infrastructure/http"
@@ -46,7 +46,7 @@ func (c *RegistrationController) Register(ctx ctx.Context) {
 		return
 	}
 
-	userDTO, err := queries.Execute[*port.UserDTO](ctx.Context(), c.queryBus, qs.FindUserByIDQuery{ID: userID})
+	userDTO, err := queries.Execute[*dto.UserDTO](ctx.Context(), c.queryBus, qs.FindUserByIDQuery{ID: userID})
 
 	if err != nil {
 		InternalServerError(ctx, NewDefaultError(err))
@@ -70,7 +70,7 @@ func (c *RegistrationController) Confirm(ctx ctx.Context) {
 		return
 	}
 
-	userDTO, err := queries.Execute[*port.UserDTO](ctx.Context(), c.queryBus, qs.FindUserByIDQuery{ID: request.UserID})
+	userDTO, err := queries.Execute[*dto.UserDTO](ctx.Context(), c.queryBus, qs.FindUserByIDQuery{ID: request.UserID})
 
 	if err != nil {
 		InternalServerError(ctx, NewDefaultError(err))

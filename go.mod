@@ -1,12 +1,13 @@
 module app
 
-go 1.24.4
+go 1.24.6
 
 require (
 	entgo.io/ent v0.14.5
 	github.com/Nerzal/gocloak/v13 v13.9.0
 	github.com/aarondl/null/v9 v9.0.1
 	github.com/caarlos0/env/v11 v11.3.1
+	github.com/gin-contrib/zap v1.1.5
 	github.com/gin-gonic/gin v1.10.1
 	github.com/go-playground/assert/v2 v2.2.0
 	github.com/go-playground/locales v0.14.1
@@ -42,7 +43,6 @@ require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.9 // indirect
 	github.com/gin-contrib/sse v1.1.0 // indirect
-	github.com/gin-contrib/zap v1.1.5 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-openapi/inflect v0.21.3 // indirect
