@@ -1,7 +1,7 @@
 package responses
 
 import (
-	"app/internal/infrastructure/validation"
+	"app/internal/infrastructure/framework/validation"
 	"encoding/json"
 	"errors"
 	"reflect"

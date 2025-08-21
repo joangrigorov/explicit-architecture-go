@@ -1,0 +1,14 @@
+root = "."
+tmp_dir = "/tmp"
+
+[build]
+  cmd = "go build -o /tmp/web ./cmd/web"
+  bin = "/tmp/web"
+  include_ext = ["go"]
+  exclude_dir = ["tmp", "vendor"]
+  delay = 1000
+
+[log]
+  time = true
+  color = true
+  level = "debug"

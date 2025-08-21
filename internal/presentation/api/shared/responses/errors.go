@@ -1,7 +1,7 @@
 package responses
 
 import (
-	ctx "app/internal/infrastructure/http"
+	ctx "app/internal/infrastructure/framework/http"
 	"net/http"
 )
 

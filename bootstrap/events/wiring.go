@@ -1,9 +1,9 @@
 package events
 
 import (
-	"app/bootstrap/events/subscribers"
 	"app/internal/core/shared_kernel/events"
-	eventBus "app/internal/infrastructure/event_bus"
+	"app/internal/infrastructure/component/user/subscribers"
+	eventBus "app/internal/infrastructure/framework/event_bus"
 )
 
 func WireSubscribers(

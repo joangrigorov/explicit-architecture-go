@@ -1,7 +1,7 @@
 package responses
 
 import (
-	"app/mock/infrastructure/http"
+	"app/mock/infrastructure/framework/http"
 	"errors"
 	"testing"
 

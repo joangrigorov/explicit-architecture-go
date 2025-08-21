@@ -1,0 +1,248 @@
+{{ define "layout" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Activity Planner</title>
+    <style>
+        /* --- Minimal modern reset --- */
+        *, *::before, *::after { box-sizing: border-box; }
+        html:focus-within { scroll-behavior: smooth; }
+        body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; line-height: 1.5; }
+        img, svg, video { display: block; max-width: 100%; }
+
+        /* --- Theme --- */
+        :root {
+            --bg: #ffffff;
+            --surface: #f5f7fb;
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #475569;
+            --primary: #2563eb;
+            --primary-ink: #ffffff;
+            --border: #e2e8f0;
+            --ring: 0 0 0 3px rgba(37, 99, 235, 0.25);
+            --radius: 14px;
+            --shadow: 0 10px 25px rgba(2, 6, 23, 0.08);
+            --shadow-sm: 0 4px 10px rgba(2, 6, 23, 0.06);
+            --maxw: 1100px;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0b0f1a;
+                --surface: #0f1423;
+                --card: #121a2d;
+                --text: #e5e7eb;
+                --muted: #94a3b8;
+                --primary: #60a5fa;
+                --primary-ink: #0b0f1a;
+                --border: #1f2a44;
+                --shadow: 0 10px 25px rgba(0,0,0,0.4);
+                --shadow-sm: 0 4px 10px rgba(0,0,0,0.35);
+            }
+        }
+
+        body { background: var(--bg); color: var(--text); }
+
+        .container { max-width: var(--maxw); margin-inline: auto; padding: 24px; }
+
+        /* --- Skip link --- */
+        .skip-link {
+            position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden;
+        }
+        .skip-link:focus {
+            left: 16px; top: 16px; width: auto; height: auto; padding: 10px 14px; border-radius: 10px; background: var(--card); color: var(--text); box-shadow: var(--shadow-sm);
+        }
+
+        /* --- Top navigation --- */
+        header { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.7); backdrop-filter: saturate(180%) blur(12px); border-bottom: 1px solid var(--border); }
+        @media (prefers-color-scheme: dark) {
+            header { background: rgba(11, 15, 26, 0.6); }
+        }
+        .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 24px; max-width: var(--maxw); margin: 0 auto; }
+        .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: 0.2px; }
+        .brand-mark { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, var(--primary), #8b5cf6); box-shadow: inset 0 0 0 2px rgba(255,255,255,0.15); }
+        .nav-actions { display: inline-flex; align-items: center; gap: 10px; }
+
+        .btn { appearance: none; border: 1px solid var(--border); background: var(--card); color: var(--text); padding: 10px 14px; border-radius: 999px; font-weight: 600; text-decoration: none; display: inline-flex; gap: 8px; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); transition: transform .08s ease, box-shadow .2s ease, border-color .2s ease; }
+        .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+        .btn:focus-visible { outline: none; box-shadow: var(--shadow), var(--ring); }
+        .btn-primary { background: var(--primary); color: var(--primary-ink); border-color: transparent; }
+
+        /* --- Page hero / intro --- */
+        .hero { background: var(--surface); border-bottom: 1px solid var(--border); }
+        .hero-inner { max-width: var(--maxw); margin-inline: auto; padding: 34px 24px; display: grid; gap: 10px; }
+        .eyebrow { font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700; }
+        h1 { margin: 0; font-size: clamp(1.6rem, 1.2rem + 2.2vw, 2.4rem); line-height: 1.2; }
+        .sub { color: var(--muted); max-width: 65ch; }
+
+        /* --- Sections --- */
+        section { padding-block: 28px; }
+        section h2 { margin: 0 0 16px; font-size: clamp(1.25rem, 1rem + 1vw, 1.6rem); }
+
+        /* --- Card grid --- */
+        .grid { display: grid; gap: 16px; grid-template-columns: repeat(12, 1fr); }
+        .span-4 { grid-column: span 12; }
+        @media (min-width: 700px) { .span-4 { grid-column: span 6; } }
+        @media (min-width: 1000px) { .span-4 { grid-column: span 4; } }
+
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; overflow: clip; }
+        .card .media { aspect-ratio: 16/9; background: linear-gradient(135deg, rgba(37,99,235,.08), rgba(139,92,246,.08)); border-bottom: 1px solid var(--border); }
+        .card .body { padding: 16px; display: grid; gap: 8px; }
+        .card h3 { margin: 0; font-size: 1.05rem; line-height: 1.3; }
+        .meta { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; color: var(--muted); font-size: 0.92rem; }
+        .tags { display: flex; gap: 8px; flex-wrap: wrap; }
+        .tag { font-size: 0.8rem; padding: 6px 10px; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); color: var(--muted); }
+        .card .footer { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px 16px; gap: 10px; }
+
+        /* --- Your activities list --- */
+        .list { display: grid; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--card); box-shadow: var(--shadow-sm); }
+        .row { display: grid; grid-template-columns: 1fr; gap: 6px; padding: 14px 16px; border-bottom: 1px solid var(--border); }
+        .row:last-child { border-bottom: none; }
+        @media (min-width: 800px) { .row { grid-template-columns: 200px 1fr auto; align-items: center; } }
+        .when { font-weight: 700; }
+        .title { font-weight: 600; }
+        .row .meta { font-size: 0.9rem; }
+
+        /* --- Footer --- */
+        footer { padding: 40px 24px 60px; color: var(--muted); text-align: center; }
+    </style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- Top navigation -->
+<header>
+    <nav class="nav" aria-label="Primary">
+        <div class="brand" aria-label="Activity Planner home">
+            <span class="brand-mark" aria-hidden="true"></span>
+            <span>Activity Planner</span>
+        </div>
+        <div class="nav-actions">
+            <a class="btn" href="#login">Log in</a>
+            <a class="btn btn-primary" href="#register">Register</a>
+        </div>
+    </nav>
+</header>
+
+<!-- Hero / intro -->
+<div class="hero">
+    <div class="hero-inner">
+        <span class="eyebrow">Plan smarter</span>
+        <h1>Your week at a glance</h1>
+        <p class="sub">Discover trending meetups near you and keep track of the events you care about. Clean, responsive layout with zero JavaScript.</p>
+    </div>
+</div>
+
+<main id="main" class="container" aria-live="polite">
+
+    <!-- Top 3 activities -->
+    <section aria-labelledby="top3-heading">
+        <h2 id="top3-heading">Top 3 activities</h2>
+        <div class="grid">
+            <!-- Card 1 -->
+            <article class="card span-4" aria-labelledby="act1-title">
+                <div class="media" role="img" aria-label="City skyline at sunset"></div>
+                <div class="body">
+                    <h3 id="act1-title">Tech Talks Tuesday</h3>
+                    <div class="meta">
+                        <span>Tue • 18:30–20:00</span>
+                        <span>Amsterdam, NL</span>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Networking</span>
+                        <span class="tag">Software</span>
+                    </div>
+                </div>
+                <div class="footer">
+                    <span class="meta">127 going</span>
+                    <a class="btn" href="#">Details</a>
+                </div>
+            </article>
+
+            <!-- Card 2 -->
+            <article class="card span-4" aria-labelledby="act2-title">
+                <div class="media" role="img" aria-label="Coffee cups on a table"></div>
+                <div class="body">
+                    <h3 id="act2-title">Founders & Coffee</h3>
+                    <div class="meta">
+                        <span>Thu • 08:30–10:00</span>
+                        <span>Remote</span>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Startups</span>
+                        <span class="tag">Community</span>
+                    </div>
+                </div>
+                <div class="footer">
+                    <span class="meta">89 going</span>
+                    <a class="btn" href="#">Details</a>
+                </div>
+            </article>
+
+            <!-- Card 3 -->
+            <article class="card span-4" aria-labelledby="act3-title">
+                <div class="media" role="img" aria-label="Green park trail"></div>
+                <div class="body">
+                    <h3 id="act3-title">Saturday Park Run</h3>
+                    <div class="meta">
+                        <span>Sat • 09:00–10:00</span>
+                        <span>Vondelpark</span>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">Fitness</span>
+                        <span class="tag">Outdoors</span>
+                    </div>
+                </div>
+                <div class="footer">
+                    <span class="meta">203 going</span>
+                    <a class="btn" href="#">Details</a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Your activities -->
+    <section aria-labelledby="your-activities-heading">
+        <h2 id="your-activities-heading">Your activities</h2>
+        <div class="list" role="list">
+            <div class="row" role="listitem">
+                <div class="when">Mon • 12:00–13:00</div>
+                <div>
+                    <div class="title">Lunch & Learn: CSS Fundamentals</div>
+                    <div class="meta">Room B • Host: Alicia • Reminders on</div>
+                </div>
+                <a class="btn" href="#">Open</a>
+            </div>
+
+            <div class="row" role="listitem">
+                <div class="when">Wed • 17:30–19:00</div>
+                <div>
+                    <div class="title">Book Club: Sci‑Fi Classics</div>
+                    <div class="meta">Library • Host: Omar</div>
+                </div>
+                <a class="btn" href="#">Open</a>
+            </div>
+
+            <div class="row" role="listitem">
+                <div class="when">Fri • 19:00–22:00</div>
+                <div>
+                    <div class="title">Board Games Night</div>
+                    <div class="meta">Café Pixel • Host: Lina • Bring a friend</div>
+                </div>
+                <a class="btn" href="#">Open</a>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <div class="container">
+        <small>© 2025 Activity Planner. All rights reserved.</small>
+    </div>
+</footer>
+</body>
+</html>
+{{ end }}

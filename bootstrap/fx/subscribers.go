@@ -1,7 +1,7 @@
 package fx
 
 import (
-	"app/bootstrap/events/subscribers"
+	"app/internal/infrastructure/component/user/subscribers"
 
 	"go.uber.org/fx"
 )

@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	. "app/internal/infrastructure/http"
+	. "app/internal/infrastructure/framework/http"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"app/mock/infrastructure/http"
+	"app/mock/infrastructure/framework/http"
 	"testing"
 
 	"github.com/gin-gonic/gin"

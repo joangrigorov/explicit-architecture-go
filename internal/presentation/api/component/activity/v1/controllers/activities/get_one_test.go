@@ -5,7 +5,7 @@ import (
 	. "app/internal/presentation/api/component/activity/v1/responses"
 	"app/internal/presentation/api/shared/responses"
 	"app/mock/core/component/activity/application/repositories"
-	"app/mock/infrastructure/http"
+	"app/mock/infrastructure/framework/http"
 	"context"
 	"errors"
 	"testing"

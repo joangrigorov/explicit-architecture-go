@@ -6,14 +6,10 @@ import (
 	"go.uber.org/fx"
 )
 
-var userComponent = fx.Module("user", fx.Provide(
-	queries.NewFindUserByIDHandler,
-))
-
-var components = fx.Module("components",
-	userComponent,
-)
-
 var Core = fx.Module("core",
-	components,
+	fx.Module("components",
+		fx.Module("user", fx.Provide(
+			queries.NewFindUserByIDHandler,
+		)),
+	),
 )

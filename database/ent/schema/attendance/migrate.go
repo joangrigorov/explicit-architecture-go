@@ -1,13 +1,13 @@
 package attendance
 
 import (
-	"app/internal/infrastructure/persistence/ent/generated/attendance"
+	"app/internal/infrastructure/component/attendance/persistence/ent/generated"
 	"context"
 
 	"go.uber.org/fx"
 )
 
-func MigrateSchema(lc fx.Lifecycle, client *attendance.Client) {
+func MigrateSchema(lc fx.Lifecycle, client *generated.Client) {
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {
 			return client.Schema.Create(ctx)

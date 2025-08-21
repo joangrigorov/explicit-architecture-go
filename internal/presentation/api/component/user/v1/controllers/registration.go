@@ -5,8 +5,8 @@ import (
 	qs "app/internal/core/component/user/application/queries"
 	"app/internal/core/component/user/application/queries/dto"
 	. "app/internal/core/port/cqrs"
-	"app/internal/infrastructure/cqrs/queries"
-	ctx "app/internal/infrastructure/http"
+	"app/internal/infrastructure/framework/cqrs/queries"
+	ctx "app/internal/infrastructure/framework/http"
 	"app/internal/presentation/api/component/user/v1/requests"
 	. "app/internal/presentation/api/shared/responses"
 

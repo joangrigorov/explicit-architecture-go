@@ -1,6 +1,6 @@
 - id: protected-backend
   upstream:
-    url: http://app:8080
+    url: http://api:8080
   match:
     url: http://localhost:4455/<.*>
     methods:

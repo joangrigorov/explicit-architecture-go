@@ -1,4 +1,4 @@
-FROM golang:1.24.4-alpine3.22
+FROM golang:1.24.6-alpine3.22
 
 # Install air
 RUN go install github.com/air-verse/air@latest

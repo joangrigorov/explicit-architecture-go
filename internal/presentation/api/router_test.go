@@ -1,9 +1,9 @@
 package api
 
 import (
-	ctx "app/internal/infrastructure/http"
+	ctx "app/internal/infrastructure/framework/http"
 	"app/internal/presentation/api/component/activity/v1/controllers/activities"
-	"app/mock/infrastructure/http"
+	"app/mock/infrastructure/framework/http"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

@@ -1,7 +1,7 @@
 package activities
 
 import (
-	. "app/internal/infrastructure/http"
+	. "app/internal/infrastructure/framework/http"
 	. "app/internal/presentation/api/component/activity/v1/responses"
 	. "app/internal/presentation/api/shared/responses"
 	"net/http"

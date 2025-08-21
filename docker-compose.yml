@@ -74,7 +74,7 @@ services:
       app_network:
         aliases:
           - db.lvh.me
-  app:
+  api:
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -83,7 +83,7 @@ services:
       - ./:/app
     environment:
       <<: *x-backend-app-environment
-    command: air
+    command: air -c .air.api.toml
     ports:
       - "8080:8080"
     depends_on:
@@ -92,7 +92,23 @@ services:
     networks:
       app_network:
         aliases:
-          - app.lvh.me
+          - api.lvh.me
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      <<: *x-backend-app-environment
+    command: air -c .air.web.toml
+    ports:
+      - "8079:8080"
+    networks:
+      app_network:
+        aliases:
+          - api.lvh.me
 
   jaeger:
     image: jaegertracing/all-in-one:latest
@@ -143,7 +159,7 @@ services:
       - "4456:4456"  # API
     depends_on:
       - keycloak
-      - app
+      - api
     networks:
       app_network:
         aliases:

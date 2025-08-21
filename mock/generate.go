@@ -19,10 +19,10 @@ package mock
 //go:generate mockgen -source=../internal/core/shared_kernel/events/event.go -destination=core/shared_kernel/events/mock_event.go -package=events
 
 // Presentation port mocks
-//go:generate mockgen -source=../internal/infrastructure/http/router.go -destination=infrastructure/http/mock_router.go -package=http
-//go:generate mockgen -source=../internal/infrastructure/http/context.go -destination=infrastructure/http/mock_context.go -package=http
+//go:generate mockgen -source=../internal/infrastructure/framework/http/router.go -destination=infrastructure/framework/http/mock_router.go -package=http
+//go:generate mockgen -source=../internal/infrastructure/framework/http/context.go -destination=infrastructure/framework/http/mock_context.go -package=http
 
-//go:generate mockgen -source=../internal/infrastructure/validation/rules.go -destination=infrastructure/validation/mock_rules.go -package=validation
+//go:generate mockgen -source=../internal/infrastructure/framework/validation/rules.go -destination=infrastructure/framework/validation/mock_rules.go -package=validation
 
 // Infrastructure mocks
-//go:generate mockgen -source=../internal/infrastructure/events/subscriber.go -destination=infrastructure/events/mock_subscriber.go -package=events
+//go:generate mockgen -source=../internal/infrastructure/framework/events/subscriber.go -destination=infrastructure/framework/events/mock_subscriber.go -package=events
