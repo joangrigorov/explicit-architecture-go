@@ -161,7 +161,7 @@ func (_m *Activity) Update() *ActivityUpdateOne {
 func (_m *Activity) Unwrap() *Activity {
 	_tx, ok := _m.config.driver.(*txDriver)
 	if !ok {
-		panic("activity: Activity is not a transactional entity")
+		panic("generated: Activity is not a transactional entity")
 	}
 	_m.config.driver = _tx.drv
 	return _m

@@ -63,7 +63,7 @@ func TestMapEntity(t *testing.T) {
 	createdAt := f.Time().Time(time.Now())
 	updatedAt := f.Time().Time(time.Now())
 
-	entity := mapEntity(&generated.User{
+	entity := mapUserAggregate(&generated.User{
 		ID:          uuid.Parse(id),
 		Username:    username,
 		Email:       email,

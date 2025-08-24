@@ -67,11 +67,12 @@ func (b *SimpleEventBus) Subscribe(subscriber Subscriber, e Event) {
 					}
 				}()
 
+				// TODO use tracer here
 				if err := w.sub.Dispatch(ev.ctx, ev.e); err != nil {
 					b.logger.Error(err)
 				} else {
 					b.logger.Debug(fmt.Sprintf(
-						"Dispatched event %s, handled by %s",
+						"Handled event %s by %s",
 						ev.e.ID(), reflect.TypeOf(w.sub).String(),
 					))
 				}

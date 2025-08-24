@@ -6,5 +6,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 )
 
+// Confirmation is the predicate function for confirmation builders.
+type Confirmation func(*sql.Selector)
+
 // User is the predicate function for user builders.
 type User func(*sql.Selector)

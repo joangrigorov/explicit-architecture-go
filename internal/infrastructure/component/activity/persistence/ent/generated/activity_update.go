@@ -480,7 +480,7 @@ func (_u *ActivityUpdateOne) sqlSave(ctx context.Context) (_node *Activity, err 
 	_spec := sqlgraph.NewUpdateSpec(activity.Table, activity.Columns, sqlgraph.NewFieldSpec(activity.FieldID, field.TypeUUID))
 	id, ok := _u.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "id", err: errors.New(`activity: missing "Activity.id" for update`)}
+		return nil, &ValidationError{Name: "id", err: errors.New(`generated: missing "Activity.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
 	if fields := _u.fields; len(fields) > 0 {
@@ -488,7 +488,7 @@ func (_u *ActivityUpdateOne) sqlSave(ctx context.Context) (_node *Activity, err 
 		_spec.Node.Columns = append(_spec.Node.Columns, activity.FieldID)
 		for _, f := range fields {
 			if !activity.ValidColumn(f) {
-				return nil, &ValidationError{Name: f, err: fmt.Errorf("activity: invalid field %q for query", f)}
+				return nil, &ValidationError{Name: f, err: fmt.Errorf("generated: invalid field %q for query", f)}
 			}
 			if f != activity.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, f)

@@ -222,7 +222,7 @@ func (_u *UserUpdate) ExecX(ctx context.Context) {
 func (_u *UserUpdate) check() error {
 	if v, ok := _u.mutation.Role(); ok {
 		if err := user.RoleValidator(v); err != nil {
-			return &ValidationError{Name: "role", err: fmt.Errorf(`user: validator failed for field "User.role": %w`, err)}
+			return &ValidationError{Name: "role", err: fmt.Errorf(`generated: validator failed for field "User.role": %w`, err)}
 		}
 	}
 	return nil
@@ -506,7 +506,7 @@ func (_u *UserUpdateOne) ExecX(ctx context.Context) {
 func (_u *UserUpdateOne) check() error {
 	if v, ok := _u.mutation.Role(); ok {
 		if err := user.RoleValidator(v); err != nil {
-			return &ValidationError{Name: "role", err: fmt.Errorf(`user: validator failed for field "User.role": %w`, err)}
+			return &ValidationError{Name: "role", err: fmt.Errorf(`generated: validator failed for field "User.role": %w`, err)}
 		}
 	}
 	return nil
@@ -519,7 +519,7 @@ func (_u *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) {
 	_spec := sqlgraph.NewUpdateSpec(user.Table, user.Columns, sqlgraph.NewFieldSpec(user.FieldID, field.TypeUUID))
 	id, ok := _u.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "id", err: errors.New(`user: missing "User.id" for update`)}
+		return nil, &ValidationError{Name: "id", err: errors.New(`generated: missing "User.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
 	if fields := _u.fields; len(fields) > 0 {
@@ -527,7 +527,7 @@ func (_u *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) {
 		_spec.Node.Columns = append(_spec.Node.Columns, user.FieldID)
 		for _, f := range fields {
 			if !user.ValidColumn(f) {
-				return nil, &ValidationError{Name: f, err: fmt.Errorf("user: invalid field %q for query", f)}
+				return nil, &ValidationError{Name: f, err: fmt.Errorf("generated: invalid field %q for query", f)}
 			}
 			if f != user.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, f)

@@ -2,8 +2,19 @@
 
 package generated
 
+import (
+	"app/database/ent/schema/users"
+	"app/internal/infrastructure/component/user/persistence/ent/generated/confirmation"
+)
+
 // The init function reads all schema descriptors with runtime code
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
+	confirmationFields := users.Confirmation{}.Fields()
+	_ = confirmationFields
+	// confirmationDescHmacSecret is the schema descriptor for hmac_secret field.
+	confirmationDescHmacSecret := confirmationFields[2].Descriptor()
+	// confirmation.DefaultHmacSecret holds the default value on creation for the hmac_secret field.
+	confirmation.DefaultHmacSecret = confirmationDescHmacSecret.Default.(string)
 }

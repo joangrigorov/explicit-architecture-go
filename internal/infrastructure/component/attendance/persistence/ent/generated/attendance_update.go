@@ -464,7 +464,7 @@ func (_u *AttendanceUpdateOne) sqlSave(ctx context.Context) (_node *Attendance, 
 	_spec := sqlgraph.NewUpdateSpec(attendance.Table, attendance.Columns, sqlgraph.NewFieldSpec(attendance.FieldID, field.TypeUUID))
 	id, ok := _u.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "id", err: errors.New(`attendance: missing "Attendance.id" for update`)}
+		return nil, &ValidationError{Name: "id", err: errors.New(`generated: missing "Attendance.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
 	if fields := _u.fields; len(fields) > 0 {
@@ -472,7 +472,7 @@ func (_u *AttendanceUpdateOne) sqlSave(ctx context.Context) (_node *Attendance, 
 		_spec.Node.Columns = append(_spec.Node.Columns, attendance.FieldID)
 		for _, f := range fields {
 			if !attendance.ValidColumn(f) {
-				return nil, &ValidationError{Name: f, err: fmt.Errorf("attendance: invalid field %q for query", f)}
+				return nil, &ValidationError{Name: f, err: fmt.Errorf("generated: invalid field %q for query", f)}
 			}
 			if f != attendance.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, f)

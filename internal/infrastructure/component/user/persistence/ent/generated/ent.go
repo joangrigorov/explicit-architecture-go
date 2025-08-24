@@ -3,6 +3,7 @@
 package generated
 
 import (
+	"app/internal/infrastructure/component/user/persistence/ent/generated/confirmation"
 	"app/internal/infrastructure/component/user/persistence/ent/generated/user"
 	"context"
 	"errors"
@@ -73,7 +74,8 @@ var (
 func checkColumn(t, c string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
-			user.Table: user.ValidColumn,
+			confirmation.Table: confirmation.ValidColumn,
+			user.Table:         user.ValidColumn,
 		})
 	})
 	return columnCheck(t, c)
@@ -84,7 +86,7 @@ func Asc(fields ...string) func(*sql.Selector) {
 	return func(s *sql.Selector) {
 		for _, f := range fields {
 			if err := checkColumn(s.TableName(), f); err != nil {
-				s.AddError(&ValidationError{Name: f, err: fmt.Errorf("user: %w", err)})
+				s.AddError(&ValidationError{Name: f, err: fmt.Errorf("generated: %w", err)})
 			}
 			s.OrderBy(sql.Asc(s.C(f)))
 		}
@@ -96,7 +98,7 @@ func Desc(fields ...string) func(*sql.Selector) {
 	return func(s *sql.Selector) {
 		for _, f := range fields {
 			if err := checkColumn(s.TableName(), f); err != nil {
-				s.AddError(&ValidationError{Name: f, err: fmt.Errorf("user: %w", err)})
+				s.AddError(&ValidationError{Name: f, err: fmt.Errorf("generated: %w", err)})
 			}
 			s.OrderBy(sql.Desc(s.C(f)))
 		}
@@ -109,7 +111,7 @@ type AggregateFunc func(*sql.Selector) string
 // As is a pseudo aggregation function for renaming another other functions with custom names. For example:
 //
 //	GroupBy(field1, field2).
-//	Aggregate(user.As(user.Sum(field1), "sum_field1"), (user.As(user.Sum(field2), "sum_field2")).
+//	Aggregate(generated.As(generated.Sum(field1), "sum_field1"), (generated.As(generated.Sum(field2), "sum_field2")).
 //	Scan(ctx, &v)
 func As(fn AggregateFunc, end string) AggregateFunc {
 	return func(s *sql.Selector) string {
@@ -128,7 +130,7 @@ func Count() AggregateFunc {
 func Max(field string) AggregateFunc {
 	return func(s *sql.Selector) string {
 		if err := checkColumn(s.TableName(), field); err != nil {
-			s.AddError(&ValidationError{Name: field, err: fmt.Errorf("user: %w", err)})
+			s.AddError(&ValidationError{Name: field, err: fmt.Errorf("generated: %w", err)})
 			return ""
 		}
 		return sql.Max(s.C(field))
@@ -139,7 +141,7 @@ func Max(field string) AggregateFunc {
 func Mean(field string) AggregateFunc {
 	return func(s *sql.Selector) string {
 		if err := checkColumn(s.TableName(), field); err != nil {
-			s.AddError(&ValidationError{Name: field, err: fmt.Errorf("user: %w", err)})
+			s.AddError(&ValidationError{Name: field, err: fmt.Errorf("generated: %w", err)})
 			return ""
 		}
 		return sql.Avg(s.C(field))
@@ -150,7 +152,7 @@ func Mean(field string) AggregateFunc {
 func Min(field string) AggregateFunc {
 	return func(s *sql.Selector) string {
 		if err := checkColumn(s.TableName(), field); err != nil {
-			s.AddError(&ValidationError{Name: field, err: fmt.Errorf("user: %w", err)})
+			s.AddError(&ValidationError{Name: field, err: fmt.Errorf("generated: %w", err)})
 			return ""
 		}
 		return sql.Min(s.C(field))
@@ -161,7 +163,7 @@ func Min(field string) AggregateFunc {
 func Sum(field string) AggregateFunc {
 	return func(s *sql.Selector) string {
 		if err := checkColumn(s.TableName(), field); err != nil {
-			s.AddError(&ValidationError{Name: field, err: fmt.Errorf("user: %w", err)})
+			s.AddError(&ValidationError{Name: field, err: fmt.Errorf("generated: %w", err)})
 			return ""
 		}
 		return sql.Sum(s.C(field))
@@ -200,7 +202,7 @@ type NotFoundError struct {
 
 // Error implements the error interface.
 func (e *NotFoundError) Error() string {
-	return "user: " + e.label + " not found"
+	return "generated: " + e.label + " not found"
 }
 
 // IsNotFound returns a boolean indicating whether the error is a not found error.
@@ -227,7 +229,7 @@ type NotSingularError struct {
 
 // Error implements the error interface.
 func (e *NotSingularError) Error() string {
-	return "user: " + e.label + " not singular"
+	return "generated: " + e.label + " not singular"
 }
 
 // IsNotSingular returns a boolean indicating whether the error is a not singular error.
@@ -246,7 +248,7 @@ type NotLoadedError struct {
 
 // Error implements the error interface.
 func (e *NotLoadedError) Error() string {
-	return "user: " + e.edge + " edge was not loaded"
+	return "generated: " + e.edge + " edge was not loaded"
 }
 
 // IsNotLoaded returns a boolean indicating whether the error is a not loaded error.
@@ -268,7 +270,7 @@ type ConstraintError struct {
 
 // Error implements the error interface.
 func (e ConstraintError) Error() string {
-	return "user: constraint failed: " + e.msg
+	return "generated: constraint failed: " + e.msg
 }
 
 // Unwrap implements the errors.Wrapper interface.
@@ -303,7 +305,7 @@ func (s *selector) ScanX(ctx context.Context, v any) {
 // Strings returns list of strings from a selector. It is only allowed when selecting one field.
 func (s *selector) Strings(ctx context.Context) ([]string, error) {
 	if len(*s.flds) > 1 {
-		return nil, errors.New("user: Strings is not achievable when selecting more than 1 field")
+		return nil, errors.New("generated: Strings is not achievable when selecting more than 1 field")
 	}
 	var v []string
 	if err := s.scan(ctx, &v); err != nil {
@@ -333,7 +335,7 @@ func (s *selector) String(ctx context.Context) (_ string, err error) {
 	case 0:
 		err = &NotFoundError{s.label}
 	default:
-		err = fmt.Errorf("user: Strings returned %d results when one was expected", len(v))
+		err = fmt.Errorf("generated: Strings returned %d results when one was expected", len(v))
 	}
 	return
 }
@@ -350,7 +352,7 @@ func (s *selector) StringX(ctx context.Context) string {
 // Ints returns list of ints from a selector. It is only allowed when selecting one field.
 func (s *selector) Ints(ctx context.Context) ([]int, error) {
 	if len(*s.flds) > 1 {
-		return nil, errors.New("user: Ints is not achievable when selecting more than 1 field")
+		return nil, errors.New("generated: Ints is not achievable when selecting more than 1 field")
 	}
 	var v []int
 	if err := s.scan(ctx, &v); err != nil {
@@ -380,7 +382,7 @@ func (s *selector) Int(ctx context.Context) (_ int, err error) {
 	case 0:
 		err = &NotFoundError{s.label}
 	default:
-		err = fmt.Errorf("user: Ints returned %d results when one was expected", len(v))
+		err = fmt.Errorf("generated: Ints returned %d results when one was expected", len(v))
 	}
 	return
 }
@@ -397,7 +399,7 @@ func (s *selector) IntX(ctx context.Context) int {
 // Float64s returns list of float64s from a selector. It is only allowed when selecting one field.
 func (s *selector) Float64s(ctx context.Context) ([]float64, error) {
 	if len(*s.flds) > 1 {
-		return nil, errors.New("user: Float64s is not achievable when selecting more than 1 field")
+		return nil, errors.New("generated: Float64s is not achievable when selecting more than 1 field")
 	}
 	var v []float64
 	if err := s.scan(ctx, &v); err != nil {
@@ -427,7 +429,7 @@ func (s *selector) Float64(ctx context.Context) (_ float64, err error) {
 	case 0:
 		err = &NotFoundError{s.label}
 	default:
-		err = fmt.Errorf("user: Float64s returned %d results when one was expected", len(v))
+		err = fmt.Errorf("generated: Float64s returned %d results when one was expected", len(v))
 	}
 	return
 }
@@ -444,7 +446,7 @@ func (s *selector) Float64X(ctx context.Context) float64 {
 // Bools returns list of bools from a selector. It is only allowed when selecting one field.
 func (s *selector) Bools(ctx context.Context) ([]bool, error) {
 	if len(*s.flds) > 1 {
-		return nil, errors.New("user: Bools is not achievable when selecting more than 1 field")
+		return nil, errors.New("generated: Bools is not achievable when selecting more than 1 field")
 	}
 	var v []bool
 	if err := s.scan(ctx, &v); err != nil {
@@ -474,7 +476,7 @@ func (s *selector) Bool(ctx context.Context) (_ bool, err error) {
 	case 0:
 		err = &NotFoundError{s.label}
 	default:
-		err = fmt.Errorf("user: Bools returned %d results when one was expected", len(v))
+		err = fmt.Errorf("generated: Bools returned %d results when one was expected", len(v))
 	}
 	return
 }

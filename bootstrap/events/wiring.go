@@ -9,6 +9,8 @@ import (
 func WireSubscribers(
 	eventBus *eventBus.SimpleEventBus,
 	kcUserSub *subscribers.CreateKeycloakUserSubscriber,
+	sendConfirmMailSub *subscribers.SendConfirmationMailSubscriber,
 ) {
 	eventBus.Subscribe(kcUserSub, events.UserCreated{})
+	eventBus.Subscribe(sendConfirmMailSub, events.IdPUserCreated{})
 }

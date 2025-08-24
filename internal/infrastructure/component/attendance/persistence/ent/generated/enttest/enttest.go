@@ -3,12 +3,13 @@
 package enttest
 
 import (
-	"app/internal/infrastructure/component/attendance/persistence/ent/generated"
-	migrate2 "app/internal/infrastructure/component/attendance/persistence/ent/generated/migrate"
 	"context"
 
+	"app/internal/infrastructure/component/attendance/persistence/ent/generated"
 	// required by schema hooks.
-	_ "app/internal/infrastructure/persistence/ent/generated/attendance/runtime"
+	_ "app/internal/infrastructure/component/attendance/persistence/ent/generated/runtime"
+
+	"app/internal/infrastructure/component/attendance/persistence/ent/generated/migrate"
 
 	"entgo.io/ent/dialect/sql/schema"
 )
@@ -52,7 +53,7 @@ func newOptions(opts []Option) *options {
 	return o
 }
 
-// Open calls attendance.Open and auto-run migration.
+// Open calls generated.Open and auto-run migration.
 func Open(t TestingT, driverName, dataSourceName string, opts ...Option) *generated.Client {
 	o := newOptions(opts)
 	c, err := generated.Open(driverName, dataSourceName, o.opts...)
@@ -64,7 +65,7 @@ func Open(t TestingT, driverName, dataSourceName string, opts ...Option) *genera
 	return c
 }
 
-// NewClient calls attendance.NewClient and auto-run migration.
+// NewClient calls generated.NewClient and auto-run migration.
 func NewClient(t TestingT, opts ...Option) *generated.Client {
 	o := newOptions(opts)
 	c := generated.NewClient(o.opts...)
@@ -72,12 +73,12 @@ func NewClient(t TestingT, opts ...Option) *generated.Client {
 	return c
 }
 func migrateSchema(t TestingT, c *generated.Client, o *options) {
-	tables, err := schema.CopyTables(migrate2.Tables)
+	tables, err := schema.CopyTables(migrate.Tables)
 	if err != nil {
 		t.Error(err)
 		t.FailNow()
 	}
-	if err := migrate2.Create(context.Background(), c.Schema, tables, o.migrateOpts...); err != nil {
+	if err := migrate.Create(context.Background(), c.Schema, tables, o.migrateOpts...); err != nil {
 		t.Error(err)
 		t.FailNow()
 	}

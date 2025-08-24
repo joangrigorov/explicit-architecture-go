@@ -6,10 +6,10 @@ x-db-environment: &x-db-environment
   POSTGRES_PASSWORD: "password"
   POSTGRES_USER: "user"
 
-x-backend-app-environment: &x-backend-app-environment
+x-backend-api-environment: &x-backend-api-environment
   # App settings
-  APP_NAME: "activity-planner"
-  APP_DEV_MODE: true
+  APP_NAME: "activity-planner-api"
+  ZAP_DEV_MODE: true
 
   ### Databases
 
@@ -45,6 +45,15 @@ x-backend-app-environment: &x-backend-app-environment
   KEYCLOAK_OAUTH_CLIENT_ID: "user-admin"
   KEYCLOAK_OAUTH_CLIENT_SECRET: "secret"
 
+  # Mail
+  MAIL_HOST: "mailhog"
+  MAIL_PORT: 1025
+  MAIL_USER: ""
+  MAIL_PASSWORD: ""
+
+  # Frontend
+  FRONTEND_WEB_URL: "http://localhost:8079"
+
   # Go
   GO111MODULE: on
 
@@ -54,6 +63,22 @@ x-backend-app-environment: &x-backend-app-environment
   # OTEL
   OTEL_LOG_LEVEL: "debug"
   OTEL_EXPORTER_JAEGER_LOG_SPANS: true
+
+x-backend-web-environment: &x-backend-web-environment
+  # App settings
+  APP_NAME: "activity-planner-web"
+  ZAP_DEV_MODE: true
+
+  # Keycloak
+  KEYCLOAK_HOST: "http://localhost:8081"
+  KEYCLOAK_OAUTH_CLIENT_ID: "web-app"
+  KEYCLOAK_REDIRECT_URL: "http://localhost:8079/oauth2/callback"
+
+  # Activity planner API
+  API_HOST: "http://kong:8000"
+
+  # Go
+  GO111MODULE: on
 
 services:
   db:
@@ -82,7 +107,7 @@ services:
     volumes:
       - ./:/app
     environment:
-      <<: *x-backend-app-environment
+      <<: *x-backend-api-environment
     command: air -c .air.api.toml
     ports:
       - "8080:8080"
@@ -101,14 +126,16 @@ services:
     volumes:
       - ./:/app
     environment:
-      <<: *x-backend-app-environment
+      <<: *x-backend-web-environment
     command: air -c .air.web.toml
     ports:
       - "8079:8080"
+    depends_on:
+      - kong
     networks:
       app_network:
         aliases:
-          - api.lvh.me
+          - web.lvh.me
 
   jaeger:
     image: jaegertracing/all-in-one:latest
@@ -143,27 +170,43 @@ services:
       - "8081:8080"
     volumes:
       - ./config/keycloak/realms:/opt/keycloak/data/import:ro
+      - ./config/keycloak/themes:/opt/keycloak/themes:ro
     networks:
       app_network:
         aliases:
           - auth.lvh.me
-
-  oathkeeper:
-    image: oryd/oathkeeper:v0.40
-    command: serve --config /etc/config/oathkeeper.yml
-    volumes:
-      - ./config/oathkeeper/oathkeeper.yml:/etc/config/oathkeeper.yml:ro
-      - ./config/oathkeeper/access-rules.yml:/etc/config/access-rules.yml:ro
+  kong:
+    image: kong:3.9
+    environment:
+      KONG_DATABASE: "off"
+      KONG_DECLARATIVE_CONFIG: /kong/declarative/kong.yml
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_LISTEN: "0.0.0.0:8001"
+      KONG_PLUGINS: "bundled,jwt,opentelemetry"
+      KONG_TRACING_INSTRUMENTATIONS: request
+      KONG_TRACING_SAMPLING_RATE: "1.0"
     ports:
-      - "4455:4455"  # proxy
-      - "4456:4456"  # API
-    depends_on:
-      - keycloak
-      - api
+      - "8000:8000"   # proxy
+      - "8001:8001"   # admin API
+    volumes:
+      - ./config/kong/kong.yml:/kong/declarative/kong.yml:ro
     networks:
       app_network:
         aliases:
-          - oathkeeper.lvh.me
+          - kong.lvh.me
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    ports:
+      - "8025:8025"
+    networks:
+      app_network:
+        aliases:
+          - mailhog.lvh.me
 
 #  app:
 #    container_name: app

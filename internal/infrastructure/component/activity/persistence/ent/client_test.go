@@ -1,7 +1,7 @@
 package ent
 
 import (
-	"app/config"
+	"app/config/api"
 	"database/sql"
 	"testing"
 
@@ -17,9 +17,9 @@ func TestNewClient(t *testing.T) {
 		_ = db.Close()
 	}(db)
 
-	cfg := &config.Config{
-		DB: config.DB{
-			Activity: config.DBActivity{
+	cfg := &api.Config{
+		DB: api.DB{
+			Activity: api.DBActivity{
 				Driver: "sqlite3",
 			},
 		},

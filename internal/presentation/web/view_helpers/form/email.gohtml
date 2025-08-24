@@ -1,0 +1,9 @@
+{{ define "#/form/email" }}
+    <label for="{{ .ID }}">{{ .Label }}</label>
+    <input type="email"
+           id="{{ .ID }}"
+           name="{{ .Name }}"
+           placeholder="{{ .Placeholder }}"
+           value="{{ .Value }}"
+           {{ if .Required }}required{{ end }}>
+{{ end }}

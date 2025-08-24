@@ -1,7 +1,7 @@
 package otel
 
 import (
-	"app/config"
+	"app/config/api"
 	"app/internal/infrastructure/framework/observability/otel/middleware"
 	"context"
 	"fmt"
@@ -24,13 +24,13 @@ import (
 )
 
 func AddOpenTelemetryMiddleware(
-	cfg *config.Config,
+	cfg *api.Config,
 	engine *gin.Engine,
 ) {
 	engine.Use(otelgin.Middleware(cfg.App.Name), middleware.RecordRequestData)
 }
 
-func NewTracerProvider(cfg *config.Config) (*sdkTrace.TracerProvider, error) {
+func NewTracerProvider(cfg *api.Config) (*sdkTrace.TracerProvider, error) {
 	headers := map[string]string{
 		"content-type": "application/json",
 	}
@@ -86,6 +86,6 @@ func RegisterTracer(lc fx.Lifecycle, tp *sdkTrace.TracerProvider) {
 	})
 }
 
-func DefaultTracer(cfg *config.Config) trace.Tracer {
+func DefaultTracer(cfg *api.Config) trace.Tracer {
 	return otel.Tracer(cfg.App.Name)
 }

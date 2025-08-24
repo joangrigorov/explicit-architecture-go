@@ -12,17 +12,16 @@ func RegisterRoutes(
 	activityController *activities.Controller,
 	registrationController *controllers.RegistrationController,
 ) {
-	api := r.Group("/api")
-
 	// Global middleware
-	api.Use(
+	r.Use(
 		// We make sure only fundamentally valid JSON passes through.
 		// The validation only happens for json requests.
 		middleware.ValidateJSONBody,
+		middleware.ResponseContentTypeJSON,
 	)
 
 	{
-		v1 := api.Group("/user/v1")
+		v1 := r.Group("/user/v1")
 
 		v1.POST("/registration", registrationController.Register)
 		v1.POST("/confirm", registrationController.Confirm)
@@ -30,7 +29,7 @@ func RegisterRoutes(
 
 	// activity component public routes
 	{
-		v1 := api.Group("/activity/v1")
+		v1 := r.Group("/activity/v1")
 
 		v1.GET("/activities/:id", activityController.GetOne)
 		v1.GET("/activities", activityController.Index)

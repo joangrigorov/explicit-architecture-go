@@ -2,6 +2,7 @@ package domain
 
 import (
 	"app/internal/core/shared_kernel/domain"
+	"fmt"
 	"time"
 )
 
@@ -22,6 +23,10 @@ type User struct {
 func (u *User) Confirm() {
 	now := time.Now()
 	u.ConfirmedAt = &now
+}
+
+func (u *User) FullName() string {
+	return fmt.Sprintf("%s %s", u.FirstName, u.LastName)
 }
 
 func NewUser(

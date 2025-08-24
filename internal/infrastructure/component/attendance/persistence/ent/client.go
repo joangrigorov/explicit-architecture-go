@@ -1,7 +1,7 @@
 package ent
 
 import (
-	"app/config"
+	"app/config/api"
 	"app/internal/infrastructure/component/attendance/persistence/ent/generated"
 	"app/internal/infrastructure/framework/persistence/pgsql"
 	"fmt"
@@ -13,7 +13,7 @@ import (
 
 type Connection *sql.DB
 
-func NewConnection(cfg *config.Config) (Connection, error) {
+func NewConnection(cfg *api.Config) (Connection, error) {
 	cfgDb := cfg.DB.Attendance
 
 	if cfgDb.Driver == "postgres" {
@@ -33,7 +33,7 @@ func NewConnection(cfg *config.Config) (Connection, error) {
 	panic(fmt.Sprintf("unsupported driver %s", cfgDb.Driver))
 }
 
-func NewClient(db Connection, cfg *config.Config) *generated.Client {
+func NewClient(db Connection, cfg *api.Config) *generated.Client {
 	return generated.NewClient(
 		generated.Driver(
 			entSql.OpenDB(cfg.DB.Attendance.Driver, db),

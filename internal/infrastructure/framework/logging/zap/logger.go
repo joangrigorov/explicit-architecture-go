@@ -1,8 +1,8 @@
 package zap
 
 import (
-	"app/config"
 	"app/internal/core/port/logging"
+	"os"
 	"time"
 
 	ginzap "github.com/gin-contrib/zap"
@@ -10,11 +10,12 @@ import (
 	"go.uber.org/zap"
 )
 
-func NewZapLogger(cfg *config.Config) *zap.SugaredLogger {
+func NewZapLogger() *zap.SugaredLogger {
 	var z *zap.Logger
 	var err error
+	devMode := os.Getenv("ZAP_DEV_MODE") == "true"
 
-	if cfg.App.DevMode {
+	if devMode {
 		z, err = zap.NewDevelopment()
 	} else {
 		z, err = zap.NewProduction()

@@ -146,30 +146,30 @@ func (_c *UserCreate) ExecX(ctx context.Context) {
 // check runs all checks and user-defined validators on the builder.
 func (_c *UserCreate) check() error {
 	if _, ok := _c.mutation.Email(); !ok {
-		return &ValidationError{Name: "email", err: errors.New(`user: missing required field "User.email"`)}
+		return &ValidationError{Name: "email", err: errors.New(`generated: missing required field "User.email"`)}
 	}
 	if _, ok := _c.mutation.Username(); !ok {
-		return &ValidationError{Name: "username", err: errors.New(`user: missing required field "User.username"`)}
+		return &ValidationError{Name: "username", err: errors.New(`generated: missing required field "User.username"`)}
 	}
 	if _, ok := _c.mutation.FirstName(); !ok {
-		return &ValidationError{Name: "first_name", err: errors.New(`user: missing required field "User.first_name"`)}
+		return &ValidationError{Name: "first_name", err: errors.New(`generated: missing required field "User.first_name"`)}
 	}
 	if _, ok := _c.mutation.LastName(); !ok {
-		return &ValidationError{Name: "last_name", err: errors.New(`user: missing required field "User.last_name"`)}
+		return &ValidationError{Name: "last_name", err: errors.New(`generated: missing required field "User.last_name"`)}
 	}
 	if _, ok := _c.mutation.Role(); !ok {
-		return &ValidationError{Name: "role", err: errors.New(`user: missing required field "User.role"`)}
+		return &ValidationError{Name: "role", err: errors.New(`generated: missing required field "User.role"`)}
 	}
 	if v, ok := _c.mutation.Role(); ok {
 		if err := user.RoleValidator(v); err != nil {
-			return &ValidationError{Name: "role", err: fmt.Errorf(`user: validator failed for field "User.role": %w`, err)}
+			return &ValidationError{Name: "role", err: fmt.Errorf(`generated: validator failed for field "User.role": %w`, err)}
 		}
 	}
 	if _, ok := _c.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "created_at", err: errors.New(`user: missing required field "User.created_at"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "User.created_at"`)}
 	}
 	if _, ok := _c.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`user: missing required field "User.updated_at"`)}
+		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "User.updated_at"`)}
 	}
 	return nil
 }

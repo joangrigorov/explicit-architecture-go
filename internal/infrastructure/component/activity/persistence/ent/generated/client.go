@@ -3,13 +3,15 @@
 package generated
 
 import (
-	"app/internal/infrastructure/component/activity/persistence/ent/generated/activity"
-	"app/internal/infrastructure/component/activity/persistence/ent/generated/migrate"
 	"context"
 	"errors"
 	"fmt"
 	"log"
 	"reflect"
+
+	"app/internal/infrastructure/component/activity/persistence/ent/generated/migrate"
+
+	"app/internal/infrastructure/component/activity/persistence/ent/generated/activity"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
@@ -111,7 +113,7 @@ func Open(driverName, dataSourceName string, options ...Option) (*Client, error)
 }
 
 // ErrTxStarted is returned when trying to start a new transaction from a transactional client.
-var ErrTxStarted = errors.New("activity: cannot start a transaction within a transaction")
+var ErrTxStarted = errors.New("generated: cannot start a transaction within a transaction")
 
 // Tx returns a new transactional client. The provided context
 // is used until the transaction is committed or rolled back.
@@ -121,7 +123,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	}
 	tx, err := newTx(ctx, c.driver)
 	if err != nil {
-		return nil, fmt.Errorf("activity: starting a transaction: %w", err)
+		return nil, fmt.Errorf("generated: starting a transaction: %w", err)
 	}
 	cfg := c.config
 	cfg.driver = tx
@@ -192,7 +194,7 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	case *ActivityMutation:
 		return c.Activity.mutate(ctx, m)
 	default:
-		return nil, fmt.Errorf("activity: unknown mutation type %T", m)
+		return nil, fmt.Errorf("generated: unknown mutation type %T", m)
 	}
 }
 
@@ -325,7 +327,7 @@ func (c *ActivityClient) mutate(ctx context.Context, m *ActivityMutation) (Value
 	case OpDelete, OpDeleteOne:
 		return (&ActivityDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
-		return nil, fmt.Errorf("activity: unknown Activity mutation op: %q", m.Op())
+		return nil, fmt.Errorf("generated: unknown Activity mutation op: %q", m.Op())
 	}
 }
 

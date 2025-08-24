@@ -224,7 +224,7 @@ func (_q *AttendanceQuery) Exist(ctx context.Context) (bool, error) {
 	case IsNotFound(err):
 		return false, nil
 	case err != nil:
-		return false, fmt.Errorf("attendance: check existence: %w", err)
+		return false, fmt.Errorf("generated: check existence: %w", err)
 	default:
 		return true, nil
 	}
@@ -269,7 +269,7 @@ func (_q *AttendanceQuery) Clone() *AttendanceQuery {
 //
 //	client.Attendance.Query().
 //		GroupBy(attendance.FieldAttendeeID).
-//		Aggregate(attendance.Count()).
+//		Aggregate(generated.Count()).
 //		Scan(ctx, &v)
 func (_q *AttendanceQuery) GroupBy(field string, fields ...string) *AttendanceGroupBy {
 	_q.ctx.Fields = append([]string{field}, fields...)
@@ -308,7 +308,7 @@ func (_q *AttendanceQuery) Aggregate(fns ...AggregateFunc) *AttendanceSelect {
 func (_q *AttendanceQuery) prepareQuery(ctx context.Context) error {
 	for _, inter := range _q.inters {
 		if inter == nil {
-			return fmt.Errorf("attendance: uninitialized interceptor (forgotten import attendance/runtime?)")
+			return fmt.Errorf("generated: uninitialized interceptor (forgotten import generated/runtime?)")
 		}
 		if trv, ok := inter.(Traverser); ok {
 			if err := trv.Traverse(ctx, _q); err != nil {
@@ -318,7 +318,7 @@ func (_q *AttendanceQuery) prepareQuery(ctx context.Context) error {
 	}
 	for _, f := range _q.ctx.Fields {
 		if !attendance.ValidColumn(f) {
-			return &ValidationError{Name: f, err: fmt.Errorf("attendance: invalid field %q for query", f)}
+			return &ValidationError{Name: f, err: fmt.Errorf("generated: invalid field %q for query", f)}
 		}
 	}
 	if _q.path != nil {

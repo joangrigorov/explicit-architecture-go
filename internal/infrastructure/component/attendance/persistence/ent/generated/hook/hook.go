@@ -17,7 +17,7 @@ func (f AttendanceFunc) Mutate(ctx context.Context, m generated.Mutation) (gener
 	if mv, ok := m.(*generated.AttendanceMutation); ok {
 		return f(ctx, mv)
 	}
-	return nil, fmt.Errorf("unexpected mutation type %T. expect *attendance.AttendanceMutation", m)
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.AttendanceMutation", m)
 }
 
 // Condition is a hook condition function.
@@ -128,14 +128,14 @@ func If(hk generated.Hook, cond Condition) generated.Hook {
 
 // On executes the given hook only for the given operation.
 //
-//	hook.On(Log, attendance.Delete|attendance.Create)
+//	hook.On(Log, generated.Delete|generated.Create)
 func On(hk generated.Hook, op generated.Op) generated.Hook {
 	return If(hk, HasOp(op))
 }
 
 // Unless skips the given hook only for the given operation.
 //
-//	hook.Unless(Log, attendance.Update|attendance.UpdateOne)
+//	hook.Unless(Log, generated.Update|generated.UpdateOne)
 func Unless(hk generated.Hook, op generated.Op) generated.Hook {
 	return If(hk, Not(HasOp(op)))
 }
@@ -151,9 +151,9 @@ func FixedError(err error) generated.Hook {
 
 // Reject returns a hook that rejects all operations that match op.
 //
-//	func (T) Hooks() []attendance.Hook {
-//		return []attendance.Hook{
-//			Reject(attendance.Delete|attendance.Update),
+//	func (T) Hooks() []generated.Hook {
+//		return []generated.Hook{
+//			Reject(generated.Delete|generated.Update),
 //		}
 //	}
 func Reject(op generated.Op) generated.Hook {

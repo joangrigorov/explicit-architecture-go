@@ -13,7 +13,7 @@ import (
 // TransactionalConfirmUserCommand runs the ConfirmUserCommandHandler in an Ent transaction,
 // and it handles commit and rollbacks.
 func TransactionalConfirmUserCommand(
-	userRepository *ent2.Repository,
+	userRepository *ent2.UserRepository,
 	idp idp.IdentityProvider,
 	entClient *ent.Client,
 ) commands.Middleware {

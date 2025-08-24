@@ -43,11 +43,3 @@ func RecordRequestData(c *gin.Context) {
 
 	c.Next()
 }
-
-func mapToAttributes(m map[string]string) []attribute.KeyValue {
-	attrs := make([]attribute.KeyValue, 0, len(m))
-	for k, v := range m {
-		attrs = append(attrs, attribute.String(k, v))
-	}
-	return attrs
-}

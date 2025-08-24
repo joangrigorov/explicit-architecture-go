@@ -1,0 +1,42 @@
+_format_version: "3.0"
+_transform: true
+
+services:
+  - name: api-public
+    url: http://api:8080
+    routes:
+      - name: user
+        paths:
+          - /user/v1/registration
+        strip_path: false
+  #    plugins:
+  #      - name: openid-connect
+  #        config:
+  #          issuer: "http://keycloak:8080/realms/myrealm"
+  #          client_id: "kong"
+  #          client_secret: "supersecret"
+  #          scopes:
+  #            - openid
+  #            - profile
+  #            - email
+  #          claim_headers:
+  #            sub: x-user-id
+  #            email: x-user-email
+  - name: web-public
+    url: http://web:8080
+    routes:
+      - name: all-routes
+        paths:
+          - "/"
+
+plugins:
+  - name: opentelemetry
+    config:
+      traces_endpoint: http://jaeger:4318/v1/traces
+      resource_attributes:
+        service.name: kong-dev
+      propagation:
+        default_format: ot
+        inject:
+          - ot
+          - jaeger

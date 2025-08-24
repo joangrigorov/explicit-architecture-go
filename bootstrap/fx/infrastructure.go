@@ -9,9 +9,11 @@ import (
 	cBus "app/internal/infrastructure/framework/cqrs/commands"
 	qBus "app/internal/infrastructure/framework/cqrs/queries"
 	"app/internal/infrastructure/framework/event_bus"
+	"app/internal/infrastructure/framework/hmac"
 	"app/internal/infrastructure/framework/http"
 	"app/internal/infrastructure/framework/idp"
 	"app/internal/infrastructure/framework/logging/zap"
+	"app/internal/infrastructure/framework/mail"
 	"app/internal/infrastructure/framework/observability/otel"
 	"app/internal/infrastructure/framework/uuid"
 	"app/internal/infrastructure/framework/validation"
@@ -35,6 +37,12 @@ var Infrastructure = fx.Module("infrastructure",
 	fx.Module("framework",
 		Http,
 		Logging,
+		fx.Module("mail", fx.Provide(
+			mail.NewDialer,
+			mail.NewGomailMailer,
+			mail.NewMailer,
+			mail.NewTransactionalMailer,
+		)),
 		fx.Module("cqrs", fx.Provide(
 			cBus.NewCommandBus,
 			cBus.NewSimpleCommandBus,
@@ -67,7 +75,12 @@ var Infrastructure = fx.Module("infrastructure",
 			otel.RegisterTracer,
 			otel.AddOpenTelemetryMiddleware,
 		)),
-		fx.Provide(uuid.NewGenerator),
+		fx.Module("hmac", fx.Provide(
+			hmac.NewGenerator,
+		)),
+		fx.Module("uuid", fx.Provide(
+			uuid.NewGenerator,
+		)),
 	),
 	fx.Module("component",
 		fx.Module("activity", fx.Module("persistence/ent", fx.Provide(
@@ -86,6 +99,8 @@ var Infrastructure = fx.Module("infrastructure",
 			user.NewRepository,
 			user.NewConcreteRepository,
 			user.NewQueries,
+			user.NewConfirmationRepository,
+			user.NewConcreteConfirmationRepository,
 		))),
 	),
 )

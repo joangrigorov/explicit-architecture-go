@@ -8,6 +8,18 @@ import (
 	"fmt"
 )
 
+// The ConfirmationFunc type is an adapter to allow the use of ordinary
+// function as Confirmation mutator.
+type ConfirmationFunc func(context.Context, *generated.ConfirmationMutation) (generated.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ConfirmationFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
+	if mv, ok := m.(*generated.ConfirmationMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.ConfirmationMutation", m)
+}
+
 // The UserFunc type is an adapter to allow the use of ordinary
 // function as User mutator.
 type UserFunc func(context.Context, *generated.UserMutation) (generated.Value, error)
@@ -17,7 +29,7 @@ func (f UserFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.V
 	if mv, ok := m.(*generated.UserMutation); ok {
 		return f(ctx, mv)
 	}
-	return nil, fmt.Errorf("unexpected mutation type %T. expect *user.UserMutation", m)
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.UserMutation", m)
 }
 
 // Condition is a hook condition function.
@@ -128,14 +140,14 @@ func If(hk generated.Hook, cond Condition) generated.Hook {
 
 // On executes the given hook only for the given operation.
 //
-//	hook.On(Log, user.Delete|user.Create)
+//	hook.On(Log, generated.Delete|generated.Create)
 func On(hk generated.Hook, op generated.Op) generated.Hook {
 	return If(hk, HasOp(op))
 }
 
 // Unless skips the given hook only for the given operation.
 //
-//	hook.Unless(Log, user.Update|user.UpdateOne)
+//	hook.Unless(Log, generated.Update|generated.UpdateOne)
 func Unless(hk generated.Hook, op generated.Op) generated.Hook {
 	return If(hk, Not(HasOp(op)))
 }
@@ -151,9 +163,9 @@ func FixedError(err error) generated.Hook {
 
 // Reject returns a hook that rejects all operations that match op.
 //
-//	func (T) Hooks() []user.Hook {
-//		return []user.Hook{
-//			Reject(user.Delete|user.Update),
+//	func (T) Hooks() []generated.Hook {
+//		return []generated.Hook{
+//			Reject(generated.Delete|generated.Update),
 //		}
 //	}
 func Reject(op generated.Op) generated.Hook {

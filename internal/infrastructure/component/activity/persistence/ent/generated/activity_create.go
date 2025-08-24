@@ -130,31 +130,31 @@ func (_c *ActivityCreate) ExecX(ctx context.Context) {
 // check runs all checks and user-defined validators on the builder.
 func (_c *ActivityCreate) check() error {
 	if _, ok := _c.mutation.Slug(); !ok {
-		return &ValidationError{Name: "slug", err: errors.New(`activity: missing required field "Activity.slug"`)}
+		return &ValidationError{Name: "slug", err: errors.New(`generated: missing required field "Activity.slug"`)}
 	}
 	if _, ok := _c.mutation.Title(); !ok {
-		return &ValidationError{Name: "title", err: errors.New(`activity: missing required field "Activity.title"`)}
+		return &ValidationError{Name: "title", err: errors.New(`generated: missing required field "Activity.title"`)}
 	}
 	if _, ok := _c.mutation.PosterImageURL(); !ok {
-		return &ValidationError{Name: "poster_image_url", err: errors.New(`activity: missing required field "Activity.poster_image_url"`)}
+		return &ValidationError{Name: "poster_image_url", err: errors.New(`generated: missing required field "Activity.poster_image_url"`)}
 	}
 	if _, ok := _c.mutation.ShortDescription(); !ok {
-		return &ValidationError{Name: "short_description", err: errors.New(`activity: missing required field "Activity.short_description"`)}
+		return &ValidationError{Name: "short_description", err: errors.New(`generated: missing required field "Activity.short_description"`)}
 	}
 	if _, ok := _c.mutation.FullDescription(); !ok {
-		return &ValidationError{Name: "full_description", err: errors.New(`activity: missing required field "Activity.full_description"`)}
+		return &ValidationError{Name: "full_description", err: errors.New(`generated: missing required field "Activity.full_description"`)}
 	}
 	if _, ok := _c.mutation.HappensAt(); !ok {
-		return &ValidationError{Name: "happens_at", err: errors.New(`activity: missing required field "Activity.happens_at"`)}
+		return &ValidationError{Name: "happens_at", err: errors.New(`generated: missing required field "Activity.happens_at"`)}
 	}
 	if _, ok := _c.mutation.Attendants(); !ok {
-		return &ValidationError{Name: "attendants", err: errors.New(`activity: missing required field "Activity.attendants"`)}
+		return &ValidationError{Name: "attendants", err: errors.New(`generated: missing required field "Activity.attendants"`)}
 	}
 	if _, ok := _c.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "created_at", err: errors.New(`activity: missing required field "Activity.created_at"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`generated: missing required field "Activity.created_at"`)}
 	}
 	if _, ok := _c.mutation.UpdatedAt(); !ok {
-		return &ValidationError{Name: "updated_at", err: errors.New(`activity: missing required field "Activity.updated_at"`)}
+		return &ValidationError{Name: "updated_at", err: errors.New(`generated: missing required field "Activity.updated_at"`)}
 	}
 	return nil
 }

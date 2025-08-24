@@ -33,6 +33,8 @@ type Context interface {
 
 	ParamInt(key string) (int, error)
 
+	SetResponseHeader(key string, val string)
+
 	// NoContent responds with 204
 	NoContent()
 
@@ -87,6 +89,10 @@ func (g *GinContext) ParamInt(key string) (int, error) {
 		return 0, errors.New(fmt.Sprintf("param error: %s: %s cannot be converted to integer", key, raw))
 	}
 	return param, err
+}
+
+func (g *GinContext) SetResponseHeader(key string, val string) {
+	g.context.Writer.Header().Set(key, val)
 }
 
 func (g *GinContext) IsPost() bool {

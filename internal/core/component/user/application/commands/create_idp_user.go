@@ -3,8 +3,10 @@ package commands
 import (
 	"app/internal/core/component/user/application/errors"
 	"app/internal/core/component/user/application/repositories"
+	eventBus "app/internal/core/port/event_bus"
 	"app/internal/core/port/idp"
 	"app/internal/core/shared_kernel/domain"
+	"app/internal/core/shared_kernel/events"
 	"context"
 	"encoding/json"
 )
@@ -41,13 +43,19 @@ func NewCreateIdPUserCommand(
 type CreateIdPUserHandler struct {
 	userRepository repositories.UserRepository
 	idp            idp.IdentityProvider
+	eventBus       eventBus.EventBus
 }
 
 func NewCreateIdPUserHandler(
 	userRepository repositories.UserRepository,
 	idp idp.IdentityProvider,
+	eventBus eventBus.EventBus,
 ) *CreateIdPUserHandler {
-	return &CreateIdPUserHandler{userRepository: userRepository, idp: idp}
+	return &CreateIdPUserHandler{
+		userRepository: userRepository,
+		idp:            idp,
+		eventBus:       eventBus,
+	}
 }
 
 func (h *CreateIdPUserHandler) Handle(ctx context.Context, c CreateIdPUserCommand) error {
@@ -65,5 +73,11 @@ func (h *CreateIdPUserHandler) Handle(ctx context.Context, c CreateIdPUserComman
 
 	user.IdPUserId = idpUserID
 
-	return h.userRepository.Update(ctx, user)
+	err = h.userRepository.Update(ctx, user)
+
+	if err != nil {
+		return err
+	}
+
+	return h.eventBus.Publish(ctx, events.NewIdPUserCreated(c.userID, *idpUserID))
 }

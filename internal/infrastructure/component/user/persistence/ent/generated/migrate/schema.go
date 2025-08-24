@@ -8,6 +8,26 @@ import (
 )
 
 var (
+	// ConfirmationsColumns holds the columns for the "confirmations" table.
+	ConfirmationsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID},
+		{Name: "user_id", Type: field.TypeUUID, Unique: true},
+		{Name: "hmac_secret", Type: field.TypeString, Default: "secret"},
+		{Name: "created_at", Type: field.TypeTime},
+	}
+	// ConfirmationsTable holds the schema information for the "confirmations" table.
+	ConfirmationsTable = &schema.Table{
+		Name:       "confirmations",
+		Columns:    ConfirmationsColumns,
+		PrimaryKey: []*schema.Column{ConfirmationsColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "confirmation_created_at",
+				Unique:  false,
+				Columns: []*schema.Column{ConfirmationsColumns[3]},
+			},
+		},
+	}
 	// UsersColumns holds the columns for the "users" table.
 	UsersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID},
@@ -57,6 +77,7 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		ConfirmationsTable,
 		UsersTable,
 	}
 )

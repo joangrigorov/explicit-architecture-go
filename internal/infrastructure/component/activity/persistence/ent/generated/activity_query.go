@@ -224,7 +224,7 @@ func (_q *ActivityQuery) Exist(ctx context.Context) (bool, error) {
 	case IsNotFound(err):
 		return false, nil
 	case err != nil:
-		return false, fmt.Errorf("activity: check existence: %w", err)
+		return false, fmt.Errorf("generated: check existence: %w", err)
 	default:
 		return true, nil
 	}
@@ -269,7 +269,7 @@ func (_q *ActivityQuery) Clone() *ActivityQuery {
 //
 //	client.Activity.Query().
 //		GroupBy(activity.FieldSlug).
-//		Aggregate(activity.Count()).
+//		Aggregate(generated.Count()).
 //		Scan(ctx, &v)
 func (_q *ActivityQuery) GroupBy(field string, fields ...string) *ActivityGroupBy {
 	_q.ctx.Fields = append([]string{field}, fields...)
@@ -308,7 +308,7 @@ func (_q *ActivityQuery) Aggregate(fns ...AggregateFunc) *ActivitySelect {
 func (_q *ActivityQuery) prepareQuery(ctx context.Context) error {
 	for _, inter := range _q.inters {
 		if inter == nil {
-			return fmt.Errorf("activity: uninitialized interceptor (forgotten import activity/runtime?)")
+			return fmt.Errorf("generated: uninitialized interceptor (forgotten import generated/runtime?)")
 		}
 		if trv, ok := inter.(Traverser); ok {
 			if err := trv.Traverse(ctx, _q); err != nil {
@@ -318,7 +318,7 @@ func (_q *ActivityQuery) prepareQuery(ctx context.Context) error {
 	}
 	for _, f := range _q.ctx.Fields {
 		if !activity.ValidColumn(f) {
-			return &ValidationError{Name: f, err: fmt.Errorf("activity: invalid field %q for query", f)}
+			return &ValidationError{Name: f, err: fmt.Errorf("generated: invalid field %q for query", f)}
 		}
 	}
 	if _q.path != nil {

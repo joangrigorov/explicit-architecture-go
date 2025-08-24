@@ -1,5 +1,7 @@
 {
   "id": "c07f2457-cc7c-42d9-8416-694878ea49b5",
+  "displayName": "Activity Planner",
+  "displayNameHtml": "Activity Planner",
   "realm": "app",
   "notBefore": 0,
   "defaultSignatureAlgorithm": "RS256",
@@ -320,6 +322,7 @@
       ],
       "security-admin-console": [],
       "user-admin": [],
+      "web-app": [],
       "admin-cli": [],
       "account-console": [],
       "broker": [
@@ -898,6 +901,67 @@
         "offline_access",
         "microprofile-jwt"
       ]
+    },
+    {
+      "clientId": "web-app",
+      "name": "Web Application Client",
+      "description": "",
+      "rootUrl": "",
+      "adminUrl": "",
+      "baseUrl": "http://localhost:8079",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "redirectUris": [
+        "http://localhost:8079/oauth2/callback"
+      ],
+      "webOrigins": [
+        "http://localhost:8079/sign-in"
+      ],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "publicClient": true,
+      "frontchannelLogout": true,
+      "protocol": "openid-connect",
+      "attributes": {
+        "realm_client": "false",
+        "oidc.ciba.grant.enabled": "false",
+        "backchannel.logout.session.required": "true",
+        "standard.token.exchange.enabled": "false",
+        "post.logout.redirect.uris": "http://localhost:8079",
+        "oauth2.device.authorization.grant.enabled": "false",
+        "backchannel.logout.revoke.offline.tokens": "false",
+        "login_theme": "activity-planner.v1"
+      },
+      "authenticationFlowBindingOverrides": {},
+      "fullScopeAllowed": true,
+      "nodeReRegistrationTimeout": -1,
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "roles",
+        "profile",
+        "basic",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "organization",
+        "offline_access",
+        "microprofile-jwt"
+      ],
+      "access": {
+        "view": true,
+        "configure": true,
+        "manage": true
+      }
     }
   ],
   "clientScopes": [
@@ -2589,7 +2653,8 @@
     "clientSessionMaxLifespan": "0",
     "clientOfflineSessionIdleTimeout": "0",
     "cibaInterval": "5",
-    "realmReusableOtpCode": "false"
+    "realmReusableOtpCode": "false",
+    "frontendUrl": "http://localhost:8079"
   },
   "keycloakVersion": "26.3.2",
   "userManagedAccessAllowed": false,

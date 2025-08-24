@@ -31,8 +31,8 @@ const (
 // ActivityMutation represents an operation that mutates the Activity nodes in the graph.
 type ActivityMutation struct {
 	config
-	op         Op
-	typ        string
+	op                Op
+	typ               string
 	id                *uuid.UUID
 	slug              *string
 	title             *string
@@ -46,9 +46,9 @@ type ActivityMutation struct {
 	updated_at        *time.Time
 	deleted_at        *time.Time
 	clearedFields     map[string]struct{}
-	done       bool
-	oldValue   func(context.Context) (*Activity, error)
-	predicates []predicate.Activity
+	done              bool
+	oldValue          func(context.Context) (*Activity, error)
+	predicates        []predicate.Activity
 }
 
 var _ ent.Mutation = (*ActivityMutation)(nil)
@@ -114,7 +114,7 @@ func (m ActivityMutation) Client() *Client {
 // it returns an error otherwise.
 func (m ActivityMutation) Tx() (*Tx, error) {
 	if _, ok := m.driver.(*txDriver); !ok {
-		return nil, errors.New("activity: mutation is not running in a transaction")
+		return nil, errors.New("generated: mutation is not running in a transaction")
 	}
 	tx := &Tx{config: m.config}
 	tx.init()

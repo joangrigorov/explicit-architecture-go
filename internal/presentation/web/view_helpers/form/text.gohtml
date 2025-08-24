@@ -1,0 +1,9 @@
+{{ define "#/form/text" }}
+    <label for="{{ .ID }}">{{ .Label }}</label>
+    <input type="text"
+           id="{{ .ID }}"
+           name="{{ .Name }}"
+           placeholder="{{ .Placeholder }}"
+           value="{{ .Value }}"
+           {{ if .Required }}required{{ end }}>
+{{ end }}

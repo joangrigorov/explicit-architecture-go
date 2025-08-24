@@ -31,8 +31,8 @@ const (
 // AttendanceMutation represents an operation that mutates the Attendance nodes in the graph.
 type AttendanceMutation struct {
 	config
-	op         Op
-	typ        string
+	op                         Op
+	typ                        string
 	id                         *uuid.UUID
 	attendee_id                *uuid.UUID
 	activity_id                *uuid.UUID
@@ -45,9 +45,9 @@ type AttendanceMutation struct {
 	updated_at                 *time.Time
 	deleted_at                 *time.Time
 	clearedFields              map[string]struct{}
-	done       bool
-	oldValue   func(context.Context) (*Attendance, error)
-	predicates []predicate.Attendance
+	done                       bool
+	oldValue                   func(context.Context) (*Attendance, error)
+	predicates                 []predicate.Attendance
 }
 
 var _ ent.Mutation = (*AttendanceMutation)(nil)
@@ -113,7 +113,7 @@ func (m AttendanceMutation) Client() *Client {
 // it returns an error otherwise.
 func (m AttendanceMutation) Tx() (*Tx, error) {
 	if _, ok := m.driver.(*txDriver); !ok {
-		return nil, errors.New("attendance: mutation is not running in a transaction")
+		return nil, errors.New("generated: mutation is not running in a transaction")
 	}
 	tx := &Tx{config: m.config}
 	tx.init()

@@ -159,7 +159,7 @@ func (_m *Attendance) Update() *AttendanceUpdateOne {
 func (_m *Attendance) Unwrap() *Attendance {
 	_tx, ok := _m.config.driver.(*txDriver)
 	if !ok {
-		panic("attendance: Attendance is not a transactional entity")
+		panic("generated: Attendance is not a transactional entity")
 	}
 	_m.config.driver = _tx.drv
 	return _m

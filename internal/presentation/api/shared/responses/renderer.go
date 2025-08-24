@@ -18,8 +18,8 @@ type fieldError struct {
 }
 
 type ErrorsResponse struct {
-	Errors []fieldError `json:"errors" binding:"omitempty"`
-	Error  *string      `json:"error" binding:"omitempty"`
+	Errors []fieldError `json:"errors"`
+	Error  *string      `json:"error,omitempty"`
 }
 
 func Render(tr ut.Translator, err error, req interface{}) ErrorsResponse {

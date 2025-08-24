@@ -12,7 +12,6 @@ import (
 
 	ut "github.com/go-playground/universal-translator"
 	"github.com/google/uuid"
-	"github.com/jaswdr/faker/v2"
 )
 
 type RegistrationController struct {
@@ -26,22 +25,25 @@ func NewRegistrationController(commandBus CommandBus, queryBus QueryBus, tr ut.T
 }
 
 func (c *RegistrationController) Register(ctx ctx.Context) {
-	f := faker.New()
+	r := &requests.Registration{}
+
+	if err := ctx.ShouldBindJSON(r); err != nil {
+		UnprocessableEntity(ctx, Render(c.tr, err, r))
+		return
+	}
 
 	userID := uuid.New().String()
 
 	cmd := NewRegisterUserCommand(
 		userID,
-		f.Internet().User(),
-		f.Internet().Password(),
-		f.Internet().Email(),
-		f.Person().FirstName(),
-		f.Person().LastName(),
+		r.Username,
+		r.Password,
+		r.Email,
+		r.FirstName,
+		r.LastName,
 	)
 
-	err := c.commandBus.Dispatch(ctx.Context(), cmd)
-
-	if err != nil {
+	if err := c.commandBus.Dispatch(ctx.Context(), cmd); err != nil {
 		InternalServerError(ctx, NewDefaultError(err))
 		return
 	}
@@ -57,7 +59,7 @@ func (c *RegistrationController) Register(ctx ctx.Context) {
 }
 
 func (c *RegistrationController) Confirm(ctx ctx.Context) {
-	request := &requests.ConfirmationRequest{}
+	request := &requests.Confirmation{}
 	if err := ctx.ShouldBindJSON(request); err != nil {
 		UnprocessableEntity(ctx, Render(c.tr, err, request))
 		return

@@ -26,6 +26,11 @@ func ValidateJSONBody(c Context) {
 	c.Next()
 }
 
+func ResponseContentTypeJSON(c Context) {
+	c.SetResponseHeader("Content-Type", "application/json; charset=utf-8")
+	c.Next()
+}
+
 // RequiresJSON middleware ensures that only requests with content type
 // application/json continue.
 func RequiresJSON(c Context) {

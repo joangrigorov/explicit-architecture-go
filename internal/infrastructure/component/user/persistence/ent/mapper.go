@@ -36,7 +36,7 @@ func mapDtoRole(role Role) roles.Role {
 	return dtoRole
 }
 
-func mapEntity(dto *generated.User) *User {
+func mapUserAggregate(dto *generated.User) *User {
 	if dto == nil {
 		return nil
 	}
@@ -60,5 +60,18 @@ func mapEntity(dto *generated.User) *User {
 		dto.ConfirmedAt,
 		dto.CreatedAt,
 		dto.UpdatedAt,
+	)
+}
+
+func mapConfirmationAggregate(dto *generated.Confirmation) *Confirmation {
+	if dto == nil {
+		return nil
+	}
+
+	return ReconstituteConfirmation(
+		ConfirmationID(dto.ID.String()),
+		UserID(dto.UserID.String()),
+		dto.HmacSecret,
+		dto.CreatedAt,
 	)
 }
