@@ -1,0 +1,56 @@
+version: 3
+name: KrakenD with Keycloak JWT & OTEL
+
+extra_config:
+  telemetry/opentelemetry:
+    service_name: krakend-gateway
+    deploy_env: development
+    metric_reporting_period: 5
+    exporters:
+      otlp:
+        - name: otlp_exporter
+          host: jaeger
+          port: 4318
+          disable_metrics: true
+          disable_traces: false
+          insecure: true
+          use_http: true
+    layers:
+      global:
+        disable_metrics: true
+        disable_traces: true
+        disable_propagation: false
+      proxy:
+        disable_metrics: true
+        disable_traces: true
+        disable_propagation: false
+      backend:
+        traces:
+          round_trip: true
+          disable_stage: false
+          read_payload: true
+          detailed_connection: true
+
+endpoints:
+  - endpoint: /user/v1/registration
+    method: POST
+    output_encoding: json
+    backend:
+      - host: http://api:8080
+        url_pattern: /user/v1/registration
+
+  - endpoint: /activity/v1/{rest}
+    method: GET
+    output_encoding: json
+    backend:
+      - host: http://api:8080
+        url_pattern: /activity/v1/{rest}
+    extra_config:
+      auth/validator:
+        alg: RS256
+        jwk_url: http://keycloak:8080/realms/app/protocol/openid-connect/certs
+        disable_jwk_security: true
+        cache: false
+        issuer: http://localhost:8079/realms/app
+        operation_debug: true
+
