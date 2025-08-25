@@ -37,3 +37,14 @@ func (m *TransactionalMailer) Flush() {
 func (m *TransactionalMailer) Reset() {
 	m.outbox = m.outbox[:0]
 }
+
+func CloseMailer(mailer *TransactionalMailer, err *error) {
+	if r := recover(); r != nil {
+		mailer.Reset()
+		panic(r)
+	} else if *err != nil {
+		mailer.Reset()
+	} else {
+		mailer.Flush()
+	}
+}

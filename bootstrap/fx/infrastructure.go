@@ -1,13 +1,15 @@
 package fx
 
 import (
-	"app/bootstrap/cqrs"
+	cqrsBootstrap "app/bootstrap/cqrs"
 	"app/bootstrap/events"
 	activity "app/internal/infrastructure/component/activity/persistence/ent"
 	attendance "app/internal/infrastructure/component/attendance/persistence/ent"
+	userCQRS "app/internal/infrastructure/component/user/cqrs"
 	user "app/internal/infrastructure/component/user/persistence/ent"
 	cBus "app/internal/infrastructure/framework/cqrs/commands"
 	qBus "app/internal/infrastructure/framework/cqrs/queries"
+	"app/internal/infrastructure/framework/errors"
 	"app/internal/infrastructure/framework/event_bus"
 	"app/internal/infrastructure/framework/hmac"
 	"app/internal/infrastructure/framework/http"
@@ -37,6 +39,9 @@ var Infrastructure = fx.Module("infrastructure",
 	fx.Module("framework",
 		Http,
 		Logging,
+		fx.Module("errors", fx.Provide(
+			errors.NewErrorFactory,
+		)),
 		fx.Module("mail", fx.Provide(
 			mail.NewDialer,
 			mail.NewGomailMailer,
@@ -49,8 +54,8 @@ var Infrastructure = fx.Module("infrastructure",
 			qBus.NewQueryBus,
 			qBus.NewSimpleQueryBus,
 		), fx.Invoke(
-			cqrs.WireCommands,
-			cqrs.WireQueries,
+			cqrsBootstrap.WireCommands,
+			cqrsBootstrap.WireQueries,
 		)),
 		fx.Module("validation", fx.Provide(
 			validation.NewValidatorValidate,
@@ -101,6 +106,10 @@ var Infrastructure = fx.Module("infrastructure",
 			user.NewQueries,
 			user.NewConfirmationRepository,
 			user.NewConcreteConfirmationRepository,
+			userCQRS.NewTransactionalRegisterUserCommand,
+			userCQRS.NewTransactionalConfirmUserCommand,
+			userCQRS.NewTransactionalCreateIdPUserCommand,
+			userCQRS.NewTransactionalSendConfirmationMailCommand,
 		))),
 	),
 )

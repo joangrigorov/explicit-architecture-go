@@ -39,3 +39,15 @@ func (t *TransactionalEventBus) Flush() error {
 func (t *TransactionalEventBus) Reset() {
 	t.outbox = make([]*outboxItem, 0)
 }
+
+func CloseEventBus(ctx context.Context, bus *TransactionalEventBus, err *error) {
+	if r := recover(); r != nil {
+		bus.Reset()
+		panic(r)
+	} else if *err != nil || ctx.Err() != nil {
+		// If there was an error or context was canceled
+		bus.Reset()
+	} else {
+		*err = bus.Flush()
+	}
+}

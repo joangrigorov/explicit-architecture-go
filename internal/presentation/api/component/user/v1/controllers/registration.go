@@ -33,15 +33,7 @@ func (c *RegistrationController) Register(ctx ctx.Context) {
 	}
 
 	userID := uuid.New().String()
-
-	cmd := NewRegisterUserCommand(
-		userID,
-		r.Username,
-		r.Password,
-		r.Email,
-		r.FirstName,
-		r.LastName,
-	)
+	cmd := r.NewRegisterUserCommand(userID)
 
 	if err := c.commandBus.Dispatch(ctx.Context(), cmd); err != nil {
 		InternalServerError(ctx, NewDefaultError(err))

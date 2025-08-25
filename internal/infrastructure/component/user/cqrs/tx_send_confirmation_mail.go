@@ -12,6 +12,7 @@ import (
 	userEnt "app/internal/infrastructure/component/user/persistence/ent/generated"
 	"app/internal/infrastructure/framework/cqrs/commands"
 	"app/internal/infrastructure/framework/mail"
+	"app/internal/infrastructure/framework/persistence/pgsql"
 	"context"
 )
 
@@ -19,51 +20,52 @@ import (
 // - an Ent transaction, handling commits and rollbacks.
 // - uses TransactionalEventBus which flushes collected events only after successful command handling.
 // - uses TransactionalMailer which flushes collected mailables only after successful command handling.
-func TransactionalSendConfirmationMailCommand(
+type TransactionalSendConfirmationMailCommand struct {
+	userRepository    *usrAdapter.UserRepository
+	confirmRepository *usrAdapter.ConfirmationRepository
+	entClient         *userEnt.Client
+	confirmMail       mailables.ConfirmationMail
+	uuidGenerator     uuid.Generator
+	hmacGenerator     hmac.Generator
+	mailer            *mail.Mailer
+	logger            logging.Logger
+}
+
+func NewTransactionalSendConfirmationMailCommand(
 	userRepository *usrAdapter.UserRepository,
 	confirmRepository *usrAdapter.ConfirmationRepository,
 	entClient *userEnt.Client,
 	confirmMail mailables.ConfirmationMail,
-
-	// framework
 	uuidGenerator uuid.Generator,
 	hmacGenerator hmac.Generator,
 	mailer *mail.Mailer,
 	logger logging.Logger,
-) commands.Middleware {
-	return func(ctx context.Context, command port.Command, next commands.Next) error {
-		tx, err := entClient.Tx(ctx)
-		if err != nil {
-			return err
-		}
+) *TransactionalSendConfirmationMailCommand {
+	return &TransactionalSendConfirmationMailCommand{
+		userRepository:    userRepository,
+		confirmRepository: confirmRepository,
+		entClient:         entClient,
+		confirmMail:       confirmMail,
+		uuidGenerator:     uuidGenerator,
+		hmacGenerator:     hmacGenerator,
+		mailer:            mailer,
+		logger:            logger,
+	}
+}
 
-		txMailer := mail.NewTransactionalMailer(mailer, logger)
+func (t *TransactionalSendConfirmationMailCommand) Provide(ctx context.Context, command port.Command, _ commands.Next) (err error) {
+	mailer := mail.NewTransactionalMailer(t.mailer, t.logger)
+	defer mail.CloseMailer(mailer, &err)
 
-		defer func() {
-			if err == nil {
-				txMailer.Flush()
-			} else {
-				txMailer.Reset()
-			}
-		}()
-
-		defer func() {
-			if r := recover(); r != nil {
-				_ = tx.Rollback()
-				panic(r)
-			} else if err != nil {
-				_ = tx.Rollback()
-			} else {
-				err = tx.Commit()
-			}
-		}()
-
-		confirmSvc := services.NewConfirmationService(confirmRepository.WithTx(tx), uuidGenerator, hmacGenerator)
-		mailerSvc := services.NewMailService(txMailer, confirmMail)
-
-		handler := NewSendConfirmationMailHandler(userRepository.WithTx(tx), confirmSvc, mailerSvc)
-
-		err = handler.Handle(ctx, command.(SendConfirmationMailCommand))
+	tx, err := t.entClient.Tx(ctx)
+	if err != nil {
 		return err
 	}
+	defer pgsql.CloseTx(tx, &err)
+
+	confirmSvc := services.NewConfirmationService(t.confirmRepository.WithTx(tx), t.uuidGenerator, t.hmacGenerator)
+	mailerSvc := services.NewMailService(mailer, t.confirmMail)
+
+	handler := NewSendConfirmationMailHandler(t.userRepository.WithTx(tx), confirmSvc, mailerSvc)
+	return handler.Handle(ctx, command.(SendConfirmationMailCommand))
 }

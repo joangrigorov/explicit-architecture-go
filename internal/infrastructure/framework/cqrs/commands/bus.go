@@ -12,6 +12,10 @@ type Next func(context.Context, cqrs.Command) error
 
 type Middleware func(context.Context, cqrs.Command, Next) error
 
+type ProvidesMiddleware interface {
+	Provide(context.Context, cqrs.Command, Next) error
+}
+
 type SimpleCommandBus struct {
 	handlers    map[reflect.Type][]Middleware
 	middlewares []Middleware

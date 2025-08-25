@@ -7,47 +7,41 @@ import (
 	userEnt "app/internal/infrastructure/component/user/persistence/ent/generated"
 	"app/internal/infrastructure/framework/cqrs/commands"
 	"app/internal/infrastructure/framework/event_bus"
+	"app/internal/infrastructure/framework/persistence/pgsql"
 	"context"
 )
 
 // TransactionalRegisterUserCommand runs the RegisterUserCommandHandler in
 // - an Ent transaction, handling commits and rollbacks.
 // - uses TransactionalEventBus which flushes collected events only after successful command handling.
-func TransactionalRegisterUserCommand(
+type TransactionalRegisterUserCommand struct {
+	userRepository *usrAdapter.UserRepository
+	eventBus       *event_bus.SimpleEventBus
+	entClient      *userEnt.Client
+}
+
+func NewTransactionalRegisterUserCommand(
 	userRepository *usrAdapter.UserRepository,
 	eventBus *event_bus.SimpleEventBus,
 	entClient *userEnt.Client,
-) commands.Middleware {
-	return func(ctx context.Context, command port.Command, next commands.Next) error {
-		tx, err := entClient.Tx(ctx)
-		if err != nil {
-			return err
-		}
+) *TransactionalRegisterUserCommand {
+	return &TransactionalRegisterUserCommand{
+		userRepository: userRepository,
+		eventBus:       eventBus,
+		entClient:      entClient,
+	}
+}
 
-		txEventBus := event_bus.NewTransactionalEventBus(eventBus)
+func (t *TransactionalRegisterUserCommand) Provide(ctx context.Context, command port.Command, _ commands.Next) (err error) {
+	txEventBus := event_bus.NewTransactionalEventBus(t.eventBus)
+	defer event_bus.CloseEventBus(ctx, txEventBus, &err)
 
-		defer func() {
-			if err == nil {
-				err = txEventBus.Flush()
-			} else {
-				txEventBus.Reset()
-			}
-		}()
-
-		defer func() {
-			if r := recover(); r != nil {
-				_ = tx.Rollback()
-				panic(r)
-			} else if err != nil {
-				_ = tx.Rollback()
-			} else {
-				err = tx.Commit()
-			}
-		}()
-
-		handler := NewRegisterUserCommandHandler(userRepository.WithTx(tx), txEventBus)
-
-		err = handler.Handle(ctx, command.(RegisterUserCommand))
+	tx, err := t.entClient.Tx(ctx)
+	if err != nil {
 		return err
 	}
+	defer pgsql.CloseTx(tx, &err)
+
+	handler := NewRegisterUserCommandHandler(t.userRepository.WithTx(tx), txEventBus)
+	return handler.Handle(ctx, command.(RegisterUserCommand))
 }
