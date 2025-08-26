@@ -31,7 +31,7 @@ func NewRegisterUserCommandHandler(
 func (h *RegisterUserCommandHandler) Handle(ctx context.Context, c RegisterUserCommand) error {
 	id := UserID(c.userID)
 
-	if user, err := h.userRepository.GetById(ctx, id); err == nil && user != nil {
+	if user, _ := h.userRepository.GetById(ctx, id); user != nil {
 		return h.errors.New(errors.ErrConflict, "User already exists", nil)
 	}
 

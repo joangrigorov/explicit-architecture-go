@@ -2,6 +2,7 @@ package errors
 
 import (
 	"app/internal/core/port/errors"
+	"fmt"
 	"runtime"
 )
 
@@ -13,7 +14,7 @@ func NewErrorFactory() errors.ErrorFactory {
 
 func (e *ErrorFactory) New(code errors.Code, message string, prev error) errors.Error {
 	const depth = 32
-	pcs := make([]uintptr, depth)
+	pcs := make(errors.StackTrace, depth)
 	n := runtime.Callers(3, pcs)
 	return Error{
 		code:    code,
@@ -27,7 +28,7 @@ type Error struct {
 	code    errors.Code
 	message string
 	prev    error
-	stack   []uintptr
+	stack   errors.StackTrace
 }
 
 func (e Error) Error() string {
@@ -46,6 +47,19 @@ func (e Error) Previous() error {
 	return e.prev
 }
 
-func (e Error) StackTrace() []uintptr {
+func (e Error) StackTrace() errors.StackTrace {
 	return e.stack
+}
+
+func (e Error) PrettyPrint() []string {
+	frames := runtime.CallersFrames(e.stack)
+	var trace []string
+	for {
+		f, more := frames.Next()
+		trace = append(trace, fmt.Sprintf("%s\n\t%s:%d", f.Function, f.File, f.Line))
+		if !more {
+			break
+		}
+	}
+	return trace
 }

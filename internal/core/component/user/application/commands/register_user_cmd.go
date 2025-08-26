@@ -1,8 +1,6 @@
 package commands
 
 import (
-	. "app/internal/core/component/user/domain"
-	. "app/internal/core/shared_kernel/domain"
 	"encoding/json"
 )
 

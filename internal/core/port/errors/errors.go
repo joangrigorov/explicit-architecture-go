@@ -2,13 +2,15 @@ package errors
 
 type Code string
 
+type StackTrace []uintptr
+
 type Error interface {
 	error
 	Code() Code
 	Message() string
 	Previous() error
-	// TODO introduce []uintptr as a type so I can add a PrettyPrint function to it
-	StackTrace() []uintptr
+	StackTrace() StackTrace
+	PrettyPrint() []string
 }
 
 type ErrorFactory interface {

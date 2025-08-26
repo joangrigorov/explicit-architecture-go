@@ -34,7 +34,7 @@ extra_config:
 endpoints:
   - endpoint: /user/v1/registration
     method: POST
-    output_encoding: json
+    output_encoding: no-op
     backend:
       - host: http://api:8080
         url_pattern: /user/v1/registration
