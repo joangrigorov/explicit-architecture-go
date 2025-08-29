@@ -1,9 +1,9 @@
 package mailables
 
 import (
-	"app/internal/core/component/user/domain/confirmation"
+	"app/internal/core/component/user/domain/verification"
 )
 
 type PasswordSetupMail interface {
-	Render(confirmationID confirmation.ID, fullName string, hmacSum string) (message string, err error)
+	Render(verification verification.ID, fullName string, token string) (message string, err error)
 }

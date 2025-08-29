@@ -33,6 +33,8 @@ type Context interface {
 
 	ParamInt(key string) (int, error)
 
+	Query(key string) string
+
 	SetResponseHeader(key string, val string)
 
 	// NoContent responds with 204
@@ -80,6 +82,10 @@ func (g *GinContext) ShouldBindJSON(obj any) error {
 
 func (g *GinContext) ParamString(key string) string {
 	return g.context.Param(key)
+}
+
+func (g *GinContext) Query(key string) string {
+	return g.context.Query(key)
 }
 
 func (g *GinContext) ParamInt(key string) (int, error) {

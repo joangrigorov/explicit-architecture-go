@@ -10,20 +10,20 @@ import (
 
 type Handler struct {
 	userRepository      repositories.UserRepository
-	confirmationService *services.ConfirmationService
+	verificationService *services.VerificationService
 	mailService         *services.MailService
 	errors              errors.ErrorFactory
 }
 
 func NewHandler(
 	userRepository repositories.UserRepository,
-	confirmationService *services.ConfirmationService,
+	verificationService *services.VerificationService,
 	mailService *services.MailService,
 	errors errors.ErrorFactory,
 ) *Handler {
 	return &Handler{
 		userRepository:      userRepository,
-		confirmationService: confirmationService,
+		verificationService: verificationService,
 		mailService:         mailService,
 		errors:              errors,
 	}
@@ -37,13 +37,13 @@ func (s *Handler) Handle(ctx context.Context, c Command) error {
 		return s.errors.New(errors.ErrValidation, "User does not exist", err)
 	}
 
-	cfr, hmac, err := s.confirmationService.Create(ctx, userID)
+	ver, token, err := s.verificationService.Create(ctx, userID)
 
 	if err != nil {
-		return s.errors.New(errors.ErrDB, "Creating confirmation failed", err)
+		return s.errors.New(errors.ErrDB, "Creating verification failed", err)
 	}
 
-	err = s.mailService.SendPasswordSetupMail(cfr.ID, user.Email, domain.Email(c.senderEmail), user.FullName(), *hmac)
+	err = s.mailService.SendPasswordSetupMail(ver.ID, user.Email, domain.Email(c.senderEmail), user.FullName(), token)
 
 	if err != nil {
 		return s.errors.New(errors.ErrExternal, "Sending email failed", err)

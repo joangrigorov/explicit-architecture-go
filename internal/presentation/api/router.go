@@ -10,7 +10,8 @@ import (
 func RegisterRoutes(
 	r http.Router,
 	activityController *activities.Controller,
-	registrationController *controllers.RegistrationController,
+	registrationController *controllers.Registration,
+	verificationController *controllers.Verification,
 ) {
 	// Global middleware
 	r.Use(
@@ -24,6 +25,7 @@ func RegisterRoutes(
 		v1 := r.Group("/user/v1")
 
 		v1.POST("/registration", registrationController.Register)
+		v1.POST("/verifications/:id/preflight", verificationController.PreflightValidate)
 	}
 
 	// activity component public routes

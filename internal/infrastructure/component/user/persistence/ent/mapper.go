@@ -1,8 +1,8 @@
 package ent
 
 import (
-	"app/internal/core/component/user/domain/confirmation"
 	"app/internal/core/component/user/domain/user"
+	"app/internal/core/component/user/domain/verification"
 	"app/internal/infrastructure/component/user/persistence/ent/generated"
 	roles "app/internal/infrastructure/component/user/persistence/ent/generated/user"
 	"fmt"
@@ -49,29 +49,37 @@ func mapUserAggregate(dto *generated.User) *user.User {
 		idPUserId = nil
 	}
 
-	return user.ReconstituteUser(
-		user.ID(dto.ID.String()),
-		user.Username(dto.Username),
-		user.Email(dto.Email),
-		dto.FirstName,
-		dto.LastName,
-		mapDomainRole(dto.Role),
-		idPUserId,
-		dto.ConfirmedAt,
-		dto.CreatedAt,
-		dto.UpdatedAt,
-	)
+	return &user.User{
+		ID:          user.ID(dto.ID.String()),
+		Username:    user.Username(dto.Username),
+		Email:       user.Email(dto.Email),
+		FirstName:   dto.FirstName,
+		LastName:    dto.LastName,
+		ConfirmedAt: dto.ConfirmedAt,
+		Role:        mapDomainRole(dto.Role),
+		IdPUserId:   idPUserId,
+		CreatedAt:   dto.CreatedAt,
+		UpdatedAt:   dto.UpdatedAt,
+	}
 }
 
-func mapConfirmationAggregate(dto *generated.Confirmation) *confirmation.Confirmation {
+func mapVerificationAggregate(dto *generated.Verification) (*verification.Verification, error) {
 	if dto == nil {
-		return nil
+		return nil, fmt.Errorf("ent: cannot map Verification dto - nil object passed")
 	}
 
-	return confirmation.ReconstituteConfirmation(
-		confirmation.ID(dto.ID.String()),
-		user.ID(dto.UserID.String()),
-		dto.HmacSecret,
-		dto.CreatedAt,
-	)
+	csrfToken, err := verification.DecodeCSRFToken(dto.HashedToken)
+
+	if err != nil {
+		return nil, fmt.Errorf("decode csrf token: %w", err)
+	}
+
+	return &verification.Verification{
+		ID:        verification.ID(dto.ID.String()),
+		UserID:    user.ID(dto.UserID.String()),
+		CSRFToken: csrfToken,
+		ExpiresAt: dto.ExpiresAt,
+		UsedAt:    dto.UsedAt,
+		CreatedAt: dto.CreatedAt,
+	}, nil
 }

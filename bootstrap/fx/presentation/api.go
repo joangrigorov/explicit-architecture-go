@@ -11,6 +11,7 @@ import (
 var Api = fx.Module("presentation/api", fx.Provide(
 	activities.NewController,
 	controllers.NewRegistrationController,
+	controllers.NewVerification,
 ), fx.Invoke(
 	api.RegisterRoutes,
 ))

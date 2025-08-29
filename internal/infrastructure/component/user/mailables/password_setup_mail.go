@@ -3,7 +3,7 @@ package mailables
 import (
 	"app/config/api"
 	"app/internal/core/component/user/application/mailables"
-	"app/internal/core/component/user/domain/confirmation"
+	"app/internal/core/component/user/domain/verification"
 	"bytes"
 	"fmt"
 	"html/template"
@@ -20,9 +20,9 @@ func NewPasswordSetupMail(cfg *api.Config) mailables.PasswordSetupMail {
 }
 
 func (c *PasswordSetupMail) Render(
-	confirmationID confirmation.ID,
+	verificationID verification.ID,
 	fullName string,
-	hmacSum string,
+	token string,
 ) (message string, err error) {
 	tmpl, err := template.
 		New(fmt.Sprintf("%T", c)).
@@ -35,8 +35,8 @@ func (c *PasswordSetupMail) Render(
 	if err := tmpl.ExecuteTemplate(&buf, "mail/password_setup", map[string]interface{}{
 		"WebURL":         c.webURL,
 		"FullName":       fullName,
-		"HmacSum":        hmacSum,
-		"ConfirmationID": confirmationID.String(),
+		"Token":          token,
+		"VerificationID": verificationID.String(),
 	}); err != nil {
 		panic(err)
 	}

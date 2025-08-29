@@ -11,7 +11,6 @@ import (
 	qBus "app/internal/infrastructure/framework/cqrs/queries"
 	"app/internal/infrastructure/framework/errors"
 	"app/internal/infrastructure/framework/events"
-	"app/internal/infrastructure/framework/hmac"
 	"app/internal/infrastructure/framework/http"
 	"app/internal/infrastructure/framework/idp"
 	"app/internal/infrastructure/framework/logging/zap"
@@ -79,9 +78,6 @@ var Infrastructure = fx.Module("infrastructure",
 		), fx.Invoke(
 			otel.RegisterTracer,
 			otel.AddOpenTelemetryMiddleware,
-		)),
-		fx.Module("hmac", fx.Provide(
-			hmac.NewGenerator,
 		)),
 		fx.Module("uuid", fx.Provide(
 			uuid.NewGenerator,

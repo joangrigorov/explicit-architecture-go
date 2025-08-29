@@ -5,9 +5,7 @@ import (
 	"app/internal/core/component/user/application/commands/confirm_user"
 	"app/internal/core/component/user/application/commands/initiate_password_setup"
 	"app/internal/core/component/user/application/commands/register_user"
-	. "app/internal/core/component/user/application/queries"
-	"app/internal/core/component/user/application/queries/dto"
-	"app/internal/core/component/user/application/queries/port"
+	. "app/internal/core/component/user/application/queries/find_user_by_id"
 	"app/internal/core/port/logging"
 	"app/internal/infrastructure/component/user/cqrs"
 	cBus "app/internal/infrastructure/framework/cqrs/commands"
@@ -40,13 +38,13 @@ func WireCommands(
 
 func WireQueries(
 	bus *qBus.SimpleQueryBus,
-	uq port.UserQueries,
+	uq UserQueries,
 	tracer trace.Tracer,
 ) {
 	bus.Use(qMdwr.Tracing(tracer))
 
-	qBus.Register[FindUserByIDQuery](
+	qBus.Register[Query](
 		bus,
-		qMdwr.ExecuteQuery[FindUserByIDQuery, *dto.UserDTO](NewFindUserByIDHandler(uq)),
+		qMdwr.ExecuteQuery[Query, *UserDTO](NewFindUserByIDHandler(uq)),
 	)
 }

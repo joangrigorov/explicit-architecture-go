@@ -8,26 +8,6 @@ import (
 )
 
 var (
-	// ConfirmationsColumns holds the columns for the "confirmations" table.
-	ConfirmationsColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeUUID},
-		{Name: "user_id", Type: field.TypeUUID, Unique: true},
-		{Name: "hmac_secret", Type: field.TypeString, Default: "secret"},
-		{Name: "created_at", Type: field.TypeTime},
-	}
-	// ConfirmationsTable holds the schema information for the "confirmations" table.
-	ConfirmationsTable = &schema.Table{
-		Name:       "confirmations",
-		Columns:    ConfirmationsColumns,
-		PrimaryKey: []*schema.Column{ConfirmationsColumns[0]},
-		Indexes: []*schema.Index{
-			{
-				Name:    "confirmation_created_at",
-				Unique:  false,
-				Columns: []*schema.Column{ConfirmationsColumns[3]},
-			},
-		},
-	}
 	// UsersColumns holds the columns for the "users" table.
 	UsersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID},
@@ -75,10 +55,42 @@ var (
 			},
 		},
 	}
+	// VerificationsColumns holds the columns for the "verifications" table.
+	VerificationsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID},
+		{Name: "user_id", Type: field.TypeUUID, Unique: true},
+		{Name: "csrf_token", Type: field.TypeString, Size: 2147483647},
+		{Name: "expires_at", Type: field.TypeTime},
+		{Name: "used_at", Type: field.TypeTime, Nullable: true},
+		{Name: "created_at", Type: field.TypeTime},
+	}
+	// VerificationsTable holds the schema information for the "verifications" table.
+	VerificationsTable = &schema.Table{
+		Name:       "verifications",
+		Columns:    VerificationsColumns,
+		PrimaryKey: []*schema.Column{VerificationsColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "verification_expires_at",
+				Unique:  false,
+				Columns: []*schema.Column{VerificationsColumns[3]},
+			},
+			{
+				Name:    "verification_used_at",
+				Unique:  false,
+				Columns: []*schema.Column{VerificationsColumns[4]},
+			},
+			{
+				Name:    "verification_created_at",
+				Unique:  false,
+				Columns: []*schema.Column{VerificationsColumns[5]},
+			},
+		},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
-		ConfirmationsTable,
 		UsersTable,
+		VerificationsTable,
 	}
 )
 

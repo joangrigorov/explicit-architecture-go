@@ -5,6 +5,18 @@ import (
 	"time"
 )
 
+type ID string
+
+func (i ID) String() string {
+	return string(i)
+}
+
+type IdPUserID string
+
+func (i IdPUserID) String() string {
+	return string(i)
+}
+
 type User struct {
 	ID          ID
 	Username    Username
@@ -48,14 +60,7 @@ func (u *User) LinkToIdP(idpUserID IdPUserID) {
 	u.recordEvent(NewIdPUserLinkedEvent(u.ID, idpUserID))
 }
 
-func NewUser(
-	id ID,
-	username Username,
-	email Email,
-	fName string,
-	lName string,
-	role Role,
-) *User {
+func NewUser(id ID, username Username, email Email, fName string, lName string, role Role) *User {
 	return &User{
 		ID:        id,
 		Username:  username,
@@ -70,32 +75,5 @@ func NewUser(
 		events: []Event{
 			NewCreatedEvent(id, username, email),
 		},
-	}
-}
-
-func ReconstituteUser(
-	id ID,
-	username Username,
-	email Email,
-	firstName string,
-	lastName string,
-	role Role,
-	idpUserId *IdPUserID,
-	confirmedAt *time.Time,
-	createdAt time.Time,
-	updatedAt time.Time,
-) *User {
-	return &User{
-		ID:          id,
-		Username:    username,
-		Email:       email,
-		FirstName:   firstName,
-		LastName:    lastName,
-		Role:        role,
-		IdPUserId:   idpUserId,
-		ConfirmedAt: confirmedAt,
-
-		CreatedAt: createdAt,
-		UpdatedAt: updatedAt,
 	}
 }

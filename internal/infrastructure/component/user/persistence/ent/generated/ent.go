@@ -3,8 +3,8 @@
 package generated
 
 import (
-	"app/internal/infrastructure/component/user/persistence/ent/generated/confirmation"
 	"app/internal/infrastructure/component/user/persistence/ent/generated/user"
+	"app/internal/infrastructure/component/user/persistence/ent/generated/verification"
 	"context"
 	"errors"
 	"fmt"
@@ -74,8 +74,8 @@ var (
 func checkColumn(t, c string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
-			confirmation.Table: confirmation.ValidColumn,
 			user.Table:         user.ValidColumn,
+			verification.Table: verification.ValidColumn,
 		})
 	})
 	return columnCheck(t, c)

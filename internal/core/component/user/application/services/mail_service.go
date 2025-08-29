@@ -2,8 +2,8 @@ package services
 
 import (
 	"app/internal/core/component/user/application/mailables"
-	"app/internal/core/component/user/domain/confirmation"
 	"app/internal/core/component/user/domain/user"
+	"app/internal/core/component/user/domain/verification"
 	"app/internal/core/port/mail"
 )
 
@@ -17,13 +17,13 @@ func NewMailService(mailer mail.Mailer, passwordSetupMail mailables.PasswordSetu
 }
 
 func (s *MailService) SendPasswordSetupMail(
-	confirmationID confirmation.ID,
+	verificationID verification.ID,
 	recipientEmail user.Email,
 	senderEmail user.Email,
 	fullName string,
-	hmac string,
+	token string,
 ) error {
-	message, err := s.passwordSetupMail.Render(confirmationID, fullName, hmac)
+	message, err := s.passwordSetupMail.Render(verificationID, fullName, token)
 
 	if err != nil {
 		return err
@@ -32,7 +32,7 @@ func (s *MailService) SendPasswordSetupMail(
 	to := []string{recipientEmail.String()}
 	var cc []string
 
-	const subject = "Confirm your Activity Planner account"
+	const subject = "Verify your Activity Planner account"
 
 	if err := s.mailer.Send(to, cc, cc, senderEmail.String(), subject, message); err != nil {
 		return err

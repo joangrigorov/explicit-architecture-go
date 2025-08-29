@@ -8,18 +8,6 @@ import (
 	"fmt"
 )
 
-// The ConfirmationFunc type is an adapter to allow the use of ordinary
-// function as Confirmation mutator.
-type ConfirmationFunc func(context.Context, *generated.ConfirmationMutation) (generated.Value, error)
-
-// Mutate calls f(ctx, m).
-func (f ConfirmationFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
-	if mv, ok := m.(*generated.ConfirmationMutation); ok {
-		return f(ctx, mv)
-	}
-	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.ConfirmationMutation", m)
-}
-
 // The UserFunc type is an adapter to allow the use of ordinary
 // function as User mutator.
 type UserFunc func(context.Context, *generated.UserMutation) (generated.Value, error)
@@ -30,6 +18,18 @@ func (f UserFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.V
 		return f(ctx, mv)
 	}
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.UserMutation", m)
+}
+
+// The VerificationFunc type is an adapter to allow the use of ordinary
+// function as Verification mutator.
+type VerificationFunc func(context.Context, *generated.VerificationMutation) (generated.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f VerificationFunc) Mutate(ctx context.Context, m generated.Mutation) (generated.Value, error) {
+	if mv, ok := m.(*generated.VerificationMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *generated.VerificationMutation", m)
 }
 
 // Condition is a hook condition function.

@@ -1,8 +1,7 @@
 package controllers
 
 import (
-	qs "app/internal/core/component/user/application/queries"
-	"app/internal/core/component/user/application/queries/dto"
+	qs "app/internal/core/component/user/application/queries/find_user_by_id"
 	"app/internal/core/port/cqrs"
 	"app/internal/infrastructure/framework/cqrs/queries"
 	ctx "app/internal/infrastructure/framework/http"
@@ -13,17 +12,17 @@ import (
 	"github.com/google/uuid"
 )
 
-type RegistrationController struct {
+type Registration struct {
 	commandBus cqrs.CommandBus
 	queryBus   cqrs.QueryBus
 	tr         ut.Translator
 }
 
-func NewRegistrationController(commandBus cqrs.CommandBus, queryBus cqrs.QueryBus, tr ut.Translator) *RegistrationController {
-	return &RegistrationController{commandBus: commandBus, queryBus: queryBus, tr: tr}
+func NewRegistrationController(commandBus cqrs.CommandBus, queryBus cqrs.QueryBus, tr ut.Translator) *Registration {
+	return &Registration{commandBus: commandBus, queryBus: queryBus, tr: tr}
 }
 
-func (c *RegistrationController) Register(ctx ctx.Context) {
+func (c *Registration) Register(ctx ctx.Context) {
 	r := &requests.Registration{}
 
 	if err := ctx.ShouldBindJSON(r); err != nil {
@@ -39,8 +38,8 @@ func (c *RegistrationController) Register(ctx ctx.Context) {
 		return
 	}
 
-	query := qs.FindUserByIDQuery{ID: userID}
-	userDTO, err := queries.Execute[*dto.UserDTO](ctx.Context(), c.queryBus, query)
+	query := qs.Query{ID: userID}
+	userDTO, err := queries.Execute[*qs.UserDTO](ctx.Context(), c.queryBus, query)
 
 	if err != nil {
 		InternalServerError(ctx, NewDefaultError(err))
