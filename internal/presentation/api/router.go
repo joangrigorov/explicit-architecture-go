@@ -24,7 +24,6 @@ func RegisterRoutes(
 		v1 := r.Group("/user/v1")
 
 		v1.POST("/registration", registrationController.Register)
-		v1.POST("/confirm", registrationController.Confirm)
 	}
 
 	// activity component public routes

@@ -2,7 +2,7 @@ package fx
 
 import (
 	cqrsBootstrap "app/bootstrap/cqrs"
-	"app/bootstrap/events"
+	eventsWiring "app/bootstrap/events"
 	activity "app/internal/infrastructure/component/activity/persistence/ent"
 	attendance "app/internal/infrastructure/component/attendance/persistence/ent"
 	userCQRS "app/internal/infrastructure/component/user/cqrs"
@@ -10,7 +10,7 @@ import (
 	cBus "app/internal/infrastructure/framework/cqrs/commands"
 	qBus "app/internal/infrastructure/framework/cqrs/queries"
 	"app/internal/infrastructure/framework/errors"
-	"app/internal/infrastructure/framework/event_bus"
+	"app/internal/infrastructure/framework/events"
 	"app/internal/infrastructure/framework/hmac"
 	"app/internal/infrastructure/framework/http"
 	"app/internal/infrastructure/framework/idp"
@@ -67,11 +67,11 @@ var Infrastructure = fx.Module("infrastructure",
 			idp.NewGoCloakClient,
 			idp.NewKeycloakIdentityProvider,
 		)),
-		fx.Module("eventbus", fx.Provide(
-			event_bus.NewEventBus,
-			event_bus.NewSimpleEventBus,
+		fx.Module("events", fx.Provide(
+			events.NewEventBus,
+			events.NewSimpleEventBus,
 		), fx.Invoke(
-			events.WireSubscribers,
+			eventsWiring.WireSubscribers,
 		)),
 		fx.Module("observability", fx.Provide(
 			otel.NewTracerProvider,
@@ -107,9 +107,9 @@ var Infrastructure = fx.Module("infrastructure",
 			user.NewConfirmationRepository,
 			user.NewConcreteConfirmationRepository,
 			userCQRS.NewTransactionalRegisterUserCommand,
+			userCQRS.NewTransactionalInitiatePasswordSetupCommand,
+			userCQRS.NewTransactionalCompletePasswordSetupCommand,
 			userCQRS.NewTransactionalConfirmUserCommand,
-			userCQRS.NewTransactionalCreateIdPUserCommand,
-			userCQRS.NewTransactionalSendConfirmationMailCommand,
 		))),
 	),
 )

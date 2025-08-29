@@ -12,17 +12,13 @@ package mock
 
 // Application port mocks
 //go:generate mockgen -source=../internal/core/port/events/bus.go -destination=core/port/events/mock_bus.go -package=events
+//go:generate mockgen -source=../internal/core/port/events/event.go -destination=core/port/events/mock_event.go -package=events
+//go:generate mockgen -source=../internal/core/port/events/subscriber.go -destination=core/port/events/mock_subscriber.go -package=events
 //go:generate mockgen -source=../internal/core/port/logging/logger.go -destination=core/port/logging/mock_logger.go -package=logging
 //go:generate mockgen -source=../internal/core/port/uuid/generator.go -destination=core/port/uuid/mock_generator.go -package=uuid
-
-// Shared kernel mocks
-//go:generate mockgen -source=../internal/core/shared_kernel/events/event.go -destination=core/shared_kernel/events/mock_event.go -package=events
 
 // Presentation port mocks
 //go:generate mockgen -source=../internal/infrastructure/framework/http/router.go -destination=infrastructure/framework/http/mock_router.go -package=http
 //go:generate mockgen -source=../internal/infrastructure/framework/http/context.go -destination=infrastructure/framework/http/mock_context.go -package=http
 
 //go:generate mockgen -source=../internal/infrastructure/framework/validation/rules.go -destination=infrastructure/framework/validation/mock_rules.go -package=validation
-
-// Infrastructure mocks
-//go:generate mockgen -source=../internal/infrastructure/framework/events/subscriber.go -destination=infrastructure/framework/events/mock_subscriber.go -package=events

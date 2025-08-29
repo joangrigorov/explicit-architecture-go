@@ -1,11 +1,11 @@
 package idp
 
 import (
-	"app/internal/core/shared_kernel/domain"
+	"app/internal/core/component/user/domain/user"
 	"context"
 )
 
 type IdentityProvider interface {
-	CreateUser(ctx context.Context, id domain.UserID, username string, email string, password string) (*domain.IdPUserID, error)
-	ConfirmUser(context.Context, domain.IdPUserID) error
+	CreateUser(ctx context.Context, id user.ID, username string, email string, password string) (*user.IdPUserID, error)
+	ConfirmUser(context.Context, user.IdPUserID) error
 }

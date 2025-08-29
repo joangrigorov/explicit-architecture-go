@@ -1,12 +1,12 @@
 package repositories
 
 import (
-	"app/internal/core/component/user/domain"
+	"app/internal/core/component/user/domain/confirmation"
 	"context"
 )
 
 type ConfirmationRepository interface {
-	Create(context.Context, *domain.Confirmation) error
-	GetByID(context.Context, domain.ConfirmationID) (*domain.Confirmation, error)
-	Expire(context.Context, *domain.Confirmation) error
+	Create(context.Context, *confirmation.Confirmation) error
+	GetByID(context.Context, confirmation.ID) (*confirmation.Confirmation, error)
+	Expire(context.Context, *confirmation.Confirmation) error
 }

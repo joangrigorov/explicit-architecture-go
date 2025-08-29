@@ -1,20 +1,20 @@
 package ent
 
 import (
-	. "app/internal/core/component/user/domain"
-	. "app/internal/core/shared_kernel/domain"
+	"app/internal/core/component/user/domain/confirmation"
+	"app/internal/core/component/user/domain/user"
 	"app/internal/infrastructure/component/user/persistence/ent/generated"
 	roles "app/internal/infrastructure/component/user/persistence/ent/generated/user"
 	"fmt"
 )
 
-func mapDomainRole(role roles.Role) Role {
-	var domainRole Role
+func mapDomainRole(role roles.Role) user.Role {
+	var domainRole user.Role
 	switch role.String() {
 	case "admin":
-		domainRole = &Admin{}
+		domainRole = &user.Admin{}
 	case "member":
-		domainRole = &Member{}
+		domainRole = &user.Member{}
 	default:
 		panic(fmt.Sprintf("unknown dto role %s", role.String()))
 	}
@@ -22,7 +22,7 @@ func mapDomainRole(role roles.Role) Role {
 	return domainRole
 }
 
-func mapDtoRole(role Role) roles.Role {
+func mapDtoRole(role user.Role) roles.Role {
 	var dtoRole roles.Role
 	switch role.ID() {
 	case "admin":
@@ -36,23 +36,23 @@ func mapDtoRole(role Role) roles.Role {
 	return dtoRole
 }
 
-func mapUserAggregate(dto *generated.User) *User {
+func mapUserAggregate(dto *generated.User) *user.User {
 	if dto == nil {
 		return nil
 	}
 
-	var idPUserId *IdPUserID
+	var idPUserId *user.IdPUserID
 	if dto.IdpUserID != nil {
-		tmp := IdPUserID(*dto.IdpUserID)
+		tmp := user.IdPUserID(*dto.IdpUserID)
 		idPUserId = &tmp
 	} else {
 		idPUserId = nil
 	}
 
-	return ReconstituteUser(
-		UserID(dto.ID.String()),
-		dto.Username,
-		dto.Email,
+	return user.ReconstituteUser(
+		user.ID(dto.ID.String()),
+		user.Username(dto.Username),
+		user.Email(dto.Email),
 		dto.FirstName,
 		dto.LastName,
 		mapDomainRole(dto.Role),
@@ -63,14 +63,14 @@ func mapUserAggregate(dto *generated.User) *User {
 	)
 }
 
-func mapConfirmationAggregate(dto *generated.Confirmation) *Confirmation {
+func mapConfirmationAggregate(dto *generated.Confirmation) *confirmation.Confirmation {
 	if dto == nil {
 		return nil
 	}
 
-	return ReconstituteConfirmation(
-		ConfirmationID(dto.ID.String()),
-		UserID(dto.UserID.String()),
+	return confirmation.ReconstituteConfirmation(
+		confirmation.ID(dto.ID.String()),
+		user.ID(dto.UserID.String()),
 		dto.HmacSecret,
 		dto.CreatedAt,
 	)

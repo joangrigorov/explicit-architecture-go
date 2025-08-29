@@ -1,7 +1,7 @@
 package ent
 
 import (
-	"app/internal/core/component/user/domain"
+	"app/internal/core/component/user/domain/user"
 	"app/internal/infrastructure/component/user/persistence/ent/generated"
 	roles "app/internal/infrastructure/component/user/persistence/ent/generated/user"
 	"app/internal/infrastructure/framework/uuid"
@@ -14,8 +14,8 @@ import (
 
 func TestMapDomainRole(t *testing.T) {
 	t.Run("supported", func(t *testing.T) {
-		assert.Equal(t, &domain.Admin{}, mapDomainRole(roles.RoleAdmin))
-		assert.Equal(t, &domain.Member{}, mapDomainRole(roles.RoleMember))
+		assert.Equal(t, &user.Admin{}, mapDomainRole(roles.RoleAdmin))
+		assert.Equal(t, &user.Member{}, mapDomainRole(roles.RoleMember))
 	})
 
 	t.Run("panics on unsupported", func(t *testing.T) {
@@ -28,7 +28,7 @@ func TestMapDomainRole(t *testing.T) {
 
 type unsupportedRole struct{}
 
-func (u *unsupportedRole) ID() domain.RoleId {
+func (u *unsupportedRole) ID() user.RoleId {
 	return "unsupported"
 }
 
@@ -38,8 +38,8 @@ func (u *unsupportedRole) String() string {
 
 func TestMapDtoRole(t *testing.T) {
 	t.Run("supported", func(t *testing.T) {
-		assert.Equal(t, roles.RoleAdmin, mapDtoRole(&domain.Admin{}))
-		assert.Equal(t, roles.RoleMember, mapDtoRole(&domain.Member{}))
+		assert.Equal(t, roles.RoleAdmin, mapDtoRole(&user.Admin{}))
+		assert.Equal(t, roles.RoleMember, mapDtoRole(&user.Member{}))
 	})
 
 	t.Run("panics on unsupported", func(t *testing.T) {

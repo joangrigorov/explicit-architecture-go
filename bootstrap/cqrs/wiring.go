@@ -1,7 +1,10 @@
 package cqrs
 
 import (
-	. "app/internal/core/component/user/application/commands"
+	"app/internal/core/component/user/application/commands/complete_password_setup"
+	"app/internal/core/component/user/application/commands/confirm_user"
+	"app/internal/core/component/user/application/commands/initiate_password_setup"
+	"app/internal/core/component/user/application/commands/register_user"
 	. "app/internal/core/component/user/application/queries"
 	"app/internal/core/component/user/application/queries/dto"
 	"app/internal/core/component/user/application/queries/port"
@@ -16,10 +19,10 @@ import (
 )
 
 func WireCommands(
-	registerUserHandler *cqrs.TransactionalRegisterUserCommand,
-	confirmUserHandler *cqrs.TransactionalConfirmUserCommand,
-	createIdPUserHandler *cqrs.TransactionalCreateIdPUserCommand,
-	sndCnfrmMailHandler *cqrs.TransactionalSendConfirmationMailCommand,
+	registerUser *cqrs.TransactionalRegisterUserCommand,
+	initPsswdSetup *cqrs.TransactionalInitiatePasswordSetupCommand,
+	completePsswdSetup *cqrs.TransactionalCompletePasswordSetupCommand,
+	cfrmUser *cqrs.TransactionalConfirmUserCommand,
 
 	// framework
 	logger logging.Logger,
@@ -29,10 +32,10 @@ func WireCommands(
 	bus.Use(cMdwr.Logger(logger))
 	bus.Use(cMdwr.Tracing(tracer))
 
-	cBus.Register[RegisterUserCommand](bus, registerUserHandler.Provide)
-	cBus.Register[ConfirmUserCommand](bus, confirmUserHandler.Provide)
-	cBus.Register[CreateIdPUserCommand](bus, createIdPUserHandler.Provide)
-	cBus.Register[SendConfirmationMailCommand](bus, sndCnfrmMailHandler.Provide)
+	cBus.Register[register_user.Command](bus, registerUser.Provide)
+	cBus.Register[initiate_password_setup.Command](bus, initPsswdSetup.Provide)
+	cBus.Register[complete_password_setup.Command](bus, completePsswdSetup.Provide)
+	cBus.Register[confirm_user.Command](bus, cfrmUser.Provide)
 }
 
 func WireQueries(

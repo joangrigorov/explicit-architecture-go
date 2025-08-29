@@ -2,10 +2,10 @@ package services
 
 import (
 	"app/internal/core/component/user/application/repositories"
-	"app/internal/core/component/user/domain"
+	"app/internal/core/component/user/domain/confirmation"
+	sk "app/internal/core/component/user/domain/user"
 	"app/internal/core/port/hmac"
 	"app/internal/core/port/uuid"
-	sk "app/internal/core/shared_kernel/domain"
 	"context"
 )
 
@@ -27,19 +27,19 @@ func NewConfirmationService(
 	}
 }
 
-func (s *ConfirmationService) Create(ctx context.Context, userID sk.UserID) (
-	confirmation *domain.Confirmation,
+func (s *ConfirmationService) Create(ctx context.Context, userID sk.ID) (
+	con *confirmation.Confirmation,
 	hmac *string,
 	err error,
 ) {
-	id := domain.ConfirmationID(s.uuidGenerator.Generate())
+	id := confirmation.ID(s.uuidGenerator.Generate())
 	hmacSum, secret, err := s.hmacGen.Generate(id.String())
 
 	if err != nil {
 		return nil, nil, err
 	}
 
-	c := domain.NewConfirmation(id, userID, secret)
+	c := confirmation.NewConfirmation(id, userID, secret)
 
 	if err := s.confirmRepository.Create(ctx, c); err != nil {
 		return nil, nil, err

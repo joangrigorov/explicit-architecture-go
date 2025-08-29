@@ -1,8 +1,7 @@
 package ent
 
 import (
-	"app/internal/core/component/user/domain"
-	. "app/internal/core/shared_kernel/domain"
+	user2 "app/internal/core/component/user/domain/user"
 	"app/internal/infrastructure/component/user/persistence/ent/generated/enttest"
 	"app/internal/infrastructure/component/user/persistence/ent/generated/user"
 	"app/internal/infrastructure/framework/uuid"
@@ -36,8 +35,8 @@ func TestRepository_Create(t *testing.T) {
 		createdAt,
 		updatedAt := fakeUserData(f)
 
-	u := &domain.User{
-		ID:          UserID(id),
+	u := &user2.User{
+		ID:          user2.ID(id),
 		Username:    username,
 		Email:       email,
 		FirstName:   fName,
@@ -87,8 +86,8 @@ func TestRepository_Update(t *testing.T) {
 
 	assert.NoError(t, err)
 
-	u := &domain.User{
-		ID:          UserID(id),
+	u := &user2.User{
+		ID:          user2.ID(id),
 		Username:    username,
 		Email:       email,
 		FirstName:   fName,
@@ -230,7 +229,7 @@ func TestRepository_GetById(t *testing.T) {
 		assert.NoError(t, err)
 
 		r := &UserRepository{entClient: client}
-		u, err := r.GetById(ctx, UserID(id))
+		u, err := r.GetById(ctx, user2.ID(id))
 
 		assert.NoError(t, err)
 		assert.NotNil(t, u)
@@ -277,21 +276,21 @@ func TestRepository_GetById(t *testing.T) {
 		assert.NoError(t, err)
 
 		r := &UserRepository{entClient: client}
-		u, err := r.GetById(ctx, UserID(id))
+		u, err := r.GetById(ctx, user2.ID(id))
 
 		assert.Error(t, err, "user: user not found")
 		assert.Nil(t, u)
 	})
 }
 
-func fakeUserData(f faker.Faker) (string, string, string, string, string, string, IdPUserID, time.Time, time.Time, time.Time) {
+func fakeUserData(f faker.Faker) (string, string, string, string, string, string, user2.IdPUserID, time.Time, time.Time, time.Time) {
 	id := f.UUID().V4()
 	username := f.Internet().User()
 	email := f.Internet().Email()
 	fName := f.Person().FirstName()
 	lName := f.Person().LastName()
 	role := f.RandomStringElement([]string{"admin", "member"})
-	idPUserId := IdPUserID(f.UUID().V4())
+	idPUserId := user2.IdPUserID(f.UUID().V4())
 	confirmedAt := f.Time().Time(time.Now())
 	createdAt := f.Time().Time(time.Now())
 	updatedAt := f.Time().Time(time.Now())

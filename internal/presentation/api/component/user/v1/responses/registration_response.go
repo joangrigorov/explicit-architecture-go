@@ -1,7 +1,7 @@
 package responses
 
 import (
-	"app/internal/core/component/user/domain"
+	"app/internal/core/component/user/domain/user"
 	"time"
 )
 
@@ -13,7 +13,7 @@ type RegistrationResponse struct {
 	Confirmed bool      `json:"confirmed"`
 }
 
-func NewRegistrationResponse(user *domain.User) *RegistrationResponse {
+func NewRegistrationResponse(user *user.User) *RegistrationResponse {
 	return &RegistrationResponse{
 		ID:        user.ID.String(),
 		Username:  user.Username,

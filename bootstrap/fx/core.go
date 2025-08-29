@@ -1,20 +1,13 @@
 package fx
 
 import (
-	"app/internal/core/component/user/application/queries"
-	"app/internal/core/component/user/application/services"
-	"app/internal/infrastructure/component/user/mailables"
+	"app/bootstrap/fx/core/component"
 
 	"go.uber.org/fx"
 )
 
 var Core = fx.Module("core",
-	fx.Module("components",
-		fx.Module("user", fx.Provide(
-			queries.NewFindUserByIDHandler,
-			services.NewConfirmationService,
-			services.NewMailService,
-			mailables.NewConfirmationMail,
-		)),
+	fx.Module("component",
+		component.User,
 	),
 )

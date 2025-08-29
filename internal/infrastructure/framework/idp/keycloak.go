@@ -2,8 +2,8 @@ package idp
 
 import (
 	"app/config/api"
+	"app/internal/core/component/user/domain/user"
 	"app/internal/core/port/idp"
-	"app/internal/core/shared_kernel/domain"
 	"context"
 	"errors"
 	"log"
@@ -55,17 +55,17 @@ func (i *KeycloakIdentityProvider) getToken(ctx context.Context) (*gocloak.JWT, 
 
 func (i *KeycloakIdentityProvider) CreateUser(
 	ctx context.Context,
-	userID domain.UserID,
+	userID user.ID,
 	username string,
 	email string,
 	password string,
-) (*domain.IdPUserID, error) {
+) (*user.IdPUserID, error) {
 	token, err := i.getToken(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	user := gocloak.User{
+	usr := gocloak.User{
 		Email:    gocloak.StringP(email),
 		Username: gocloak.StringP(username),
 		Enabled:  gocloak.BoolP(false),
@@ -74,7 +74,7 @@ func (i *KeycloakIdentityProvider) CreateUser(
 		},
 	}
 
-	id, err := i.client.CreateUser(ctx, token.AccessToken, i.realm, user)
+	id, err := i.client.CreateUser(ctx, token.AccessToken, i.realm, usr)
 
 	if err != nil {
 		log.Println("Create user error:", err)
@@ -88,28 +88,28 @@ func (i *KeycloakIdentityProvider) CreateUser(
 		return nil, err
 	}
 
-	keycloakUserID := domain.IdPUserID(id)
+	keycloakUserID := user.IdPUserID(id)
 
 	return &keycloakUserID, nil
 }
 
-func (i *KeycloakIdentityProvider) ConfirmUser(ctx context.Context, id domain.IdPUserID) error {
+func (i *KeycloakIdentityProvider) ConfirmUser(ctx context.Context, id user.IdPUserID) error {
 	token, err := i.getToken(ctx)
 	if err != nil {
 		return err
 	}
 
-	user, err := i.client.GetUserByID(ctx, token.AccessToken, i.realm, id.String())
+	usr, err := i.client.GetUserByID(ctx, token.AccessToken, i.realm, id.String())
 	if err != nil {
 		return err
 	}
 
-	if (user.Enabled != nil && *user.Enabled) || user.EmailVerified != nil && *user.EmailVerified {
+	if (usr.Enabled != nil && *usr.Enabled) || usr.EmailVerified != nil && *usr.EmailVerified {
 		return errors.New("user is already enabled")
 	}
 
-	user.Enabled = gocloak.BoolP(true)
-	user.EmailVerified = gocloak.BoolP(true)
+	usr.Enabled = gocloak.BoolP(true)
+	usr.EmailVerified = gocloak.BoolP(true)
 
-	return i.client.UpdateUser(ctx, token.AccessToken, i.realm, *user)
+	return i.client.UpdateUser(ctx, token.AccessToken, i.realm, *usr)
 }

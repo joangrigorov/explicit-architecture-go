@@ -1,16 +1,17 @@
 package events
 
 import (
-	"app/internal/core/shared_kernel/events"
-	"app/internal/infrastructure/component/user/subscribers"
-	eventBus "app/internal/infrastructure/framework/event_bus"
+	userSubscribers "app/internal/core/component/user/application/subscribers"
+	"app/internal/core/component/user/domain/user"
+	eventBus "app/internal/infrastructure/framework/events"
 )
 
 func WireSubscribers(
 	eventBus *eventBus.SimpleEventBus,
-	kcUserSub *subscribers.CreateKeycloakUserSubscriber,
-	sendConfirmMailSub *subscribers.SendConfirmationMailSubscriber,
+
+	sendPsswdSetupMailSub *userSubscribers.SendSetPasswordMailSubscriber,
+	confirmUserSub *userSubscribers.ConfirmUserSubscriber,
 ) {
-	eventBus.Subscribe(kcUserSub, events.UserCreated{})
-	eventBus.Subscribe(sendConfirmMailSub, events.IdPUserCreated{})
+	eventBus.Subscribe(sendPsswdSetupMailSub, user.CreatedEvent{})
+	eventBus.Subscribe(confirmUserSub, user.ConfirmedEvent{})
 }

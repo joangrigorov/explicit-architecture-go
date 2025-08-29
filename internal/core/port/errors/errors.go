@@ -18,10 +18,13 @@ type ErrorFactory interface {
 }
 
 const (
-	ErrValidation   Code = "VALIDATION"
-	ErrUnauthorized Code = "UNAUTHORIZED"
-	ErrConflict     Code = "CONFLICT"
-	ErrDB           Code = "DB_ERROR"
-	ErrExternal     Code = "EXTERNAL_ERROR"
-	ErrUnknown      Code = "UNKNOWN"
+	ErrValidation           Code = "VALIDATION"
+	ErrUnauthorized         Code = "UNAUTHORIZED"
+	ErrConflict             Code = "CONFLICT"
+	ErrDB                   Code = "DB_ERROR"
+	ErrExternal             Code = "EXTERNAL_ERROR"
+	ErrTypeMismatch         Code = "TYPE_MISMATCH"
+	ErrCommandHandlingError Code = "COMMAND_HANDLING_ERROR"
+	ErrQueryHandlingError   Code = "QUERY_HANDLING_ERROR"
+	ErrUnknown              Code = "UNKNOWN"
 )

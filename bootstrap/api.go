@@ -11,7 +11,6 @@ import (
 func APIApp() *fx.App {
 	return fx.New(
 		fx.Module("config", fx.Provide(api.NewConfig)),
-		d.Subscribers,
 		d.Infrastructure,
 		d.Core,
 		d.Migrations,
