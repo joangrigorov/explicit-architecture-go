@@ -38,6 +38,22 @@ endpoints:
     backend:
       - host: http://api:8080
         url_pattern: /user/v1/registration
+  - endpoint: /user/v1/verifications/{id}/preflight
+    input_query_strings:
+      - token
+    method: GET
+    output_encoding: no-op
+    backend:
+      - host: http://api:8080
+        url_pattern: /user/v1/verifications/{id}/preflight
+        input_query_strings:
+          - token
+  - endpoint: /user/v1/verifications/{id}/password-setup
+    method: POST
+    output_encoding: no-op
+    backend:
+      - host: http://api:8080
+        url_pattern: /user/v1/verifications/{id}/password-setup
 
   - endpoint: /activity/v1/{rest}
     method: GET

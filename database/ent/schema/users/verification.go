@@ -15,6 +15,7 @@ func (Verification) Fields() []ent.Field {
 	return []ent.Field{
 		field.UUID("id", uuid.UUID{}),
 		field.UUID("user_id", uuid.UUID{}).Unique(),
+		field.String("user_email_masked"),
 		field.Text("csrf_token"),
 		field.Time("expires_at"),
 		field.Time("used_at").Nillable().Optional(),

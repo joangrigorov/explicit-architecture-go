@@ -72,10 +72,10 @@ x-backend-web-environment: &x-backend-web-environment
   # Keycloak
   KEYCLOAK_HOST: "http://localhost:8081"
   KEYCLOAK_OAUTH_CLIENT_ID: "web-app"
-  KEYCLOAK_REDIRECT_URL: "http://localhost:8079/oauth2/callback"
+  KEYCLOAK_REDIRECT_URI: "http://localhost:8079/oauth2/callback"
 
   # Activity planner API
-  API_HOST: "http://krakend:8000"
+  API_HOST: "http://krakend:8080"
 
   # Go
   GO111MODULE: on

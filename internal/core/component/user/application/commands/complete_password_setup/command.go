@@ -1,12 +1,11 @@
 package complete_password_setup
 
 import (
-	"app/internal/core/component/user/domain/user"
 	"encoding/json"
 )
 
 type Command struct {
-	userID   user.ID
+	userID   string
 	password string
 }
 
@@ -17,12 +16,6 @@ func (c Command) LogBody() ([]byte, error) {
 	})
 }
 
-func NewCommand(
-	userID user.ID,
-	password string,
-) Command {
-	return Command{
-		userID:   userID,
-		password: password,
-	}
+func NewCommand(userID string, password string) Command {
+	return Command{userID: userID, password: password}
 }

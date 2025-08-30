@@ -37,7 +37,7 @@ func (s *Handler) Handle(ctx context.Context, c Command) error {
 		return s.errors.New(errors.ErrValidation, "User does not exist", err)
 	}
 
-	ver, token, err := s.verificationService.Create(ctx, userID)
+	ver, token, err := s.verificationService.Create(ctx, userID, user.Email)
 
 	if err != nil {
 		return s.errors.New(errors.ErrDB, "Creating verification failed", err)

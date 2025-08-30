@@ -1,4 +1,4 @@
-package get_verification_preflight
+package port
 
 import (
 	"context"
@@ -6,4 +6,5 @@ import (
 
 type VerificationQueries interface {
 	FindByID(ctx context.Context, id string) (*VerificationDTO, error)
+	FindByUserID(ctx context.Context, userID string) (*VerificationDTO, error)
 }

@@ -43,6 +43,20 @@ func (_u *VerificationUpdate) SetNillableUserID(v *uuid.UUID) *VerificationUpdat
 	return _u
 }
 
+// SetUserEmailMasked sets the "user_email_masked" field.
+func (_u *VerificationUpdate) SetUserEmailMasked(v string) *VerificationUpdate {
+	_u.mutation.SetUserEmailMasked(v)
+	return _u
+}
+
+// SetNillableUserEmailMasked sets the "user_email_masked" field if the given value is not nil.
+func (_u *VerificationUpdate) SetNillableUserEmailMasked(v *string) *VerificationUpdate {
+	if v != nil {
+		_u.SetUserEmailMasked(*v)
+	}
+	return _u
+}
+
 // SetCsrfToken sets the "csrf_token" field.
 func (_u *VerificationUpdate) SetCsrfToken(v string) *VerificationUpdate {
 	_u.mutation.SetCsrfToken(v)
@@ -149,6 +163,9 @@ func (_u *VerificationUpdate) sqlSave(ctx context.Context) (_node int, err error
 	if value, ok := _u.mutation.UserID(); ok {
 		_spec.SetField(verification.FieldUserID, field.TypeUUID, value)
 	}
+	if value, ok := _u.mutation.UserEmailMasked(); ok {
+		_spec.SetField(verification.FieldUserEmailMasked, field.TypeString, value)
+	}
 	if value, ok := _u.mutation.CsrfToken(); ok {
 		_spec.SetField(verification.FieldCsrfToken, field.TypeString, value)
 	}
@@ -194,6 +211,20 @@ func (_u *VerificationUpdateOne) SetUserID(v uuid.UUID) *VerificationUpdateOne {
 func (_u *VerificationUpdateOne) SetNillableUserID(v *uuid.UUID) *VerificationUpdateOne {
 	if v != nil {
 		_u.SetUserID(*v)
+	}
+	return _u
+}
+
+// SetUserEmailMasked sets the "user_email_masked" field.
+func (_u *VerificationUpdateOne) SetUserEmailMasked(v string) *VerificationUpdateOne {
+	_u.mutation.SetUserEmailMasked(v)
+	return _u
+}
+
+// SetNillableUserEmailMasked sets the "user_email_masked" field if the given value is not nil.
+func (_u *VerificationUpdateOne) SetNillableUserEmailMasked(v *string) *VerificationUpdateOne {
+	if v != nil {
+		_u.SetUserEmailMasked(*v)
 	}
 	return _u
 }
@@ -333,6 +364,9 @@ func (_u *VerificationUpdateOne) sqlSave(ctx context.Context) (_node *Verificati
 	}
 	if value, ok := _u.mutation.UserID(); ok {
 		_spec.SetField(verification.FieldUserID, field.TypeUUID, value)
+	}
+	if value, ok := _u.mutation.UserEmailMasked(); ok {
+		_spec.SetField(verification.FieldUserEmailMasked, field.TypeString, value)
 	}
 	if value, ok := _u.mutation.CsrfToken(); ok {
 		_spec.SetField(verification.FieldCsrfToken, field.TypeString, value)

@@ -1,34 +1,50 @@
 package get_verification_preflight
 
 import (
+	"app/internal/core/component/user/application/queries/port"
 	"app/internal/core/component/user/domain/verification"
 	"app/internal/core/port/errors"
 	"context"
 	"crypto/subtle"
+	"time"
 )
 
 type Handler struct {
-	queries VerificationQueries
-	errors  errors.ErrorFactory
+	verificationQueries port.VerificationQueries
+	errors              errors.ErrorFactory
 }
 
-func NewHandler(queries VerificationQueries, errors errors.ErrorFactory) *Handler {
-	return &Handler{queries: queries, errors: errors}
+func NewHandler(queries port.VerificationQueries, errors errors.ErrorFactory) *Handler {
+	return &Handler{verificationQueries: queries, errors: errors}
 }
 
-func (h *Handler) Execute(ctx context.Context, q Query) (*VerificationPreflightDto, error) {
-	ver, err := h.queries.FindByID(ctx, q.verificationID)
+func (h *Handler) Execute(ctx context.Context, q Query) (*DTO, error) {
+	ver, err := h.verificationQueries.FindByID(ctx, q.verificationID)
+
 	if err != nil || ver == nil {
-		return nil, h.errors.New(errors.ErrDB, "Verification not found", err)
+		return nil, h.errors.New(errors.ErrNotFound, "Verification entry not found", err)
 	}
 
-	expectedCSRF := verification.Token(q.Token).Hash()
+	if ver.UsedAt != nil {
+		return nil, h.errors.New(errors.ErrConflict, "Verification entry already used", nil)
+	}
+
+	rawToken, err := verification.DecodeToken(q.Token)
+	if err != nil {
+		return nil, h.errors.New(errors.ErrValidation, "Verification token decode failed", err)
+	}
+
+	expectedCSRF := rawToken.Hash()
 	actualCSRF, err := verification.DecodeCSRFToken(ver.CSRFToken)
 
 	if err != nil {
 		return nil, h.errors.New(errors.ErrDB, "Cannot decode stored CSRF token", err)
 	}
 
-	// TODO continue from here
-	if subtle.ConstantTimeCompare([]byte(expectedCSRF.Bytes()), actualCSRF.Bytes()) == 1
+	return &DTO{
+		ValidCSRF:   subtle.ConstantTimeCompare(expectedCSRF[:], actualCSRF[:]) == 1,
+		Expired:     time.Now().After(ver.ExpiresAt),
+		MaskedEmail: ver.UserEmailMasked,
+		UserID:      ver.UserID,
+	}, nil
 }

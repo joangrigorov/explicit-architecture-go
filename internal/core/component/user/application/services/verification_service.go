@@ -2,7 +2,7 @@ package services
 
 import (
 	"app/internal/core/component/user/application/repositories"
-	sk "app/internal/core/component/user/domain/user"
+	"app/internal/core/component/user/domain/user"
 	"app/internal/core/component/user/domain/verification"
 	"app/internal/core/port/errors"
 	"app/internal/core/port/uuid"
@@ -27,7 +27,7 @@ func NewVerificationService(
 	}
 }
 
-func (s *VerificationService) Create(ctx context.Context, userID sk.ID) (
+func (s *VerificationService) Create(ctx context.Context, userID user.ID, userEmail user.Email) (
 	ver *verification.Verification,
 	token string,
 	err error,
@@ -39,7 +39,7 @@ func (s *VerificationService) Create(ctx context.Context, userID sk.ID) (
 		return nil, "", s.errors.New(errors.ErrUnknown, "Error generating verification token", err)
 	}
 
-	c := verification.NewVerification(id, userID, t.Hash())
+	c := verification.NewVerification(id, userID, userEmail.Mask(), t.Hash())
 
 	if err := s.verificationRepository.Create(ctx, c); err != nil {
 		return nil, "", s.errors.New(errors.ErrUnknown, "Error creating verification", err)

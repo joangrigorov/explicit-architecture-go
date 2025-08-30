@@ -1,7 +1,7 @@
 package user
 
 import (
-	"app/internal/core/shared_kernel/domain"
+	"app/internal/core/shared_kernel/domain/mixin"
 	"time"
 )
 
@@ -11,24 +11,27 @@ type Event interface {
 }
 
 type CreatedEvent struct {
-	userId   ID
-	username Username
-	email    Email
+	userId    ID
+	username  Username
+	email     Email
+	firstName string
+	lastName  string
 
-	domain.WithCreatedAt
+	mixin.WithCreatedAt
 }
 
 type IdPUserLinkedEvent struct {
-	userID  ID
-	idpUser IdPUserID
+	userID    ID
+	idpUserID IdPUserID
 
-	domain.WithCreatedAt
+	mixin.WithCreatedAt
 }
 
 type ConfirmedEvent struct {
-	userID ID
+	userID      ID
+	confirmedAt time.Time
 
-	domain.WithCreatedAt
+	mixin.WithCreatedAt
 }
 
 func (u CreatedEvent) UserID() ID {
@@ -49,26 +52,29 @@ func (u ConfirmedEvent) UserID() ID {
 	return u.userID
 }
 
-func NewIdPUserLinkedEvent(userID ID, idpUserID IdPUserID) IdPUserLinkedEvent {
-	return IdPUserLinkedEvent{
-		userID:        userID,
-		idpUser:       idpUserID,
-		WithCreatedAt: domain.NewWithCreatedAtNow(),
-	}
-}
-
-func NewConfirmedEvent(userId ID) ConfirmedEvent {
-	return ConfirmedEvent{
-		userID:        userId,
-		WithCreatedAt: domain.NewWithCreatedAtNow(),
-	}
-}
-
-func NewCreatedEvent(id ID, username Username, email Email) CreatedEvent {
+func NewCreatedEvent(id ID, username Username, email Email, fName string, lName string) CreatedEvent {
 	return CreatedEvent{
 		userId:        id,
 		username:      username,
 		email:         email,
-		WithCreatedAt: domain.NewWithCreatedAtNow(),
+		firstName:     fName,
+		lastName:      lName,
+		WithCreatedAt: mixin.NewWithCreatedAtNow(),
+	}
+}
+
+func NewIdPUserLinkedEvent(userID ID, idpUserID IdPUserID) IdPUserLinkedEvent {
+	return IdPUserLinkedEvent{
+		userID:        userID,
+		idpUserID:     idpUserID,
+		WithCreatedAt: mixin.NewWithCreatedAtNow(),
+	}
+}
+
+func NewConfirmedEvent(userId ID, confirmedAt time.Time) ConfirmedEvent {
+	return ConfirmedEvent{
+		userID:        userId,
+		confirmedAt:   confirmedAt,
+		WithCreatedAt: mixin.NewWithCreatedAtNow(),
 	}
 }

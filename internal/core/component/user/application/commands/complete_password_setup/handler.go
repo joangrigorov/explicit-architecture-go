@@ -2,6 +2,7 @@ package complete_password_setup
 
 import (
 	"app/internal/core/component/user/application/repositories"
+	"app/internal/core/component/user/domain/user"
 	"app/internal/core/port/errors"
 	eventBus "app/internal/core/port/events"
 	"app/internal/core/port/idp"
@@ -19,22 +20,29 @@ func NewHandler(
 	userRepository repositories.UserRepository,
 	idp idp.IdentityProvider,
 	eventBus eventBus.EventBus,
+	errors errors.ErrorFactory,
 ) *Handler {
 	return &Handler{
 		userRepository: userRepository,
 		idp:            idp,
 		eventBus:       eventBus,
+		errors:         errors,
 	}
 }
 
 func (h *Handler) Handle(ctx context.Context, c Command) error {
-	usr, err := h.userRepository.GetById(ctx, c.userID)
+	userID := user.ID(c.userID)
+	usr, err := h.userRepository.GetById(ctx, userID)
 
 	if err != nil {
 		return h.errors.New(errors.ErrValidation, "User not found", err)
 	}
 
-	idpUserID, err := h.idp.CreateUser(ctx, c.userID, usr.Username.String(), usr.Email.String(), c.password)
+	if usr.IdPUserId != nil {
+		return h.errors.New(errors.ErrValidation, "User is already linked to IdP", nil)
+	}
+
+	idpUserID, err := h.idp.CreateUser(ctx, userID, usr.Username.String(), usr.Email.String(), c.password)
 
 	if err != nil {
 		return h.errors.New(errors.ErrDB, "Cannot create user in IdP", err)

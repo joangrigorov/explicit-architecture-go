@@ -30,14 +30,14 @@ func GenerateToken() (Token, error) {
 	return b, nil
 }
 
+func DecodeToken(s string) (Token, error) {
+	return base64.RawURLEncoding.DecodeString(s)
+}
+
 type CSRFToken [32]byte
 
 func (t CSRFToken) Encode() string {
 	return base64.RawURLEncoding.EncodeToString(t[:])
-}
-
-func (t CSRFToken) Bytes() [32]byte {
-	return t
 }
 
 func DecodeCSRFToken(s string) (CSRFToken, error) {

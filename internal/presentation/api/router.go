@@ -3,15 +3,15 @@ package api
 import (
 	"app/internal/infrastructure/framework/http"
 	"app/internal/presentation/api/component/activity/v1/controllers/activities"
-	"app/internal/presentation/api/component/user/v1/controllers"
+	uc "app/internal/presentation/api/component/user/v1/controllers"
 	"app/internal/presentation/api/shared/middleware"
 )
 
 func RegisterRoutes(
 	r http.Router,
 	activityController *activities.Controller,
-	registrationController *controllers.Registration,
-	verificationController *controllers.Verification,
+	registrationController *uc.Registration,
+	verificationController *uc.Verification,
 ) {
 	// Global middleware
 	r.Use(
@@ -25,7 +25,8 @@ func RegisterRoutes(
 		v1 := r.Group("/user/v1")
 
 		v1.POST("/registration", registrationController.Register)
-		v1.POST("/verifications/:id/preflight", verificationController.PreflightValidate)
+		v1.GET("/verifications/:id/preflight", verificationController.PreflightValidate)
+		v1.POST("/verifications/:id/password-setup", verificationController.PasswordSetup)
 	}
 
 	// activity component public routes

@@ -1,10 +1,10 @@
-{{ define "mail/password_setup" }}
+{{ define "mail/user_confirmed" }}
     <!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Confirm your account</title>
+        <title>You completed your Activity Planner account!</title>
     </head>
     <body style="margin:0; padding:0; background-color:#f5f7fb; font-family:Arial, Helvetica, sans-serif; color:#0f172a;">
     <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f5f7fb; padding:30px 0;">
@@ -19,12 +19,7 @@
                     <tr>
                         <td style="padding:32px 24px; font-size:16px; line-height:1.5; color:#0f172a;">
                             <p style="margin:0 0 16px 0;">Hello {{ .FullName }},</p>
-                            <p style="margin:0 0 16px 0;">Thanks for signing up for Activity Planner. Please set your user password to activate your account.</p>
-                            <p style="text-align:center; margin:24px 0;">
-                                <a href="{{ .WebURL }}/set-password?id={{ .VerificationID }}&token={{ .Token }}" style="display:inline-block; padding:14px 28px; font-size:16px; font-weight:600; color:#ffffff; background-color:#2563eb; border-radius:999px; text-decoration:none;">Set Password</a>
-                            </p>
-                            <p style="margin:0;">This email will expire in 2 days. You have to use the sign-up form again to retry.</p>
-                            <p style="margin:0;">If you didn’t create an account, you can safely ignore this email.</p>
+                            <p style="margin:0 0 16px 0;">Thanks for signing up with Activity Planner, your account registration is now completed!</p>
                         </td>
                     </tr>
                     <tr>

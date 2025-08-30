@@ -1,6 +1,9 @@
 package user
 
-import "regexp"
+import (
+	"regexp"
+	"strings"
+)
 
 var emailRegex = regexp.MustCompile(`^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$`)
 
@@ -21,6 +24,15 @@ func (e Email) String() string {
 
 func (e Email) IsValid() bool {
 	return emailRegex.MatchString(string(e))
+}
+
+func (e Email) Mask() string {
+	email := e.String()
+	at := strings.Index(email, "@")
+	if at <= 1 {
+		return "***" + email[at:]
+	}
+	return email[:2] + "***" + email[at:]
 }
 
 type InvalidEmailError struct{}

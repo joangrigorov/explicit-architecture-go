@@ -1,6 +1,8 @@
 package pgsql
 
-import "database/sql/driver"
+import (
+	"database/sql/driver"
+)
 
 func CloseTx(tx driver.Tx, err *error) {
 	if r := recover(); r != nil {

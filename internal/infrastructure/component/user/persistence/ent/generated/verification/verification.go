@@ -13,6 +13,8 @@ const (
 	FieldID = "id"
 	// FieldUserID holds the string denoting the user_id field in the database.
 	FieldUserID = "user_id"
+	// FieldUserEmailMasked holds the string denoting the user_email_masked field in the database.
+	FieldUserEmailMasked = "user_email_masked"
 	// FieldCsrfToken holds the string denoting the csrf_token field in the database.
 	FieldCsrfToken = "csrf_token"
 	// FieldExpiresAt holds the string denoting the expires_at field in the database.
@@ -29,6 +31,7 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldUserID,
+	FieldUserEmailMasked,
 	FieldCsrfToken,
 	FieldExpiresAt,
 	FieldUsedAt,
@@ -56,6 +59,11 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 // ByUserID orders the results by the user_id field.
 func ByUserID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUserID, opts...).ToFunc()
+}
+
+// ByUserEmailMasked orders the results by the user_email_masked field.
+func ByUserEmailMasked(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldUserEmailMasked, opts...).ToFunc()
 }
 
 // ByCsrfToken orders the results by the csrf_token field.

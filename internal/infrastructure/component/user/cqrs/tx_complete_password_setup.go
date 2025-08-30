@@ -3,6 +3,7 @@ package cqrs
 import (
 	"app/internal/core/component/user/application/commands/complete_password_setup"
 	port "app/internal/core/port/cqrs"
+	"app/internal/core/port/errors"
 	"app/internal/core/port/idp"
 	usrAdapter "app/internal/infrastructure/component/user/persistence/ent"
 	userEnt "app/internal/infrastructure/component/user/persistence/ent/generated"
@@ -20,6 +21,7 @@ type TransactionalCompletePasswordSetupCommand struct {
 	eventBus       *events.SimpleEventBus
 	idp            idp.IdentityProvider
 	entClient      *userEnt.Client
+	errors         errors.ErrorFactory
 }
 
 func NewTransactionalCompletePasswordSetupCommand(
@@ -27,12 +29,14 @@ func NewTransactionalCompletePasswordSetupCommand(
 	eventBus *events.SimpleEventBus,
 	idp idp.IdentityProvider,
 	entClient *userEnt.Client,
+	errors errors.ErrorFactory,
 ) *TransactionalCompletePasswordSetupCommand {
 	return &TransactionalCompletePasswordSetupCommand{
 		userRepository: userRepository,
 		eventBus:       eventBus,
 		idp:            idp,
 		entClient:      entClient,
+		errors:         errors,
 	}
 }
 
@@ -50,6 +54,7 @@ func (t *TransactionalCompletePasswordSetupCommand) Provide(ctx context.Context,
 		WithTx(tx).
 		WithEventBus(txEventBus)
 
-	handler := complete_password_setup.NewHandler(userRepository, t.idp, txEventBus)
-	return handler.Handle(ctx, command.(complete_password_setup.Command))
+	handler := complete_password_setup.NewHandler(userRepository, t.idp, txEventBus, t.errors)
+	err = handler.Handle(ctx, command.(complete_password_setup.Command))
+	return err
 }

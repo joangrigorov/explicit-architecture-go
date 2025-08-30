@@ -20,14 +20,21 @@ func (r *VerificationRepository) Create(ctx context.Context, c *verification.Ver
 		Create().
 		SetID(uuid.Parse(c.ID.String())).
 		SetUserID(uuid.Parse(c.UserID.String())).
+		SetUserEmailMasked(c.UserEmailMasked).
 		SetCsrfToken(c.CSRFToken.Encode()).
 		SetExpiresAt(c.ExpiresAt).
 		SetCreatedAt(c.CreatedAt).
 		Save(ctx)
 
-	// TODO offload events into event bus
+	if err != nil {
+		return err
+	}
 
-	return err
+	if err = r.flushEvents(ctx, c); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (r *VerificationRepository) GetByID(ctx context.Context, id verification.ID) (*verification.Verification, error) {
@@ -41,7 +48,17 @@ func (r *VerificationRepository) GetByID(ctx context.Context, id verification.ID
 }
 
 func (r *VerificationRepository) Expire(ctx context.Context, c *verification.Verification) error {
-	return r.client().DeleteOneID(uuid.Parse(c.ID.String())).Exec(ctx)
+	err := r.client().DeleteOneID(uuid.Parse(c.ID.String())).Exec(ctx)
+
+	if err != nil {
+		return err
+	}
+
+	if err = r.flushEvents(ctx, c); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (r *VerificationRepository) client() *generated.VerificationClient {
@@ -54,6 +71,18 @@ func (r *VerificationRepository) client() *generated.VerificationClient {
 	}
 
 	panic("ent client not initialized")
+}
+
+func (r *VerificationRepository) flushEvents(ctx context.Context, c *verification.Verification) error {
+	for _, event := range c.Events() {
+		err := r.eventBus.Publish(ctx, event)
+		if err != nil {
+			return err
+		}
+	}
+
+	c.ResetEvents()
+	return nil
 }
 
 func (r *VerificationRepository) WithTx(tx *generated.Tx) *VerificationRepository {

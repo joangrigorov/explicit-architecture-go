@@ -20,6 +20,8 @@ type Verification struct {
 	ID uuid.UUID `json:"id,omitempty"`
 	// UserID holds the value of the "user_id" field.
 	UserID uuid.UUID `json:"user_id,omitempty"`
+	// UserEmailMasked holds the value of the "user_email_masked" field.
+	UserEmailMasked string `json:"user_email_masked,omitempty"`
 	// CsrfToken holds the value of the "csrf_token" field.
 	CsrfToken string `json:"csrf_token,omitempty"`
 	// ExpiresAt holds the value of the "expires_at" field.
@@ -36,7 +38,7 @@ func (*Verification) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case verification.FieldCsrfToken:
+		case verification.FieldUserEmailMasked, verification.FieldCsrfToken:
 			values[i] = new(sql.NullString)
 		case verification.FieldExpiresAt, verification.FieldUsedAt, verification.FieldCreatedAt:
 			values[i] = new(sql.NullTime)
@@ -68,6 +70,12 @@ func (_m *Verification) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field user_id", values[i])
 			} else if value != nil {
 				_m.UserID = *value
+			}
+		case verification.FieldUserEmailMasked:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field user_email_masked", values[i])
+			} else if value.Valid {
+				_m.UserEmailMasked = value.String
 			}
 		case verification.FieldCsrfToken:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -132,6 +140,9 @@ func (_m *Verification) String() string {
 	builder.WriteString(fmt.Sprintf("id=%v, ", _m.ID))
 	builder.WriteString("user_id=")
 	builder.WriteString(fmt.Sprintf("%v", _m.UserID))
+	builder.WriteString(", ")
+	builder.WriteString("user_email_masked=")
+	builder.WriteString(_m.UserEmailMasked)
 	builder.WriteString(", ")
 	builder.WriteString("csrf_token=")
 	builder.WriteString(_m.CsrfToken)

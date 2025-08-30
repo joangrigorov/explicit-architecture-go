@@ -27,6 +27,7 @@ type TransactionalInitiatePasswordSetupCommand struct {
 	eventBus               *events.SimpleEventBus
 	entClient              *userEnt.Client
 	passwordSetupMail      mailables.PasswordSetupMail
+	userConfirmedMail      mailables.UserConfirmedMail
 	uuidGenerator          uuid.Generator
 	mailer                 *mail.Mailer
 	logger                 logging.Logger
@@ -39,6 +40,7 @@ func NewTransactionalInitiatePasswordSetupCommand(
 	eventBus *events.SimpleEventBus,
 	entClient *userEnt.Client,
 	passwordSetupMail mailables.PasswordSetupMail,
+	userConfirmedMail mailables.UserConfirmedMail,
 	uuidGenerator uuid.Generator,
 	mailer *mail.Mailer,
 	logger logging.Logger,
@@ -50,6 +52,7 @@ func NewTransactionalInitiatePasswordSetupCommand(
 		eventBus:               eventBus,
 		entClient:              entClient,
 		passwordSetupMail:      passwordSetupMail,
+		userConfirmedMail:      userConfirmedMail,
 		uuidGenerator:          uuidGenerator,
 		mailer:                 mailer,
 		logger:                 logger,
@@ -75,7 +78,7 @@ func (t *TransactionalInitiatePasswordSetupCommand) Provide(ctx context.Context,
 		WithEventBus(txEventBus)
 
 	verificationService := services.NewVerificationService(verificationRepository, t.uuidGenerator, t.errors)
-	mailerSvc := services.NewMailService(mailer, t.passwordSetupMail)
+	mailerSvc := services.NewMailService(mailer, t.passwordSetupMail, t.userConfirmedMail, t.errors)
 
 	userRepository := t.userRepository.
 		WithTx(tx).

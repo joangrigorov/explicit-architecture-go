@@ -13,5 +13,5 @@ func WireSubscribers(
 	confirmUserSub *userSubscribers.ConfirmUserSubscriber,
 ) {
 	eventBus.Subscribe(sendPsswdSetupMailSub, user.CreatedEvent{})
-	eventBus.Subscribe(confirmUserSub, user.ConfirmedEvent{})
+	eventBus.Subscribe(confirmUserSub, user.IdPUserLinkedEvent{})
 }

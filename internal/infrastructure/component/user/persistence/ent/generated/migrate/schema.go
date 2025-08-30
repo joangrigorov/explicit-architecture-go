@@ -59,6 +59,7 @@ var (
 	VerificationsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID},
 		{Name: "user_id", Type: field.TypeUUID, Unique: true},
+		{Name: "user_email_masked", Type: field.TypeString},
 		{Name: "csrf_token", Type: field.TypeString, Size: 2147483647},
 		{Name: "expires_at", Type: field.TypeTime},
 		{Name: "used_at", Type: field.TypeTime, Nullable: true},
@@ -73,17 +74,17 @@ var (
 			{
 				Name:    "verification_expires_at",
 				Unique:  false,
-				Columns: []*schema.Column{VerificationsColumns[3]},
+				Columns: []*schema.Column{VerificationsColumns[4]},
 			},
 			{
 				Name:    "verification_used_at",
 				Unique:  false,
-				Columns: []*schema.Column{VerificationsColumns[4]},
+				Columns: []*schema.Column{VerificationsColumns[5]},
 			},
 			{
 				Name:    "verification_created_at",
 				Unique:  false,
-				Columns: []*schema.Column{VerificationsColumns[5]},
+				Columns: []*schema.Column{VerificationsColumns[6]},
 			},
 		},
 	}

@@ -5,5 +5,5 @@ import (
 )
 
 type UserQueries interface {
-	FindById(ctx context.Context, id string) (*UserDTO, error)
+	FindByID(ctx context.Context, id string) (*DTO, error)
 }

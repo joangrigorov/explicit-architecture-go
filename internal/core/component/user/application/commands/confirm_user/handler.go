@@ -1,7 +1,9 @@
 package confirm_user
 
 import (
+	"app/config/api"
 	"app/internal/core/component/user/application/repositories"
+	"app/internal/core/component/user/application/services"
 	"app/internal/core/component/user/domain/user"
 	"app/internal/core/port/errors"
 	"app/internal/core/port/idp"
@@ -11,15 +13,25 @@ import (
 type Handler struct {
 	userRepository repositories.UserRepository
 	idp            idp.IdentityProvider
+	mailService    *services.MailService
 	errors         errors.ErrorFactory
+	senderEmail    string
 }
 
 func NewHandler(
 	userRepository repositories.UserRepository,
 	idp idp.IdentityProvider,
+	mailService *services.MailService,
 	errors errors.ErrorFactory,
+	cfg *api.Config,
 ) *Handler {
-	return &Handler{userRepository: userRepository, idp: idp, errors: errors}
+	return &Handler{
+		userRepository: userRepository,
+		idp:            idp,
+		mailService:    mailService,
+		errors:         errors,
+		senderEmail:    cfg.Mail.DefaultSender,
+	}
 }
 
 func (h *Handler) Handle(ctx context.Context, c Command) error {
@@ -41,10 +53,12 @@ func (h *Handler) Handle(ctx context.Context, c Command) error {
 
 	usr.Confirm()
 
-	err = h.userRepository.Update(ctx, usr)
-
-	if err != nil {
+	if err := h.userRepository.Update(ctx, usr); err != nil {
 		return h.errors.New(errors.ErrDB, "Error updating user", err)
+	}
+
+	if err := h.mailService.SendUserConfirmedMail(usr.Email, user.Email(h.senderEmail), usr.FullName()); err != nil {
+		return h.errors.New(errors.ErrMail, "Error sending user confirmed mail", err)
 	}
 
 	return nil

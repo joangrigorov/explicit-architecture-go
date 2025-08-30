@@ -39,7 +39,7 @@ func (c *Registration) Register(ctx ctx.Context) {
 	}
 
 	query := qs.Query{ID: userID}
-	userDTO, err := queries.Execute[*qs.UserDTO](ctx.Context(), c.queryBus, query)
+	userDTO, err := queries.Execute[*qs.DTO](ctx.Context(), c.queryBus, query)
 
 	if err != nil {
 		InternalServerError(ctx, NewDefaultError(err))

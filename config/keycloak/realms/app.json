@@ -908,7 +908,6 @@
       "description": "",
       "rootUrl": "",
       "adminUrl": "",
-      "baseUrl": "http://localhost:8079",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
@@ -2653,8 +2652,7 @@
     "clientSessionMaxLifespan": "0",
     "clientOfflineSessionIdleTimeout": "0",
     "cibaInterval": "5",
-    "realmReusableOtpCode": "false",
-    "frontendUrl": "http://localhost:8079"
+    "realmReusableOtpCode": "false"
   },
   "keycloakVersion": "26.3.2",
   "userManagedAccessAllowed": false,

@@ -1,0 +1,7 @@
+{{ define "#/form/hidden" }}
+    <input type="hidden"
+           id="{{ .ID }}"
+           name="{{ .Name }}"
+           value="{{ .Value }}"
+           {{ if .Required }}required{{ end }}>
+{{ end }}

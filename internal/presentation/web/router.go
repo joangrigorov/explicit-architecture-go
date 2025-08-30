@@ -15,6 +15,7 @@ func RegisterRoutes(
 
 	h *homeC.Home,
 	su *id.SignUp,
+	ps *id.PasswordSetup,
 ) {
 	r.StaticFS("/assets", http.Dir("internal/presentation/web/assets"))
 
@@ -24,4 +25,6 @@ func RegisterRoutes(
 	r.GET("/sign-up", su.SignUpForm)
 	r.POST("/sign-up", su.SignUp)
 	r.GET("/sign-in", su.SignInForm)
+	r.GET("/set-password", ps.SetPasswordForm)
+	r.POST("/set-password", ps.SetPassword)
 }

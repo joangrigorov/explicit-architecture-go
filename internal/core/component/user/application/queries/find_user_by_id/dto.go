@@ -2,7 +2,7 @@ package find_user_by_id
 
 import "time"
 
-type UserDTO struct {
+type DTO struct {
 	ID          string     `json:"id"`
 	Email       string     `json:"email"`
 	Username    string     `json:"username"`

@@ -1,7 +1,7 @@
 package verification
 
 import (
-	"app/internal/core/shared_kernel/domain"
+	"app/internal/core/shared_kernel/domain/mixin"
 	"time"
 )
 
@@ -13,11 +13,11 @@ type Event interface {
 type CreatedEvent struct {
 	verificationID ID
 
-	domain.WithCreatedAt
+	mixin.WithCreatedAt
 }
 
 func NewCreatedEvent(verificationID ID) *CreatedEvent {
-	return &CreatedEvent{verificationID: verificationID, WithCreatedAt: domain.NewWithCreatedAtNow()}
+	return &CreatedEvent{verificationID: verificationID, WithCreatedAt: mixin.NewWithCreatedAtNow()}
 }
 
 func (c CreatedEvent) VerificationID() ID {

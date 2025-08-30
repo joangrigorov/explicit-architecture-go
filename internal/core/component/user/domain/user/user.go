@@ -46,18 +46,18 @@ func (u *User) Events() []Event {
 }
 
 func (u *User) Confirm() {
-	now := time.Now()
-	u.ConfirmedAt = &now
-	u.recordEvent(NewConfirmedEvent(u.ID))
-}
-
-func (u *User) FullName() string {
-	return fmt.Sprintf("%s %s", u.FirstName, u.LastName)
+	confirmedAt := time.Now()
+	u.ConfirmedAt = &confirmedAt
+	u.recordEvent(NewConfirmedEvent(u.ID, confirmedAt))
 }
 
 func (u *User) LinkToIdP(idpUserID IdPUserID) {
 	u.IdPUserId = &idpUserID
 	u.recordEvent(NewIdPUserLinkedEvent(u.ID, idpUserID))
+}
+
+func (u *User) FullName() string {
+	return fmt.Sprintf("%s %s", u.FirstName, u.LastName)
 }
 
 func NewUser(id ID, username Username, email Email, fName string, lName string, role Role) *User {
@@ -73,7 +73,7 @@ func NewUser(id ID, username Username, email Email, fName string, lName string, 
 		UpdatedAt: time.Now(),
 
 		events: []Event{
-			NewCreatedEvent(id, username, email),
+			NewCreatedEvent(id, username, email, fName, lName),
 		},
 	}
 }

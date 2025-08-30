@@ -18,6 +18,7 @@ type DefaultError struct {
 func NewDefaultError(err error) DefaultError {
 	var appErr Error
 	if errors.As(err, &appErr) {
+		// TODO only add the stack trace if app is set in debug mode
 		return DefaultError{appErr.Error(), appErr.PrettyPrint()}
 	}
 
@@ -40,4 +41,12 @@ func BadRequest(c ctx.Context, res interface{}) {
 
 func NotFound(c ctx.Context, res interface{}) {
 	c.JSON(http.StatusNotFound, res)
+}
+
+func Conflict(c ctx.Context, res interface{}) {
+	c.JSON(http.StatusConflict, res)
+}
+
+func Gone(c ctx.Context, res interface{}) {
+	c.JSON(http.StatusGone, res)
 }

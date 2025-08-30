@@ -48,7 +48,6 @@ func (i *KeycloakIdentityProvider) getToken(ctx context.Context) (*gocloak.JWT, 
 	}
 
 	i.token = token
-	log.Println(token.AccessToken)
 
 	return token, nil
 }

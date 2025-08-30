@@ -8,15 +8,15 @@ import (
 	"context"
 )
 
-type Queries struct {
+type UserQueries struct {
 	client *generated.Client
 }
 
-func NewQueries(client *generated.Client) find_user_by_id.UserQueries {
-	return &Queries{client: client}
+func NewUserQueries(client *generated.Client) find_user_by_id.UserQueries {
+	return &UserQueries{client: client}
 }
 
-func (u *Queries) FindById(ctx context.Context, id string) (*find_user_by_id.UserDTO, error) {
+func (u *UserQueries) FindByID(ctx context.Context, id string) (*find_user_by_id.DTO, error) {
 	entDto, err := u.client.User.
 		Query().
 		Where(ent.ID(uuid.Parse(id)), ent.DeletedAtIsNil()).
@@ -26,7 +26,7 @@ func (u *Queries) FindById(ctx context.Context, id string) (*find_user_by_id.Use
 		return nil, err
 	}
 
-	return &find_user_by_id.UserDTO{
+	return &find_user_by_id.DTO{
 		ID:          entDto.ID.String(),
 		Email:       entDto.Email,
 		Username:    entDto.Username,

@@ -60,6 +60,11 @@ func UserID(v uuid.UUID) predicate.Verification {
 	return predicate.Verification(sql.FieldEQ(FieldUserID, v))
 }
 
+// UserEmailMasked applies equality check predicate on the "user_email_masked" field. It's identical to UserEmailMaskedEQ.
+func UserEmailMasked(v string) predicate.Verification {
+	return predicate.Verification(sql.FieldEQ(FieldUserEmailMasked, v))
+}
+
 // CsrfToken applies equality check predicate on the "csrf_token" field. It's identical to CsrfTokenEQ.
 func CsrfToken(v string) predicate.Verification {
 	return predicate.Verification(sql.FieldEQ(FieldCsrfToken, v))
@@ -118,6 +123,71 @@ func UserIDLT(v uuid.UUID) predicate.Verification {
 // UserIDLTE applies the LTE predicate on the "user_id" field.
 func UserIDLTE(v uuid.UUID) predicate.Verification {
 	return predicate.Verification(sql.FieldLTE(FieldUserID, v))
+}
+
+// UserEmailMaskedEQ applies the EQ predicate on the "user_email_masked" field.
+func UserEmailMaskedEQ(v string) predicate.Verification {
+	return predicate.Verification(sql.FieldEQ(FieldUserEmailMasked, v))
+}
+
+// UserEmailMaskedNEQ applies the NEQ predicate on the "user_email_masked" field.
+func UserEmailMaskedNEQ(v string) predicate.Verification {
+	return predicate.Verification(sql.FieldNEQ(FieldUserEmailMasked, v))
+}
+
+// UserEmailMaskedIn applies the In predicate on the "user_email_masked" field.
+func UserEmailMaskedIn(vs ...string) predicate.Verification {
+	return predicate.Verification(sql.FieldIn(FieldUserEmailMasked, vs...))
+}
+
+// UserEmailMaskedNotIn applies the NotIn predicate on the "user_email_masked" field.
+func UserEmailMaskedNotIn(vs ...string) predicate.Verification {
+	return predicate.Verification(sql.FieldNotIn(FieldUserEmailMasked, vs...))
+}
+
+// UserEmailMaskedGT applies the GT predicate on the "user_email_masked" field.
+func UserEmailMaskedGT(v string) predicate.Verification {
+	return predicate.Verification(sql.FieldGT(FieldUserEmailMasked, v))
+}
+
+// UserEmailMaskedGTE applies the GTE predicate on the "user_email_masked" field.
+func UserEmailMaskedGTE(v string) predicate.Verification {
+	return predicate.Verification(sql.FieldGTE(FieldUserEmailMasked, v))
+}
+
+// UserEmailMaskedLT applies the LT predicate on the "user_email_masked" field.
+func UserEmailMaskedLT(v string) predicate.Verification {
+	return predicate.Verification(sql.FieldLT(FieldUserEmailMasked, v))
+}
+
+// UserEmailMaskedLTE applies the LTE predicate on the "user_email_masked" field.
+func UserEmailMaskedLTE(v string) predicate.Verification {
+	return predicate.Verification(sql.FieldLTE(FieldUserEmailMasked, v))
+}
+
+// UserEmailMaskedContains applies the Contains predicate on the "user_email_masked" field.
+func UserEmailMaskedContains(v string) predicate.Verification {
+	return predicate.Verification(sql.FieldContains(FieldUserEmailMasked, v))
+}
+
+// UserEmailMaskedHasPrefix applies the HasPrefix predicate on the "user_email_masked" field.
+func UserEmailMaskedHasPrefix(v string) predicate.Verification {
+	return predicate.Verification(sql.FieldHasPrefix(FieldUserEmailMasked, v))
+}
+
+// UserEmailMaskedHasSuffix applies the HasSuffix predicate on the "user_email_masked" field.
+func UserEmailMaskedHasSuffix(v string) predicate.Verification {
+	return predicate.Verification(sql.FieldHasSuffix(FieldUserEmailMasked, v))
+}
+
+// UserEmailMaskedEqualFold applies the EqualFold predicate on the "user_email_masked" field.
+func UserEmailMaskedEqualFold(v string) predicate.Verification {
+	return predicate.Verification(sql.FieldEqualFold(FieldUserEmailMasked, v))
+}
+
+// UserEmailMaskedContainsFold applies the ContainsFold predicate on the "user_email_masked" field.
+func UserEmailMaskedContainsFold(v string) predicate.Verification {
+	return predicate.Verification(sql.FieldContainsFold(FieldUserEmailMasked, v))
 }
 
 // CsrfTokenEQ applies the EQ predicate on the "csrf_token" field.

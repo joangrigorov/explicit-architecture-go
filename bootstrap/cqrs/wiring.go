@@ -5,7 +5,10 @@ import (
 	"app/internal/core/component/user/application/commands/confirm_user"
 	"app/internal/core/component/user/application/commands/initiate_password_setup"
 	"app/internal/core/component/user/application/commands/register_user"
-	. "app/internal/core/component/user/application/queries/find_user_by_id"
+	"app/internal/core/component/user/application/queries/find_user_by_id"
+	"app/internal/core/component/user/application/queries/get_verification_preflight"
+	"app/internal/core/component/user/application/queries/port"
+	"app/internal/core/port/errors"
 	"app/internal/core/port/logging"
 	"app/internal/infrastructure/component/user/cqrs"
 	cBus "app/internal/infrastructure/framework/cqrs/commands"
@@ -38,13 +41,20 @@ func WireCommands(
 
 func WireQueries(
 	bus *qBus.SimpleQueryBus,
-	uq UserQueries,
+	uq find_user_by_id.UserQueries,
+	vq port.VerificationQueries,
 	tracer trace.Tracer,
+	errors errors.ErrorFactory,
 ) {
 	bus.Use(qMdwr.Tracing(tracer))
 
-	qBus.Register[Query](
+	qBus.Register[find_user_by_id.Query](
 		bus,
-		qMdwr.ExecuteQuery[Query, *UserDTO](NewFindUserByIDHandler(uq)),
+		qMdwr.ExecuteQuery[find_user_by_id.Query, *find_user_by_id.DTO](find_user_by_id.NewHandler(uq)),
+	)
+
+	qBus.Register[get_verification_preflight.Query](
+		bus,
+		qMdwr.ExecuteQuery[get_verification_preflight.Query, *get_verification_preflight.DTO](get_verification_preflight.NewHandler(vq, errors)),
 	)
 }

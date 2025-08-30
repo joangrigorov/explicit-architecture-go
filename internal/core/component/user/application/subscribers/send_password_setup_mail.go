@@ -36,7 +36,7 @@ func (s *SendSetPasswordMailSubscriber) Dispatch(ctx context.Context, event even
 
 	command := initiate_password_setup.NewCommand(e.UserID().String(), s.senderEmail)
 	if err := s.commandBus.Dispatch(ctx, command); err != nil {
-		return s.errors.New(errors.ErrCommandHandlingError, "Error handling command", err)
+		return s.errors.New(errors.ErrCommandHandling, "Error handling command", err)
 	}
 
 	return nil

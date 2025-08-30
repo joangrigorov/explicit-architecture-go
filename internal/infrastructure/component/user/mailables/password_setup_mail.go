@@ -9,8 +9,6 @@ import (
 	"html/template"
 )
 
-const templateFile = "internal/infrastructure/component/user/mailables/password_setup_mail.gohtml"
-
 type PasswordSetupMail struct {
 	webURL string
 }
@@ -26,13 +24,13 @@ func (c *PasswordSetupMail) Render(
 ) (message string, err error) {
 	tmpl, err := template.
 		New(fmt.Sprintf("%T", c)).
-		ParseFiles(templateFile)
+		ParseFiles("internal/infrastructure/component/user/mailables/password_setup_mail.gohtml")
 	if err != nil {
 		panic(err)
 	}
 
 	var buf bytes.Buffer
-	if err := tmpl.ExecuteTemplate(&buf, "mail/password_setup", map[string]interface{}{
+	if err := tmpl.ExecuteTemplate(&buf, "mail/password_setup", map[string]any{
 		"WebURL":         c.webURL,
 		"FullName":       fullName,
 		"Token":          token,

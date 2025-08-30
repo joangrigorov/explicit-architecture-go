@@ -12,6 +12,7 @@ import (
 var pages = fx.Module("pages", fx.Provide(
 	home.NewHome,
 	id.NewSignUp,
+	id.NewPasswordSetup,
 ))
 
 var framework = fx.Module("framework", fx.Provide(

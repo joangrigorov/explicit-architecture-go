@@ -911,18 +911,19 @@ func (m *UserMutation) ResetEdge(name string) error {
 // VerificationMutation represents an operation that mutates the Verification nodes in the graph.
 type VerificationMutation struct {
 	config
-	op            Op
-	typ           string
-	id            *uuid.UUID
-	user_id       *uuid.UUID
-	csrf_token    *string
-	expires_at    *time.Time
-	used_at       *time.Time
-	created_at    *time.Time
-	clearedFields map[string]struct{}
-	done          bool
-	oldValue      func(context.Context) (*Verification, error)
-	predicates    []predicate.Verification
+	op                Op
+	typ               string
+	id                *uuid.UUID
+	user_id           *uuid.UUID
+	user_email_masked *string
+	csrf_token        *string
+	expires_at        *time.Time
+	used_at           *time.Time
+	created_at        *time.Time
+	clearedFields     map[string]struct{}
+	done              bool
+	oldValue          func(context.Context) (*Verification, error)
+	predicates        []predicate.Verification
 }
 
 var _ ent.Mutation = (*VerificationMutation)(nil)
@@ -1063,6 +1064,42 @@ func (m *VerificationMutation) OldUserID(ctx context.Context) (v uuid.UUID, err 
 // ResetUserID resets all changes to the "user_id" field.
 func (m *VerificationMutation) ResetUserID() {
 	m.user_id = nil
+}
+
+// SetUserEmailMasked sets the "user_email_masked" field.
+func (m *VerificationMutation) SetUserEmailMasked(s string) {
+	m.user_email_masked = &s
+}
+
+// UserEmailMasked returns the value of the "user_email_masked" field in the mutation.
+func (m *VerificationMutation) UserEmailMasked() (r string, exists bool) {
+	v := m.user_email_masked
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUserEmailMasked returns the old "user_email_masked" field's value of the Verification entity.
+// If the Verification object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *VerificationMutation) OldUserEmailMasked(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUserEmailMasked is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUserEmailMasked requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUserEmailMasked: %w", err)
+	}
+	return oldValue.UserEmailMasked, nil
+}
+
+// ResetUserEmailMasked resets all changes to the "user_email_masked" field.
+func (m *VerificationMutation) ResetUserEmailMasked() {
+	m.user_email_masked = nil
 }
 
 // SetCsrfToken sets the "csrf_token" field.
@@ -1256,9 +1293,12 @@ func (m *VerificationMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *VerificationMutation) Fields() []string {
-	fields := make([]string, 0, 5)
+	fields := make([]string, 0, 6)
 	if m.user_id != nil {
 		fields = append(fields, verification.FieldUserID)
+	}
+	if m.user_email_masked != nil {
+		fields = append(fields, verification.FieldUserEmailMasked)
 	}
 	if m.csrf_token != nil {
 		fields = append(fields, verification.FieldCsrfToken)
@@ -1282,6 +1322,8 @@ func (m *VerificationMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case verification.FieldUserID:
 		return m.UserID()
+	case verification.FieldUserEmailMasked:
+		return m.UserEmailMasked()
 	case verification.FieldCsrfToken:
 		return m.CsrfToken()
 	case verification.FieldExpiresAt:
@@ -1301,6 +1343,8 @@ func (m *VerificationMutation) OldField(ctx context.Context, name string) (ent.V
 	switch name {
 	case verification.FieldUserID:
 		return m.OldUserID(ctx)
+	case verification.FieldUserEmailMasked:
+		return m.OldUserEmailMasked(ctx)
 	case verification.FieldCsrfToken:
 		return m.OldCsrfToken(ctx)
 	case verification.FieldExpiresAt:
@@ -1324,6 +1368,13 @@ func (m *VerificationMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetUserID(v)
+		return nil
+	case verification.FieldUserEmailMasked:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUserEmailMasked(v)
 		return nil
 	case verification.FieldCsrfToken:
 		v, ok := value.(string)
@@ -1413,6 +1464,9 @@ func (m *VerificationMutation) ResetField(name string) error {
 	switch name {
 	case verification.FieldUserID:
 		m.ResetUserID()
+		return nil
+	case verification.FieldUserEmailMasked:
+		m.ResetUserEmailMasked()
 		return nil
 	case verification.FieldCsrfToken:
 		m.ResetCsrfToken()

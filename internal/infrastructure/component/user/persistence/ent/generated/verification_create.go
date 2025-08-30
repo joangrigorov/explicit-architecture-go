@@ -27,6 +27,12 @@ func (_c *VerificationCreate) SetUserID(v uuid.UUID) *VerificationCreate {
 	return _c
 }
 
+// SetUserEmailMasked sets the "user_email_masked" field.
+func (_c *VerificationCreate) SetUserEmailMasked(v string) *VerificationCreate {
+	_c.mutation.SetUserEmailMasked(v)
+	return _c
+}
+
 // SetCsrfToken sets the "csrf_token" field.
 func (_c *VerificationCreate) SetCsrfToken(v string) *VerificationCreate {
 	_c.mutation.SetCsrfToken(v)
@@ -102,6 +108,9 @@ func (_c *VerificationCreate) check() error {
 	if _, ok := _c.mutation.UserID(); !ok {
 		return &ValidationError{Name: "user_id", err: errors.New(`generated: missing required field "Verification.user_id"`)}
 	}
+	if _, ok := _c.mutation.UserEmailMasked(); !ok {
+		return &ValidationError{Name: "user_email_masked", err: errors.New(`generated: missing required field "Verification.user_email_masked"`)}
+	}
 	if _, ok := _c.mutation.CsrfToken(); !ok {
 		return &ValidationError{Name: "csrf_token", err: errors.New(`generated: missing required field "Verification.csrf_token"`)}
 	}
@@ -149,6 +158,10 @@ func (_c *VerificationCreate) createSpec() (*Verification, *sqlgraph.CreateSpec)
 	if value, ok := _c.mutation.UserID(); ok {
 		_spec.SetField(verification.FieldUserID, field.TypeUUID, value)
 		_node.UserID = value
+	}
+	if value, ok := _c.mutation.UserEmailMasked(); ok {
+		_spec.SetField(verification.FieldUserEmailMasked, field.TypeString, value)
+		_node.UserEmailMasked = value
 	}
 	if value, ok := _c.mutation.CsrfToken(); ok {
 		_spec.SetField(verification.FieldCsrfToken, field.TypeString, value)

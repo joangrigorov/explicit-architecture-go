@@ -68,18 +68,19 @@ func mapVerificationAggregate(dto *generated.Verification) (*verification.Verifi
 		return nil, fmt.Errorf("ent: cannot map Verification dto - nil object passed")
 	}
 
-	csrfToken, err := verification.DecodeCSRFToken(dto.HashedToken)
+	csrfToken, err := verification.DecodeCSRFToken(dto.CsrfToken)
 
 	if err != nil {
 		return nil, fmt.Errorf("decode csrf token: %w", err)
 	}
 
 	return &verification.Verification{
-		ID:        verification.ID(dto.ID.String()),
-		UserID:    user.ID(dto.UserID.String()),
-		CSRFToken: csrfToken,
-		ExpiresAt: dto.ExpiresAt,
-		UsedAt:    dto.UsedAt,
-		CreatedAt: dto.CreatedAt,
+		ID:              verification.ID(dto.ID.String()),
+		UserID:          user.ID(dto.UserID.String()),
+		UserEmailMasked: dto.UserEmailMasked,
+		CSRFToken:       csrfToken,
+		ExpiresAt:       dto.ExpiresAt,
+		UsedAt:          dto.UsedAt,
+		CreatedAt:       dto.CreatedAt,
 	}, nil
 }

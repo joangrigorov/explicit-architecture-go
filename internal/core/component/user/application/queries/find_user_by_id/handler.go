@@ -9,10 +9,10 @@ type Handler struct {
 	queries UserQueries
 }
 
-func NewFindUserByIDHandler(queries UserQueries) cqrs.QueryHandler[Query, *UserDTO] {
+func NewHandler(queries UserQueries) cqrs.QueryHandler[Query, *DTO] {
 	return &Handler{queries: queries}
 }
 
-func (h *Handler) Execute(ctx context.Context, q Query) (*UserDTO, error) {
-	return h.queries.FindById(ctx, q.ID)
+func (h *Handler) Execute(ctx context.Context, q Query) (*DTO, error) {
+	return h.queries.FindByID(ctx, q.ID)
 }

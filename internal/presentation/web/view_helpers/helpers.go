@@ -44,7 +44,19 @@ func Helpers(tmpl *template.Template) template.FuncMap {
 				Required:    required,
 			})
 			if err != nil {
-				return "<!-- error rendering password field -->"
+				return "<!-- error rendering email field -->"
+			}
+			return html
+		},
+		"gui_form_hidden": func(required bool, name string, value string) template.HTML {
+			html, err := form.RenderHidden(tmpl, form.Hidden{
+				ID:       name,
+				Name:     name,
+				Value:    &value,
+				Required: required,
+			})
+			if err != nil {
+				return "<!-- error rendering hidden field -->"
 			}
 			return html
 		},
