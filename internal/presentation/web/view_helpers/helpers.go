@@ -3,9 +3,11 @@ package view_helpers
 import (
 	"app/internal/presentation/web/view_helpers/form"
 	"html/template"
+
+	ut "github.com/go-playground/universal-translator"
 )
 
-func Helpers(tmpl *template.Template) template.FuncMap {
+func Helpers(tmpl *template.Template, tr ut.Translator) template.FuncMap {
 	return template.FuncMap{
 		"gui_form_text": func(required bool, name string, label string, value string, placeholder string) template.HTML {
 			html, err := form.RenderText(tmpl, form.Text{
@@ -57,6 +59,13 @@ func Helpers(tmpl *template.Template) template.FuncMap {
 			})
 			if err != nil {
 				return "<!-- error rendering hidden field -->"
+			}
+			return html
+		},
+		"gui_form_error": func(err error, targetField string) template.HTML {
+			html, err := form.RenderError(tmpl, tr, form.Error{FormErrors: err, TargetField: targetField})
+			if err != nil {
+				return "<!-- error rendering an error (lol) -->"
 			}
 			return html
 		},

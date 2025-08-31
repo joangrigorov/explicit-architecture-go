@@ -1,6 +1,7 @@
 package presentation
 
 import (
+	"app/internal/infrastructure/framework/validation"
 	"app/internal/presentation/web"
 	home "app/internal/presentation/web/pages/home/controllers"
 	id "app/internal/presentation/web/pages/identity/controllers"
@@ -19,8 +20,11 @@ var pages = fx.Module("pages", fx.Provide(
 
 var framework = fx.Module("framework", fx.Provide(
 	web.NewTemplate,
+	validation.NewValidatorValidate,
+	validation.NewTranslator,
 ), fx.Invoke(
 	web.RegisterRoutes,
+	validation.RegisterRules,
 ))
 
 var services = fx.Module("services", fx.Provide(

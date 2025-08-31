@@ -119,27 +119,40 @@
         <h1>Create your account</h1>
         <p>Join Activity Planner and start tracking your favorite events today.</p>
 
-        {{ if .Error }}
-        <div class="alert alert-error">
-            <svg viewBox="0 0 20 20">
-                <path d="M14.348 14.849l-4.243-4.243 4.243-4.243-1.415-1.415L8.69 9.19 4.447 4.947 3.032 6.362l4.243 4.243-4.243 4.243 1.415 1.415L8.69 11.62l4.243 4.243z"></path>
-            </svg>
-            {{ .Error }}
-        </div>
+        {{ if .FormError }}
+            <div class="alert alert-error">
+                <svg viewBox="0 0 20 20">
+                    <path d="M14.348 14.849l-4.243-4.243 4.243-4.243-1.415-1.415L8.69 9.19 4.447 4.947 3.032 6.362l4.243 4.243-4.243 4.243 1.415 1.415L8.69 11.62l4.243 4.243z"></path>
+                </svg>
+                {{ .FormError }}
+            </div>
+        {{ end }}
+
+        {{ if .FormErrors }}
+            <div class="alert alert-error">
+                <svg viewBox="0 0 20 20">
+                    <path d="M14.348 14.849l-4.243-4.243 4.243-4.243-1.415-1.415L8.69 9.19 4.447 4.947 3.032 6.362l4.243 4.243-4.243 4.243 1.415 1.415L8.69 11.62l4.243 4.243z"></path>
+                </svg>
+                Invalid input. Please check the form errors.
+            </div>
         {{ end }}
 
         <form action="/sign-up" method="post">
             <div>
                 {{ gui_form_email true "email" "E-mail" .Values.Email "Enter your email address" }}
+                {{ gui_form_error .FormErrors "Email" }}
             </div>
             <div>
                 {{ gui_form_text true "username" "Username" .Values.Username "Choose username" }}
+                {{ gui_form_error .FormErrors "Username" }}
             </div>
             <div>
                 {{ gui_form_text true "first_name" "First Name" .Values.FirstName "Enter your first name" }}
+                {{ gui_form_error .FormErrors "FirstName" }}
             </div>
             <div>
                 {{ gui_form_text true "last_name" "Last Name" .Values.LastName "Enter your last name" }}
+                {{ gui_form_error .FormErrors "LastName" }}
             </div>
 
             <button type="submit" class="btn btn-primary">Register</button>

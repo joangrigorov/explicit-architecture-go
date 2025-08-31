@@ -37,27 +37,29 @@ func (s *AuthenticationService) ObtainToken(session *sessions.Session, code stri
 
 func (s *AuthenticationService) ActiveSession(session *sessions.Session) (AuthenticationSession, error) {
 	authSession, ok := session.Values[authSessionKey].(AuthenticationSession)
-	if !ok {
+	if !ok || authSession.Expired() {
 		token, err := s.ids.RefreshToken(authSession.RefreshToken)
 		if err != nil {
 			delete(session.Values, authSessionKey)
 			return AuthenticationSession{}, err
 		}
-		authenticationSession := AuthenticationSession{
+		authSession = AuthenticationSession{
 			AccessToken:  token.AccessToken,
 			RefreshToken: token.RefreshToken,
 			ExpiresAt:    time.Now().Add(time.Duration(token.ExpiresIn) * time.Second),
 		}
-		session.Values[authSessionKey] = authenticationSession
-		return authenticationSession, nil
+		session.Values[authSessionKey] = authSession
+		return authSession, nil
 	}
+
+	log.Printf("Authentication session expiry: %v", authSession.ExpiresAt)
 
 	return authSession, nil
 }
 
 func (s *AuthenticationService) SignedIn(session *sessions.Session) bool {
-	_, err := s.ActiveSession(session)
-	return err == nil
+	auth, err := s.ActiveSession(session)
+	return err == nil && !auth.Expired()
 }
 
 func (s *AuthenticationService) Forget(session *sessions.Session) {
