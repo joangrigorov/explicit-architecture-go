@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"app/internal/core/component/user/application/queries/dto"
 	qs "app/internal/core/component/user/application/queries/find_user_by_id"
 	"app/internal/core/port/cqrs"
 	"app/internal/infrastructure/framework/cqrs/queries"
@@ -34,14 +35,16 @@ func (c *Registration) Register(ctx ctx.Context) {
 	cmd := r.NewRegisterUserCommand(userID)
 
 	if err := c.commandBus.Dispatch(ctx.Context(), cmd); err != nil {
+		// TODO handle other types of errors. Not all is 500
 		InternalServerError(ctx, NewDefaultError(err))
 		return
 	}
 
 	query := qs.Query{ID: userID}
-	userDTO, err := queries.Execute[*qs.DTO](ctx.Context(), c.queryBus, query)
+	userDTO, err := queries.Execute[*dto.UserDTO](ctx.Context(), c.queryBus, query)
 
 	if err != nil {
+		// TODO handle other types of errors. Not all is 500
 		InternalServerError(ctx, NewDefaultError(err))
 		return
 	}

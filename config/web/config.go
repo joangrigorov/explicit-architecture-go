@@ -10,6 +10,7 @@ type Config struct {
 	App      App
 	Api      Api
 	Keycloak Keycloak
+	Session  Session
 }
 
 type App struct {
@@ -22,18 +23,32 @@ type Api struct {
 }
 
 type Keycloak struct {
-	Host        string `env:"KEYCLOAK_HOST"`
-	ClientId    string `env:"KEYCLOAK_OAUTH_CLIENT_ID"`
-	Realm       string `env:"KEYCLOAK_REALM" envDefault:"app"`
-	RedirectURI string `env:"KEYCLOAK_REDIRECT_URI"`
+	UIHost       string `env:"KEYCLOAK_UI_HOST"`
+	APIHost      string `env:"KEYCLOAK_API_HOST"`
+	ClientId     string `env:"KEYCLOAK_OAUTH_CLIENT_ID"`
+	ClientSecret string `env:"KEYCLOAK_OAUTH_CLIENT_SECRET"`
+	Realm        string `env:"KEYCLOAK_REALM" envDefault:"app"`
+	RedirectURI  string `env:"KEYCLOAK_REDIRECT_URI"`
+}
+
+type Session struct {
+	Driver         string `env:"SESSION_DRIVER" envDefault:"cookie"`
+	SessionSecret  string `env:"SESSION_SECRET"`
+	SessionKey     string `env:"SESSION_KEY"`
+	RedisPoolSize  int    `env:"REDIS_POOL_SIZE" envDefault:"10"`
+	RedisNetwork   string `env:"REDIS_NETWORK" envDefault:"tcp"`
+	RedisAddr      string `env:"REDIS_ADDR" envDefault:"redis:6379"`
+	RedisUsername  string `env:"REDIS_USERNAME"`
+	RedisPassword  string `env:"REDIS_PASSWORD"`
+	FilesystemPath string `env:"FILESYSTEM_PATH" envDefault:"/tmp/go-apps/"`
 }
 
 // NewConfig returns app config.
-func NewConfig() (*Config, error) {
+func NewConfig() (Config, error) {
 	cfg := &Config{}
 	if err := env.Parse(cfg); err != nil {
-		return nil, fmt.Errorf("config error: %w", err)
+		return *cfg, fmt.Errorf("config error: %w", err)
 	}
 
-	return cfg, nil
+	return *cfg, nil
 }

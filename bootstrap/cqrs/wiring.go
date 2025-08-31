@@ -5,6 +5,7 @@ import (
 	"app/internal/core/component/user/application/commands/confirm_user"
 	"app/internal/core/component/user/application/commands/initiate_password_setup"
 	"app/internal/core/component/user/application/commands/register_user"
+	"app/internal/core/component/user/application/queries/dto"
 	"app/internal/core/component/user/application/queries/find_user_by_id"
 	"app/internal/core/component/user/application/queries/get_verification_preflight"
 	"app/internal/core/component/user/application/queries/port"
@@ -41,7 +42,7 @@ func WireCommands(
 
 func WireQueries(
 	bus *qBus.SimpleQueryBus,
-	uq find_user_by_id.UserQueries,
+	uq port.UserQueries,
 	vq port.VerificationQueries,
 	tracer trace.Tracer,
 	errors errors.ErrorFactory,
@@ -50,11 +51,11 @@ func WireQueries(
 
 	qBus.Register[find_user_by_id.Query](
 		bus,
-		qMdwr.ExecuteQuery[find_user_by_id.Query, *find_user_by_id.DTO](find_user_by_id.NewHandler(uq)),
+		qMdwr.ExecuteQuery[find_user_by_id.Query, *dto.UserDTO](find_user_by_id.NewHandler(uq)),
 	)
 
 	qBus.Register[get_verification_preflight.Query](
 		bus,
-		qMdwr.ExecuteQuery[get_verification_preflight.Query, *get_verification_preflight.DTO](get_verification_preflight.NewHandler(vq, errors)),
+		qMdwr.ExecuteQuery[get_verification_preflight.Query, *dto.PreflightDTO](get_verification_preflight.NewHandler(vq, errors)),
 	)
 }

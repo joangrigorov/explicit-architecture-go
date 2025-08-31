@@ -2,7 +2,8 @@ package controllers
 
 import (
 	"app/internal/core/component/user/application/commands/complete_password_setup"
-	gvpq "app/internal/core/component/user/application/queries/get_verification_preflight"
+	"app/internal/core/component/user/application/queries/dto"
+	preflight_check "app/internal/core/component/user/application/queries/get_verification_preflight"
 	"app/internal/core/port/cqrs"
 	errorsPort "app/internal/core/port/errors"
 	"app/internal/core/port/logging"
@@ -50,8 +51,8 @@ func (v *Verification) PreflightValidate(ctx http.Context) {
 		return
 	}
 
-	query := gvpq.NewQuery(verificationID, token)
-	result, err := queries.Execute[*gvpq.DTO](ctx.Context(), v.queryBus, query)
+	query := preflight_check.NewQuery(verificationID, token)
+	result, err := queries.Execute[*dto.PreflightDTO](ctx.Context(), v.queryBus, query)
 	if err != nil {
 		v.renderVerificationError(ctx, err)
 		return
@@ -80,8 +81,9 @@ func (v *Verification) PasswordSetup(ctx http.Context) {
 	verificationID := ctx.ParamString("id")
 	token := req.Token
 
-	query := gvpq.NewQuery(verificationID, token)
-	result, err := queries.Execute[*gvpq.DTO](ctx.Context(), v.queryBus, query)
+	query := preflight_check.NewQuery(verificationID, token)
+	result, err := queries.Execute[*dto.PreflightDTO](ctx.Context(), v.queryBus, query)
+
 	if err != nil {
 		v.renderVerificationError(ctx, err)
 		return
@@ -100,6 +102,7 @@ func (v *Verification) PasswordSetup(ctx http.Context) {
 	cmd := complete_password_setup.NewCommand(result.UserID, req.Password)
 
 	if err = v.commandBus.Dispatch(ctx.Context(), cmd); err != nil {
+		// TODO handle other types of errors, not all is 500
 		responses.InternalServerError(ctx, responses.NewDefaultError(err))
 		return
 	}

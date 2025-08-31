@@ -1,7 +1,8 @@
 package ent
 
 import (
-	"app/internal/core/component/user/application/queries/find_user_by_id"
+	"app/internal/core/component/user/application/queries/dto"
+	"app/internal/core/component/user/application/queries/port"
 	"app/internal/infrastructure/component/user/persistence/ent/generated"
 	ent "app/internal/infrastructure/component/user/persistence/ent/generated/user"
 	"app/internal/infrastructure/framework/uuid"
@@ -12,11 +13,11 @@ type UserQueries struct {
 	client *generated.Client
 }
 
-func NewUserQueries(client *generated.Client) find_user_by_id.UserQueries {
+func NewUserQueries(client *generated.Client) port.UserQueries {
 	return &UserQueries{client: client}
 }
 
-func (u *UserQueries) FindByID(ctx context.Context, id string) (*find_user_by_id.DTO, error) {
+func (u *UserQueries) FindByID(ctx context.Context, id string) (*dto.UserDTO, error) {
 	entDto, err := u.client.User.
 		Query().
 		Where(ent.ID(uuid.Parse(id)), ent.DeletedAtIsNil()).
@@ -26,7 +27,7 @@ func (u *UserQueries) FindByID(ctx context.Context, id string) (*find_user_by_id
 		return nil, err
 	}
 
-	return &find_user_by_id.DTO{
+	return &dto.UserDTO{
 		ID:          entDto.ID.String(),
 		Email:       entDto.Email,
 		Username:    entDto.Username,

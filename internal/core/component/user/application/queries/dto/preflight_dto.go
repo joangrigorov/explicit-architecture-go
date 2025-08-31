@@ -1,6 +1,6 @@
-package get_verification_preflight
+package dto
 
-type DTO struct {
+type PreflightDTO struct {
 	ValidCSRF   bool   `json:"valid_csrf"`
 	MaskedEmail string `json:"masked_email"`
 	Expired     bool   `json:"expired"`

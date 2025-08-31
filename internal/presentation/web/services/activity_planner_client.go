@@ -16,7 +16,7 @@ type ActivityPlannerClient struct {
 	host string
 }
 
-func NewActivityPlannerClient(cfg *web.Config) *ActivityPlannerClient {
+func NewActivityPlannerClient(cfg web.Config) *ActivityPlannerClient {
 	return &ActivityPlannerClient{
 		host: cfg.Api.Host,
 	}

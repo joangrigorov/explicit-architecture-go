@@ -1,6 +1,7 @@
 package ent
 
 import (
+	"app/internal/core/component/user/application/queries/dto"
 	"app/internal/core/component/user/application/queries/port"
 	"app/internal/infrastructure/component/user/persistence/ent/generated"
 	"app/internal/infrastructure/component/user/persistence/ent/generated/verification"
@@ -12,7 +13,7 @@ type VerificationQueries struct {
 	client *generated.Client
 }
 
-func (u *VerificationQueries) FindByID(ctx context.Context, id string) (*port.VerificationDTO, error) {
+func (u *VerificationQueries) FindByID(ctx context.Context, id string) (*dto.VerificationDTO, error) {
 	entDto, err := u.client.Verification.Get(ctx, uuid.Parse(id))
 	if err != nil {
 		return nil, err
@@ -21,7 +22,7 @@ func (u *VerificationQueries) FindByID(ctx context.Context, id string) (*port.Ve
 	return mapFromEnt(entDto), nil
 }
 
-func (u *VerificationQueries) FindByUserID(ctx context.Context, userID string) (*port.VerificationDTO, error) {
+func (u *VerificationQueries) FindByUserID(ctx context.Context, userID string) (*dto.VerificationDTO, error) {
 	entDto, err := u.client.Verification.
 		Query().
 		Where(verification.UserID(uuid.Parse(userID))).
@@ -33,8 +34,8 @@ func (u *VerificationQueries) FindByUserID(ctx context.Context, userID string) (
 	return mapFromEnt(entDto), nil
 }
 
-func mapFromEnt(entDto *generated.Verification) *port.VerificationDTO {
-	return &port.VerificationDTO{
+func mapFromEnt(entDto *generated.Verification) *dto.VerificationDTO {
+	return &dto.VerificationDTO{
 		ID:              entDto.ID.String(),
 		UserID:          entDto.UserID.String(),
 		UserEmailMasked: entDto.UserEmailMasked,

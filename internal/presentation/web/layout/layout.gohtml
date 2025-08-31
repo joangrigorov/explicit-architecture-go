@@ -24,10 +24,7 @@
                 </div>
             </div>
             <div>
-                <div class="nav-actions">
-                    <a class="btn" href="/sign-in">Log in</a>
-                    <a class="btn btn-primary" href="/sign-up">Register</a>
-                </div>
+                {{ if .SignedIn }}
                 <div class="profile-menu">
                     <div class="profile-trigger">
                         <span class="avatar">JD</span>
@@ -36,9 +33,15 @@
                     <div class="dropdown">
                         <a href="#profile">Profile</a>
                         <a href="#settings">Settings</a>
-                        <a href="#logout">Log out</a>
+                        <a href="/sign-out">Log out</a>
                     </div>
                 </div>
+                {{ else }}
+                <div class="nav-actions">
+                    <a class="btn" href="/sign-in">Log in</a>
+                    <a class="btn btn-primary" href="/sign-up">Register</a>
+                </div>
+                {{ end }}
             </div>
         </nav>
     </header>

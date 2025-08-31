@@ -41,7 +41,7 @@ x-backend-api-environment: &x-backend-api-environment
   DB_USER_SSLMODE: "disable"
 
   # Keycloak
-  KEYCLOAK_URL: "http://keycloak:8080"
+  KEYCLOAK_URL: "http://keycloak:8081"
   KEYCLOAK_OAUTH_CLIENT_ID: "user-admin"
   KEYCLOAK_OAUTH_CLIENT_SECRET: "secret"
 
@@ -70,12 +70,21 @@ x-backend-web-environment: &x-backend-web-environment
   ZAP_DEV_MODE: true
 
   # Keycloak
-  KEYCLOAK_HOST: "http://localhost:8081"
+  KEYCLOAK_UI_HOST: "http://localhost:8081"
+  KEYCLOAK_API_HOST: "http://keycloak:8081"
   KEYCLOAK_OAUTH_CLIENT_ID: "web-app"
   KEYCLOAK_REDIRECT_URI: "http://localhost:8079/oauth2/callback"
 
   # Activity planner API
   API_HOST: "http://krakend:8080"
+
+  # Sessions
+  SESSION_DRIVER: "redis"
+  SESSION_SECRET: "secret"
+  SESSION_KEY: "activity-planner"
+  REDIS_POOL_SIZE: 5
+  REDIS_NETWORK: "tcp"
+  REDIS_ADDR: "redis:6379"
 
   # Go
   GO111MODULE: on
@@ -163,11 +172,12 @@ services:
       KC_BOOTSTRAP_ADMIN_USERNAME: admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
       KC_HOSTNAME: localhost
+      KC_HTTP_PORT: 8081
       KC_HTTP_ENABLED: "true"
     depends_on:
       - db
     ports:
-      - "8081:8080"
+      - "8081:8081"
     volumes:
       - ./config/keycloak/realms:/opt/keycloak/data/import:ro
       - ./config/keycloak/themes:/opt/keycloak/themes:ro
@@ -190,7 +200,6 @@ services:
 
   mailhog:
     image: mailhog/mailhog:latest
-    container_name: mailhog
     ports:
       - "8025:8025"
     networks:
@@ -198,6 +207,12 @@ services:
         aliases:
           - mailhog.lvh.me
 
+  redis:
+    image: redis:latest
+    networks:
+      app_network:
+        aliases:
+          - redis.lvh.me
 #  app:
 #    container_name: app
 #    platform: linux/amd64

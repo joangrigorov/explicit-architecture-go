@@ -1,6 +1,7 @@
 package get_verification_preflight
 
 import (
+	"app/internal/core/component/user/application/queries/dto"
 	"app/internal/core/component/user/application/queries/port"
 	"app/internal/core/component/user/domain/verification"
 	"app/internal/core/port/errors"
@@ -18,7 +19,7 @@ func NewHandler(queries port.VerificationQueries, errors errors.ErrorFactory) *H
 	return &Handler{verificationQueries: queries, errors: errors}
 }
 
-func (h *Handler) Execute(ctx context.Context, q Query) (*DTO, error) {
+func (h *Handler) Execute(ctx context.Context, q Query) (*dto.PreflightDTO, error) {
 	ver, err := h.verificationQueries.FindByID(ctx, q.verificationID)
 
 	if err != nil || ver == nil {
@@ -41,7 +42,7 @@ func (h *Handler) Execute(ctx context.Context, q Query) (*DTO, error) {
 		return nil, h.errors.New(errors.ErrDB, "Cannot decode stored CSRF token", err)
 	}
 
-	return &DTO{
+	return &dto.PreflightDTO{
 		ValidCSRF:   subtle.ConstantTimeCompare(expectedCSRF[:], actualCSRF[:]) == 1,
 		Expired:     time.Now().After(ver.ExpiresAt),
 		MaskedEmail: ver.UserEmailMasked,

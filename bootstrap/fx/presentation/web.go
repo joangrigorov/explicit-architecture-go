@@ -12,7 +12,9 @@ import (
 var pages = fx.Module("pages", fx.Provide(
 	home.NewHome,
 	id.NewSignUp,
+	id.NewSignOut,
 	id.NewPasswordSetup,
+	id.NewOAuth2,
 ))
 
 var framework = fx.Module("framework", fx.Provide(
@@ -24,6 +26,8 @@ var framework = fx.Module("framework", fx.Provide(
 var services = fx.Module("services", fx.Provide(
 	svc.NewActivityPlannerClient,
 	svc.NewIdentityService,
+	svc.NewSessionStore,
+	svc.NewAuthenticationService,
 ))
 
 var Web = fx.Module("presentation/web",
