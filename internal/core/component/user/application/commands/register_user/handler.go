@@ -47,7 +47,7 @@ func (h *Handler) Handle(ctx context.Context, c Command) error {
 		return h.errors.New(errors.ErrConflict, "User with that username already exists", nil)
 	}
 
-	usr := user.NewUser(id, username, email, c.firstName, c.lastName, &user.Member{})
+	usr := user.NewUser(id, username, email, c.firstName, c.lastName, user.Member{})
 
 	if err := h.userRepository.Create(ctx, usr); err != nil {
 		return h.errors.New(errors.ErrDB, "Error creating user", err)

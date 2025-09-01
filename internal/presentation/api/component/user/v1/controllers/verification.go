@@ -3,7 +3,7 @@ package controllers
 import (
 	"app/internal/core/component/user/application/commands/complete_password_setup"
 	"app/internal/core/component/user/application/queries/dto"
-	preflight_check "app/internal/core/component/user/application/queries/get_verification_preflight"
+	preflightCheck "app/internal/core/component/user/application/queries/get_verification_preflight"
 	"app/internal/core/port/cqrs"
 	errorsPort "app/internal/core/port/errors"
 	"app/internal/core/port/logging"
@@ -51,7 +51,7 @@ func (v *Verification) PreflightValidate(ctx http.Context) {
 		return
 	}
 
-	query := preflight_check.NewQuery(verificationID, token)
+	query := preflightCheck.NewQuery(verificationID, token)
 	result, err := queries.Execute[*dto.PreflightDTO](ctx.Context(), v.queryBus, query)
 	if err != nil {
 		v.renderVerificationError(ctx, err)
@@ -78,10 +78,11 @@ func (v *Verification) PasswordSetup(ctx http.Context) {
 		responses.UnprocessableEntity(ctx, responses.Render(v.tr, err, req))
 		return
 	}
+	// TODO Make the complete password setup command require verificationID+token and move all checks in there
 	verificationID := ctx.ParamString("id")
 	token := req.Token
 
-	query := preflight_check.NewQuery(verificationID, token)
+	query := preflightCheck.NewQuery(verificationID, token)
 	result, err := queries.Execute[*dto.PreflightDTO](ctx.Context(), v.queryBus, query)
 
 	if err != nil {
@@ -110,6 +111,7 @@ func (v *Verification) PasswordSetup(ctx http.Context) {
 	ctx.NoContent()
 }
 
+// TODO Deprecated - use errors.Handler instead
 func (v *Verification) renderVerificationError(ctx http.Context, err error) {
 	if err != nil {
 		var appErr errorsPort.Error

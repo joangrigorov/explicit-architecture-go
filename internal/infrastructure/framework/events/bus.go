@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"reflect"
 	"sync"
+
+	"go.opentelemetry.io/otel/trace"
 )
 
 // bufferSize of how many events can wait in the queue before they are processed
@@ -24,15 +26,18 @@ type subscriberWorker struct {
 
 type SimpleEventBus struct {
 	logger logging.Logger
-	subs   map[string][]*subscriberWorker
-	mu     sync.RWMutex
-	wg     sync.WaitGroup
+	tracer trace.Tracer
+
+	subs map[string][]*subscriberWorker
+	mu   sync.RWMutex
+	wg   sync.WaitGroup
 }
 
-func NewSimpleEventBus(logger logging.Logger) *SimpleEventBus {
+func NewSimpleEventBus(logger logging.Logger, tracer trace.Tracer) *SimpleEventBus {
 	return &SimpleEventBus{
 		logger: logger,
 		subs:   make(map[string][]*subscriberWorker),
+		tracer: tracer,
 	}
 }
 
@@ -57,16 +62,20 @@ func (b *SimpleEventBus) Subscribe(subscriber Subscriber, e Event) {
 		for ev := range w.ch {
 			// Wrap each dispatch in its own func scope
 			func(ev event) {
+				ctx, span := b.tracer.Start(ev.ctx, fmt.Sprintf("Handle event %T", ev.e))
+				defer span.End()
+
 				defer func() {
 					if r := recover(); r != nil {
 						b.logger.Error(fmt.Sprintf("Recovered from panic in subscriber %s: %v", id(w.sub), r))
 					}
 				}()
 
-				// TODO use tracer here
 				if err := w.sub.Dispatch(ev.ctx, ev.e); err != nil {
 					b.logger.Error(err)
+					span.RecordError(err)
 				} else {
+					span.AddEvent("Event handled OK")
 					b.logger.Debug(fmt.Sprintf("Handled event %s by %s", id(ev.e), id(w.sub)))
 				}
 			}(ev)
