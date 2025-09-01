@@ -23,7 +23,7 @@ func NewHandler(
 	idp idp.IdentityProvider,
 	mailService *services.MailService,
 	errors errors.ErrorFactory,
-	cfg *api.Config,
+	cfg api.Config,
 ) *Handler {
 	return &Handler{
 		userRepository: userRepository,

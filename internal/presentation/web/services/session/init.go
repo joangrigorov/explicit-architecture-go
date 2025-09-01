@@ -1,4 +1,4 @@
-package services
+package session
 
 import (
 	"app/config/web"
@@ -28,6 +28,7 @@ func NewSessionStore(cfg web.Config) sessions.Store {
 			sessionCfg.RedisPassword,
 			sessionSecret,
 		)
+		store.(*redistore.RediStore).SetMaxLength(sessionCfg.RedisMaxLengthKB * 1024)
 	case "file":
 		store = sessions.NewFilesystemStore(sessionCfg.FilesystemPath, sessionSecret)
 	case "cookie":
@@ -42,7 +43,7 @@ func NewSessionStore(cfg web.Config) sessions.Store {
 	return store
 }
 
-func SessionHandler(logger *zap.SugaredLogger, store sessions.Store, sessionName string) gin.HandlerFunc {
+func Handler(logger *zap.SugaredLogger, store sessions.Store, sessionName string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session, err := store.Get(c.Request, sessionName)
 		if err != nil {

@@ -16,7 +16,8 @@ type Config struct {
 }
 
 type App struct {
-	Name string `env:"APP_NAME"`
+	Name  string `env:"APP_NAME"`
+	Debug bool   `env:"APP_DEBUG" envDefault:"false"`
 }
 
 type DB struct {
@@ -89,11 +90,11 @@ type Frontend struct {
 }
 
 // NewConfig returns app config.
-func NewConfig() (*Config, error) {
+func NewConfig() (Config, error) {
 	cfg := &Config{}
 	if err := env.Parse(cfg); err != nil {
-		return nil, fmt.Errorf("config error: %w", err)
+		return *cfg, fmt.Errorf("config error: %w", err)
 	}
 
-	return cfg, nil
+	return *cfg, nil
 }

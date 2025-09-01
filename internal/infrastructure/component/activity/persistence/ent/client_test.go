@@ -17,7 +17,7 @@ func TestNewClient(t *testing.T) {
 		_ = db.Close()
 	}(db)
 
-	cfg := &api.Config{
+	cfg := api.Config{
 		DB: api.DB{
 			Activity: api.DBActivity{
 				Driver: "sqlite3",

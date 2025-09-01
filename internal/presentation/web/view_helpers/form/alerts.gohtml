@@ -1,0 +1,9 @@
+{{ define "#/form/alerts" }}
+    {{ if .Alerts }}
+        {{ range .Alerts }}
+            <div class="alert alert-{{ .Kind }}">
+                {{ .Msg }}
+            </div>
+        {{ end }}
+    {{ end }}
+{{ end }}

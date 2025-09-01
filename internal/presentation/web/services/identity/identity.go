@@ -1,4 +1,4 @@
-package services
+package identity
 
 import (
 	"app/config/web"
@@ -11,7 +11,7 @@ import (
 	"net/url"
 )
 
-type IdentityService struct {
+type IdPService struct {
 	keycloakCfg web.Keycloak
 }
 
@@ -23,7 +23,7 @@ type TokenResponse struct {
 	Scope        string `json:"scope"`
 }
 
-func (s *IdentityService) SignInURL(state string, nonce string) string {
+func (s *IdPService) SignInURL(state string, nonce string) string {
 	authURL := fmt.Sprintf("%s/realms/%s/protocol/openid-connect/auth", s.keycloakCfg.UIHost, s.keycloakCfg.Realm)
 
 	params := url.Values{}
@@ -37,7 +37,7 @@ func (s *IdentityService) SignInURL(state string, nonce string) string {
 	return authURL + "?" + params.Encode()
 }
 
-func (s *IdentityService) ExchangeCodeForToken(code string) (*TokenResponse, error) {
+func (s *IdPService) ExchangeCodeForToken(code string) (*TokenResponse, error) {
 	tokenURL := fmt.Sprintf("%s/realms/%s/protocol/openid-connect/token",
 		s.keycloakCfg.APIHost, s.keycloakCfg.Realm)
 
@@ -75,7 +75,7 @@ func (s *IdentityService) ExchangeCodeForToken(code string) (*TokenResponse, err
 	return &tokenResp, nil
 }
 
-func (s *IdentityService) RefreshToken(refreshToken string) (*TokenResponse, error) {
+func (s *IdPService) RefreshToken(refreshToken string) (*TokenResponse, error) {
 	tokenURL := fmt.Sprintf("%s/realms/%s/protocol/openid-connect/token",
 		s.keycloakCfg.APIHost, s.keycloakCfg.Realm)
 
@@ -112,7 +112,7 @@ func (s *IdentityService) RefreshToken(refreshToken string) (*TokenResponse, err
 	return &tokenResp, nil
 }
 
-func (s *IdentityService) Logout(refreshToken string) error {
+func (s *IdPService) Logout(refreshToken string) error {
 	logoutURL := fmt.Sprintf("%s/realms/%s/protocol/openid-connect/logout",
 		s.keycloakCfg.APIHost, s.keycloakCfg.Realm)
 
@@ -147,8 +147,8 @@ func (s *IdentityService) Logout(refreshToken string) error {
 	return nil
 }
 
-func NewIdentityService(cfg web.Config) *IdentityService {
-	return &IdentityService{
+func NewIdentityService(cfg web.Config) *IdPService {
+	return &IdPService{
 		keycloakCfg: cfg.Keycloak,
 	}
 }

@@ -4,6 +4,11 @@
            id="{{ .ID }}"
            name="{{ .Name }}"
            placeholder="{{ .Placeholder }}"
-           value="{{ .Value }}"
+           {{ if .Value }}value="{{ .Value }}"{{ end }}
            {{ if .Required }}required{{ end }}>
+    {{ if .Error }}
+        <div class="form-error">
+            {{ .Error }}
+        </div>
+    {{ end }}
 {{ end }}

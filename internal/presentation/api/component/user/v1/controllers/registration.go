@@ -7,27 +7,30 @@ import (
 	"app/internal/infrastructure/framework/cqrs/queries"
 	ctx "app/internal/infrastructure/framework/http"
 	"app/internal/presentation/api/component/user/v1/requests"
-	. "app/internal/presentation/api/shared/responses"
+	"app/internal/presentation/api/shared/errors"
 
-	ut "github.com/go-playground/universal-translator"
 	"github.com/google/uuid"
 )
 
 type Registration struct {
-	commandBus cqrs.CommandBus
-	queryBus   cqrs.QueryBus
-	tr         ut.Translator
+	commandBus   cqrs.CommandBus
+	queryBus     cqrs.QueryBus
+	errorHandler *errors.Handler
 }
 
-func NewRegistrationController(commandBus cqrs.CommandBus, queryBus cqrs.QueryBus, tr ut.Translator) *Registration {
-	return &Registration{commandBus: commandBus, queryBus: queryBus, tr: tr}
+func NewRegistration(
+	commandBus cqrs.CommandBus,
+	queryBus cqrs.QueryBus,
+	errorHandler *errors.Handler,
+) *Registration {
+	return &Registration{commandBus: commandBus, queryBus: queryBus, errorHandler: errorHandler}
 }
 
 func (c *Registration) Register(ctx ctx.Context) {
 	r := &requests.Registration{}
 
 	if err := ctx.ShouldBindJSON(r); err != nil {
-		UnprocessableEntity(ctx, Render(c.tr, err, r))
+		c.errorHandler.RenderRequestError(ctx, err, r)
 		return
 	}
 
@@ -35,8 +38,7 @@ func (c *Registration) Register(ctx ctx.Context) {
 	cmd := r.NewRegisterUserCommand(userID)
 
 	if err := c.commandBus.Dispatch(ctx.Context(), cmd); err != nil {
-		// TODO handle other types of errors. Not all is 500
-		InternalServerError(ctx, NewDefaultError(err))
+		c.errorHandler.RenderApplicationError(ctx, err)
 		return
 	}
 
@@ -44,8 +46,7 @@ func (c *Registration) Register(ctx ctx.Context) {
 	userDTO, err := queries.Execute[*dto.UserDTO](ctx.Context(), c.queryBus, query)
 
 	if err != nil {
-		// TODO handle other types of errors. Not all is 500
-		InternalServerError(ctx, NewDefaultError(err))
+		c.errorHandler.RenderApplicationError(ctx, err)
 		return
 	}
 

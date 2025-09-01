@@ -9,6 +9,7 @@ type Email struct {
 	ID, Label, Name    string
 	Placeholder, Value *string
 	Required           bool
+	Error              string
 }
 
 func RenderEmail(tmpl *template.Template, f Email) (template.HTML, error) {

@@ -30,7 +30,7 @@ type TransactionalConfirmUserCommand struct {
 	idp               idp.IdentityProvider
 	entClient         *userEnt.Client
 	errors            errors.ErrorFactory
-	cfg               *api.Config
+	cfg               api.Config
 }
 
 func NewTransactionalConfirmUserCommand(
@@ -43,7 +43,7 @@ func NewTransactionalConfirmUserCommand(
 	identityProvider idp.IdentityProvider,
 	entClient *userEnt.Client,
 	errors errors.ErrorFactory,
-	cfg *api.Config,
+	cfg api.Config,
 ) *TransactionalConfirmUserCommand {
 	return &TransactionalConfirmUserCommand{
 		userRepository:    userRepository,

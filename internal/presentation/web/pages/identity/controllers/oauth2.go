@@ -1,18 +1,19 @@
 package controllers
 
 import (
-	"app/internal/presentation/web/services"
+	"app/internal/presentation/web/services/identity"
+	"app/internal/presentation/web/services/session"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 type OAuth2 struct {
-	authService *services.AuthenticationService
+	authService *identity.AuthenticationService
 }
 
 func (a *OAuth2) Callback(c *gin.Context) {
-	_, err := a.authService.ObtainToken(services.GetSession(c), c.Query("code"))
+	_, err := a.authService.ObtainToken(session.GetSession(c), c.Query("code"))
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -25,6 +26,6 @@ func (a *OAuth2) Callback(c *gin.Context) {
 	c.Redirect(http.StatusTemporaryRedirect, "/")
 }
 
-func NewOAuth2(authService *services.AuthenticationService) *OAuth2 {
+func NewOAuth2(authService *identity.AuthenticationService) *OAuth2 {
 	return &OAuth2{authService: authService}
 }

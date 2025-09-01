@@ -1,4 +1,4 @@
-package services
+package identity
 
 import (
 	"encoding/gob"
@@ -15,7 +15,7 @@ func init() {
 }
 
 type AuthenticationService struct {
-	ids *IdentityService
+	ids *IdPService
 }
 
 func (s *AuthenticationService) ObtainToken(session *sessions.Session, code string) (AuthenticationSession, error) {
@@ -52,8 +52,6 @@ func (s *AuthenticationService) ActiveSession(session *sessions.Session) (Authen
 		return authSession, nil
 	}
 
-	log.Printf("Authentication session expiry: %v", authSession.ExpiresAt)
-
 	return authSession, nil
 }
 
@@ -82,6 +80,6 @@ func (s AuthenticationSession) Expired() bool {
 	return time.Now().After(s.ExpiresAt)
 }
 
-func NewAuthenticationService(ids *IdentityService) *AuthenticationService {
+func NewAuthenticationService(ids *IdPService) *AuthenticationService {
 	return &AuthenticationService{ids: ids}
 }

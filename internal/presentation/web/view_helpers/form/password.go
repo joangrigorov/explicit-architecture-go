@@ -9,6 +9,7 @@ type Password struct {
 	ID, Label, Name string
 	Placeholder     *string
 	Required        bool
+	Error           string
 }
 
 func RenderPassword(tmpl *template.Template, f Password) (template.HTML, error) {

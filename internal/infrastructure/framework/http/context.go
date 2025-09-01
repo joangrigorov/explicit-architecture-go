@@ -35,6 +35,8 @@ type Context interface {
 
 	Query(key string) string
 
+	GetHeader(key string) string
+
 	SetResponseHeader(key string, val string)
 
 	// NoContent responds with 204
@@ -86,6 +88,10 @@ func (g *GinContext) ParamString(key string) string {
 
 func (g *GinContext) Query(key string) string {
 	return g.context.Query(key)
+}
+
+func (g *GinContext) GetHeader(key string) string {
+	return g.context.GetHeader(key)
 }
 
 func (g *GinContext) ParamInt(key string) (int, error) {

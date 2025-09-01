@@ -6,12 +6,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <title>Activity Planner</title>
         <link rel="stylesheet" href="/assets/css/theme.css">
+        <link rel="stylesheet" href="/assets/css/alerts.css">
     </head>
     <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
     <!-- Top navigation -->
     <header>
+        {{ gui_alerts .Alerts }}
         <nav class="nav" aria-label="Primary">
             <div class="nav-left">
                 <div class="brand" aria-label="Activity Planner home">
@@ -27,8 +29,8 @@
                 {{ if .SignedIn }}
                 <div class="profile-menu">
                     <div class="profile-trigger">
-                        <span class="avatar">JD</span>
-                        <span>John Doe ▾</span>
+                        <span class="avatar">{{ .Profile.Initials }}</span>
+                        <span>{{ .Profile.FullName }} ▾</span>
                     </div>
                     <div class="dropdown">
                         <a href="#profile">Profile</a>

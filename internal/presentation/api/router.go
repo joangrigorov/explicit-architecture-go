@@ -12,6 +12,7 @@ func RegisterRoutes(
 	activityController *activities.Controller,
 	registrationController *uc.Registration,
 	verificationController *uc.Verification,
+	meController *uc.Me,
 ) {
 	// Global middleware
 	r.Use(
@@ -27,6 +28,12 @@ func RegisterRoutes(
 		v1.POST("/registration", registrationController.Register)
 		v1.GET("/verifications/:id/preflight", verificationController.PreflightValidate)
 		v1.POST("/verifications/:id/password-setup", verificationController.PasswordSetup)
+
+		{
+			protected := v1.Group("/me")
+			protected.Use(middleware.RequiresIdentity)
+			protected.GET("/", meController.Me)
+		}
 	}
 
 	// activity component public routes

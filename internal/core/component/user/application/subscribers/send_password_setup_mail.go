@@ -19,7 +19,7 @@ type SendSetPasswordMailSubscriber struct {
 func NewSendSetPasswordMailSubscriber(
 	commandBus cqrs.CommandBus,
 	errors errors.ErrorFactory,
-	cfg *api.Config,
+	cfg api.Config,
 ) *SendSetPasswordMailSubscriber {
 	return &SendSetPasswordMailSubscriber{
 		commandBus:  commandBus,

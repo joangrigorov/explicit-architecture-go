@@ -9,6 +9,7 @@ type Text struct {
 	ID, Label, Name    string
 	Placeholder, Value *string
 	Required           bool
+	Error              string
 }
 
 func RenderText(tmpl *template.Template, f Text) (template.HTML, error) {

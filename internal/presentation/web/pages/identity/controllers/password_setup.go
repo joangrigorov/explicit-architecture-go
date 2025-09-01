@@ -2,7 +2,9 @@ package controllers
 
 import (
 	"app/internal/presentation/web/pages/identity/forms"
-	"app/internal/presentation/web/services"
+	"app/internal/presentation/web/services/activity_planner"
+	"app/internal/presentation/web/services/session"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -10,8 +12,9 @@ import (
 )
 
 type PasswordSetup struct {
-	client *services.ActivityPlannerClient
+	client *activity_planner.Client
 	logger *zap.SugaredLogger
+	flash  *session.Flash
 }
 
 func (s *PasswordSetup) SetPasswordForm(c *gin.Context) {
@@ -19,68 +22,79 @@ func (s *PasswordSetup) SetPasswordForm(c *gin.Context) {
 	token := c.Query("token")
 	response, err := s.client.PreflightVerification(verificationID, token)
 
+	sess := session.GetSession(c)
+	
+	alerts := s.flash.GetAlerts(sess, "password_setup")
+
 	if err != nil {
-		s.logger.Error("error while verifying token", zap.Error(err))
 		c.HTML(http.StatusInternalServerError, "identity/password_setup", gin.H{
-			"Error": "Unknown error occurred",
+			"Alerts":   append(alerts, session.Alert{Kind: session.AlertError, Msg: "Unknown error occurred"}),
+			"HideForm": true,
 		})
 		return
 	}
 
 	if response.Error != "" {
 		c.HTML(http.StatusInternalServerError, "identity/password_setup", gin.H{
-			"Error":   response.Error,
-			"Expired": false,
+			"Alerts":   append(alerts, session.Alert{Kind: session.AlertError, Msg: response.Error}),
+			"HideForm": true,
 		})
 		return
 	}
 
 	if response.Expired {
 		c.HTML(http.StatusGone, "identity/password_setup", gin.H{
-			"Error":   "Token is expired",
-			"Expired": true,
+			"Alerts":   append(alerts, session.Alert{Kind: session.AlertError, Msg: "Password setup session has expired"}),
+			"Expired":  true,
+			"HideForm": true,
 		})
 		return
 	}
 
 	if !response.ValidCSRF {
 		c.HTML(http.StatusBadRequest, "identity/password_setup", gin.H{
-			"Error":   "CSRF token is invalid",
-			"Expired": false,
+			"Alerts":   append(alerts, session.Alert{Kind: session.AlertError, Msg: "CSRF token is invalid"}),
+			"HideForm": true,
 		})
 		return
 	}
 
+	formErrors := s.flash.GetFormErrors(sess, forms.PasswordSetup{})
+
 	c.HTML(http.StatusOK, "identity/password_setup", gin.H{
 		"MaskedEmail": response.MaskedEmail,
-		"ID":          verificationID,
-		"Token":       token,
+		"id":          verificationID,
+		"token":       token,
+		"FormErrors":  formErrors,
 	})
 	return
 }
 
 func (s *PasswordSetup) SetPassword(c *gin.Context) {
-	req := &forms.PasswordSetup{}
-	if err := c.ShouldBind(req); err != nil {
-		// TODO render form errors properly
-		c.HTML(422, "identity/password_setup", gin.H{
-			"Error": err.Error(),
-		})
+	form := &forms.PasswordSetup{}
+	if err := c.ShouldBind(form); err != nil {
+		s.flash.AddFormErrors(session.GetSession(c), *form, err)
+		s.flash.AddFormValues(session.GetSession(c), *form)
+		log.Println("Params", form.VerificationID, form.Token, err.Error())
+		c.Redirect(http.StatusFound, "/set-password?id="+form.VerificationID+"&token="+form.Token)
 		return
 	}
 
-	if err := s.client.PasswordSetup(req); err != nil {
-		// TODO save error in session and redirect to the form
-		c.HTML(422, "identity/password_setup", gin.H{
-			"Error": err.Error(),
-		})
+	if err := s.client.PasswordSetup(form); err != nil {
+		s.flash.AddAlert(session.GetSession(c), "password_setup", session.AlertError, err.Error())
+		s.flash.AddFormValues(session.GetSession(c), *form)
+		c.Redirect(http.StatusFound, "/set-password?id="+form.VerificationID+"&token="+form.Token)
 		return
 	}
 
-	// TODO save a success state in session and display it in the sign in form
-	c.Redirect(http.StatusFound, "/sign-in")
+	s.flash.AddAlert(session.GetSession(c), "landing", session.AlertSuccess, "Registration finalized")
+	c.Redirect(http.StatusFound, "/")
 }
 
-func NewPasswordSetup(client *services.ActivityPlannerClient, logger *zap.SugaredLogger) *PasswordSetup {
-	return &PasswordSetup{client: client, logger: logger}
+func NewPasswordSetup(
+	client *activity_planner.Client,
+	logger *zap.SugaredLogger,
+	flash *session.Flash,
+) *PasswordSetup {
+	return &PasswordSetup{client: client, logger: logger, flash: flash}
 }

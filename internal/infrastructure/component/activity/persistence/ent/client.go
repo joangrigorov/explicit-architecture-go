@@ -12,7 +12,7 @@ import (
 
 type Connection *sql.DB
 
-func NewConnection(cfg *api.Config) (Connection, error) {
+func NewConnection(cfg api.Config) (Connection, error) {
 	cfgDb := cfg.DB.Activity
 
 	if cfgDb.Driver == "postgres" {
@@ -32,7 +32,7 @@ func NewConnection(cfg *api.Config) (Connection, error) {
 	panic(fmt.Sprintf("unsupported driver %s", cfgDb.Driver))
 }
 
-func NewClient(db Connection, cfg *api.Config) *generated.Client {
+func NewClient(db Connection, cfg api.Config) *generated.Client {
 	return generated.NewClient(
 		generated.Driver(
 			entSql.OpenDB(cfg.DB.Activity.Driver, db),

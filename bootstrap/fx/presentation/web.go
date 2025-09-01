@@ -5,7 +5,9 @@ import (
 	"app/internal/presentation/web"
 	home "app/internal/presentation/web/pages/home/controllers"
 	id "app/internal/presentation/web/pages/identity/controllers"
-	svc "app/internal/presentation/web/services"
+	"app/internal/presentation/web/services/activity_planner"
+	"app/internal/presentation/web/services/identity"
+	"app/internal/presentation/web/services/session"
 
 	"go.uber.org/fx"
 )
@@ -28,10 +30,11 @@ var framework = fx.Module("framework", fx.Provide(
 ))
 
 var services = fx.Module("services", fx.Provide(
-	svc.NewActivityPlannerClient,
-	svc.NewIdentityService,
-	svc.NewSessionStore,
-	svc.NewAuthenticationService,
+	activity_planner.NewClient,
+	identity.NewIdentityService,
+	session.NewSessionStore,
+	session.NewFlash,
+	identity.NewAuthenticationService,
 ))
 
 var Web = fx.Module("presentation/web",

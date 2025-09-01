@@ -7,6 +7,9 @@ import (
 	"net/http"
 )
 
+type ErrorHandler struct {
+}
+
 // TODO convert this into a factory and make a function that automatically
 // TODO detects if the error is a controlled application error,
 // TODO a validation error or generic error of any other kind.

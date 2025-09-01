@@ -13,7 +13,7 @@ type PasswordSetupMail struct {
 	webURL string
 }
 
-func NewPasswordSetupMail(cfg *api.Config) mailables.PasswordSetupMail {
+func NewPasswordSetupMail(cfg api.Config) mailables.PasswordSetupMail {
 	return &PasswordSetupMail{webURL: cfg.Frontend.WebURL}
 }
 

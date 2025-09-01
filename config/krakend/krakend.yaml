@@ -57,12 +57,18 @@ endpoints:
       - host: http://api:8080
         url_pattern: /user/v1/verifications/{id}/password-setup
 
-  - endpoint: /activity/v1/{rest}
+  - endpoint: /user/v1/me
     method: GET
-    output_encoding: json
+    output_encoding: no-op
+    input_headers:
+      - x-idp-user-id
+      - x-app-user-id
     backend:
       - host: http://api:8080
-        url_pattern: /activity/v1/{rest}
+        url_pattern: /user/v1/me
+        input_headers:
+          - x-idp-user-id
+          - x-app-user-id
     extra_config:
       auth/validator:
         alg: RS256
@@ -71,4 +77,7 @@ endpoints:
         cache: false
         issuer: http://localhost:8081/realms/app
         operation_debug: true
+        propagate_claims:
+          - ["sub", "x-idp-user-id"]
+          - ["app_user_id", "x-app-user-id"]
 

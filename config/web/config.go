@@ -32,15 +32,16 @@ type Keycloak struct {
 }
 
 type Session struct {
-	Driver         string `env:"SESSION_DRIVER" envDefault:"cookie"`
-	SessionSecret  string `env:"SESSION_SECRET"`
-	SessionKey     string `env:"SESSION_KEY"`
-	RedisPoolSize  int    `env:"REDIS_POOL_SIZE" envDefault:"10"`
-	RedisNetwork   string `env:"REDIS_NETWORK" envDefault:"tcp"`
-	RedisAddr      string `env:"REDIS_ADDR" envDefault:"redis:6379"`
-	RedisUsername  string `env:"REDIS_USERNAME"`
-	RedisPassword  string `env:"REDIS_PASSWORD"`
-	FilesystemPath string `env:"FILESYSTEM_PATH" envDefault:"/tmp/go-apps/"`
+	Driver           string `env:"SESSION_DRIVER" envDefault:"cookie"`
+	SessionSecret    string `env:"SESSION_SECRET"`
+	SessionKey       string `env:"SESSION_KEY"`
+	RedisPoolSize    int    `env:"REDIS_POOL_SIZE" envDefault:"10"`
+	RedisNetwork     string `env:"REDIS_NETWORK" envDefault:"tcp"`
+	RedisAddr        string `env:"REDIS_ADDR" envDefault:"redis:6379"`
+	RedisUsername    string `env:"REDIS_USERNAME"`
+	RedisPassword    string `env:"REDIS_PASSWORD"`
+	FilesystemPath   string `env:"FILESYSTEM_PATH" envDefault:"/tmp/go-apps/"`
+	RedisMaxLengthKB int    `env:"REDIS_MAX_LENGTH_KB" envDefault:"128"`
 }
 
 // NewConfig returns app config.

@@ -4,7 +4,7 @@ import (
 	"app/config/web"
 	homeC "app/internal/presentation/web/pages/home/controllers"
 	id "app/internal/presentation/web/pages/identity/controllers"
-	"app/internal/presentation/web/services"
+	"app/internal/presentation/web/services/session"
 	"html/template"
 	"net/http"
 
@@ -26,7 +26,7 @@ func RegisterRoutes(
 	ps *id.PasswordSetup,
 	oauth2 *id.OAuth2,
 ) {
-	r.Use(services.SessionHandler(logger, store, cfg.Session.SessionKey))
+	r.Use(session.Handler(logger, store, cfg.Session.SessionKey))
 
 	r.StaticFS("/assets", http.Dir("internal/presentation/web/assets"))
 

@@ -9,6 +9,7 @@ x-db-environment: &x-db-environment
 x-backend-api-environment: &x-backend-api-environment
   # App settings
   APP_NAME: "activity-planner-api"
+  APP_DEBUG: true
   ZAP_DEV_MODE: true
 
   ### Databases

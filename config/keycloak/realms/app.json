@@ -1632,6 +1632,23 @@
           }
         },
         {
+          "id": "d46491b0-9a3b-4996-90a1-2ed142dab2e3",
+          "name": "App user ID",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "introspection.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "user.attribute": "app_user_id",
+            "id.token.claim": "true",
+            "lightweight.claim": "false",
+            "access.token.claim": "true",
+            "claim.name": "app_user_id",
+            "jsonType.label": "String"
+          }
+        },
+        {
           "id": "e34b3bb2-90a6-419f-bd52-5457804696c0",
           "name": "nickname",
           "protocol": "openid-connect",

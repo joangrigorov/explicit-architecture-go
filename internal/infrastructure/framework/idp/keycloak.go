@@ -24,7 +24,7 @@ type KeycloakIdentityProvider struct {
 	token *gocloak.JWT
 }
 
-func NewKeycloakIdentityProvider(client *gocloak.GoCloak, cfg *api.Config) idp.IdentityProvider {
+func NewKeycloakIdentityProvider(client *gocloak.GoCloak, cfg api.Config) idp.IdentityProvider {
 	return &KeycloakIdentityProvider{
 		client:       client,
 		clientID:     cfg.Keycloak.ClientId,
