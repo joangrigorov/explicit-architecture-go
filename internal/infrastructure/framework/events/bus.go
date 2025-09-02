@@ -8,6 +8,7 @@ import (
 	"reflect"
 	"sync"
 
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -64,6 +65,10 @@ func (b *SimpleEventBus) Subscribe(subscriber Subscriber, e Event) {
 			func(ev event) {
 				ctx, span := b.tracer.Start(ev.ctx, fmt.Sprintf("Handle event %T", ev.e))
 				defer span.End()
+				span.SetAttributes(
+					attribute.String("event", id(ev.e)),
+					attribute.String("sub", id(w.sub)),
+				)
 
 				defer func() {
 					if r := recover(); r != nil {
@@ -71,11 +76,11 @@ func (b *SimpleEventBus) Subscribe(subscriber Subscriber, e Event) {
 					}
 				}()
 
-				if err := w.sub.Dispatch(ev.ctx, ev.e); err != nil {
+				if err := w.sub.Dispatch(ctx, ev.e); err != nil {
 					b.logger.Error(err)
 					span.RecordError(err)
 				} else {
-					span.AddEvent("Event handled OK")
+					span.AddEvent(fmt.Sprintf("Handled event %s by %s", id(ev.e), id(w.sub)))
 					b.logger.Debug(fmt.Sprintf("Handled event %s by %s", id(ev.e), id(w.sub)))
 				}
 			}(ev)

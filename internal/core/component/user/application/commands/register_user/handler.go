@@ -12,16 +12,6 @@ type Handler struct {
 	errors         errors.ErrorFactory
 }
 
-func NewHandler(
-	userRepository repositories.UserRepository,
-	errors errors.ErrorFactory,
-) *Handler {
-	return &Handler{
-		userRepository: userRepository,
-		errors:         errors,
-	}
-}
-
 func (h *Handler) Handle(ctx context.Context, c Command) error {
 	id := user.ID(c.userID)
 
@@ -54,4 +44,14 @@ func (h *Handler) Handle(ctx context.Context, c Command) error {
 	}
 
 	return nil
+}
+
+func NewHandler(
+	userRepository repositories.UserRepository,
+	errors errors.ErrorFactory,
+) *Handler {
+	return &Handler{
+		userRepository: userRepository,
+		errors:         errors,
+	}
 }

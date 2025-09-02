@@ -16,18 +16,6 @@ type SendSetPasswordMailSubscriber struct {
 	errors      errors.ErrorFactory
 }
 
-func NewSendSetPasswordMailSubscriber(
-	commandBus cqrs.CommandBus,
-	errors errors.ErrorFactory,
-	cfg api.Config,
-) *SendSetPasswordMailSubscriber {
-	return &SendSetPasswordMailSubscriber{
-		commandBus:  commandBus,
-		senderEmail: cfg.Mail.DefaultSender,
-		errors:      errors,
-	}
-}
-
 func (s *SendSetPasswordMailSubscriber) Dispatch(ctx context.Context, event events.Event) error {
 	e, ok := event.(user.CreatedEvent)
 	if !ok {
@@ -40,4 +28,17 @@ func (s *SendSetPasswordMailSubscriber) Dispatch(ctx context.Context, event even
 	}
 
 	return nil
+}
+
+func NewSendSetPasswordMailSubscriber(
+	commandBus cqrs.CommandBus,
+	errors errors.ErrorFactory,
+	// TODO dependency creep - this shouldn't be injected here! Use a port!
+	cfg api.Config,
+) *SendSetPasswordMailSubscriber {
+	return &SendSetPasswordMailSubscriber{
+		commandBus:  commandBus,
+		senderEmail: cfg.Mail.DefaultSender,
+		errors:      errors,
+	}
 }

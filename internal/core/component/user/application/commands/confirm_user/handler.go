@@ -18,22 +18,6 @@ type Handler struct {
 	senderEmail    string
 }
 
-func NewHandler(
-	userRepository repositories.UserRepository,
-	idp idp.IdentityProvider,
-	mailService *services.MailService,
-	errors errors.ErrorFactory,
-	cfg api.Config,
-) *Handler {
-	return &Handler{
-		userRepository: userRepository,
-		idp:            idp,
-		mailService:    mailService,
-		errors:         errors,
-		senderEmail:    cfg.Mail.DefaultSender,
-	}
-}
-
 func (h *Handler) Handle(ctx context.Context, c Command) error {
 	usr, err := h.userRepository.GetById(ctx, user.ID(c.userID))
 
@@ -62,4 +46,21 @@ func (h *Handler) Handle(ctx context.Context, c Command) error {
 	}
 
 	return nil
+}
+
+func NewHandler(
+	userRepository repositories.UserRepository,
+	idp idp.IdentityProvider,
+	mailService *services.MailService,
+	errors errors.ErrorFactory,
+	// TODO dependency creep - this shouldn't be injected here! Use a port!
+	cfg api.Config,
+) *Handler {
+	return &Handler{
+		userRepository: userRepository,
+		idp:            idp,
+		mailService:    mailService,
+		errors:         errors,
+		senderEmail:    cfg.Mail.DefaultSender,
+	}
 }

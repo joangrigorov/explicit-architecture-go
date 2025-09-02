@@ -12,6 +12,7 @@ exclude:
 
 components:
   # Application Core layers
+  # TODO fix naming mismatch - core/activity/domain and NOT core/domain/activity
   core/domain/activity:
     in: internal/core/component/activity/domain/**
   core/domain/attendance:
@@ -30,12 +31,13 @@ components:
     in: internal/core/shared_kernel/**
   # Outer layers
   presentation:
+    # TODO introduce separate api and web layers. Make web not depending on anything but config
     in: internal/presentation/**
   infrastructure:
     in:
       - internal/infrastructure/**
-      - config
-  # App boilerplate
+      - config/**
+  # Composition root/boilerplate
   bootstrap:
     in:
       - bootstrap/**

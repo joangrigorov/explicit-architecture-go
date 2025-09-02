@@ -15,10 +15,6 @@ type Handler struct {
 	errors              errors.ErrorFactory
 }
 
-func NewHandler(queries port.VerificationQueries, errors errors.ErrorFactory) *Handler {
-	return &Handler{verificationQueries: queries, errors: errors}
-}
-
 func (h *Handler) Execute(ctx context.Context, q Query) (*dto.PreflightDTO, error) {
 	ver, err := h.verificationQueries.FindByID(ctx, q.verificationID)
 
@@ -48,4 +44,8 @@ func (h *Handler) Execute(ctx context.Context, q Query) (*dto.PreflightDTO, erro
 		MaskedEmail: ver.UserEmailMasked,
 		UserID:      ver.UserID,
 	}, nil
+}
+
+func NewHandler(queries port.VerificationQueries, errors errors.ErrorFactory) *Handler {
+	return &Handler{verificationQueries: queries, errors: errors}
 }

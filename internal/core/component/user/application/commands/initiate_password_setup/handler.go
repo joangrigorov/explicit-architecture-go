@@ -15,20 +15,6 @@ type Handler struct {
 	errors              errors.ErrorFactory
 }
 
-func NewHandler(
-	userRepository repositories.UserRepository,
-	verificationService *services.VerificationService,
-	mailService *services.MailService,
-	errors errors.ErrorFactory,
-) *Handler {
-	return &Handler{
-		userRepository:      userRepository,
-		verificationService: verificationService,
-		mailService:         mailService,
-		errors:              errors,
-	}
-}
-
 func (s *Handler) Handle(ctx context.Context, c Command) error {
 	userID := domain.ID(c.userID)
 	user, err := s.userRepository.GetById(ctx, userID)
@@ -50,4 +36,18 @@ func (s *Handler) Handle(ctx context.Context, c Command) error {
 	}
 
 	return nil
+}
+
+func NewHandler(
+	userRepository repositories.UserRepository,
+	verificationService *services.VerificationService,
+	mailService *services.MailService,
+	errors errors.ErrorFactory,
+) *Handler {
+	return &Handler{
+		userRepository:      userRepository,
+		verificationService: verificationService,
+		mailService:         mailService,
+		errors:              errors,
+	}
 }

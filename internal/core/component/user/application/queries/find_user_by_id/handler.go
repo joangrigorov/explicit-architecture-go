@@ -11,10 +11,10 @@ type Handler struct {
 	queries port.UserQueries
 }
 
-func NewHandler(queries port.UserQueries) cqrs.QueryHandler[Query, *dto.UserDTO] {
-	return &Handler{queries: queries}
-}
-
 func (h *Handler) Execute(ctx context.Context, q Query) (*dto.UserDTO, error) {
 	return h.queries.FindByID(ctx, q.ID)
+}
+
+func NewHandler(queries port.UserQueries) cqrs.QueryHandler[Query, *dto.UserDTO] {
+	return &Handler{queries: queries}
 }

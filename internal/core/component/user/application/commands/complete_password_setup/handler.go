@@ -16,20 +16,6 @@ type Handler struct {
 	errors         errors.ErrorFactory
 }
 
-func NewHandler(
-	userRepository repositories.UserRepository,
-	idp idp.IdentityProvider,
-	eventBus eventBus.EventBus,
-	errors errors.ErrorFactory,
-) *Handler {
-	return &Handler{
-		userRepository: userRepository,
-		idp:            idp,
-		eventBus:       eventBus,
-		errors:         errors,
-	}
-}
-
 func (h *Handler) Handle(ctx context.Context, c Command) error {
 	userID := user.ID(c.userID)
 	usr, err := h.userRepository.GetById(ctx, userID)
@@ -57,4 +43,18 @@ func (h *Handler) Handle(ctx context.Context, c Command) error {
 	}
 
 	return nil
+}
+
+func NewHandler(
+	userRepository repositories.UserRepository,
+	idp idp.IdentityProvider,
+	eventBus eventBus.EventBus,
+	errors errors.ErrorFactory,
+) *Handler {
+	return &Handler{
+		userRepository: userRepository,
+		idp:            idp,
+		eventBus:       eventBus,
+		errors:         errors,
+	}
 }
